@@ -80,7 +80,7 @@ Login into <a href='https://cloud.google.com'>gcloud</a> using the account that 
 8. Now go back to browser and for value: press the paste buttons (CMD + V on Mac / CTRL + V on windows)
 
 ### step 9: Update circle.yaml file
-In your local repository, update `circle.yaml` file by replacing the `<your-gcloud-project-id>` with your project id from google cloud.
+In your local repository, update `circle.yaml` file by replacing the `<your-gcloud-project-id>` at two places with your Project ID from google cloud. 
 
 Then,
 
