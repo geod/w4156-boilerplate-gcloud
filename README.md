@@ -99,6 +99,17 @@ To verify:
 2. If everything is good -> build will succeed and the app will be deployed into google app engine. 
 3. you can also verify that by going to `https://<your-gcloud-project-id>.appspot.com` which will show a message like starting with `hello`
 
+### step 11: Setting up Google Cloud SDK & App Engine SDK in your local system
+
+1. Following this link and perform the 3 steps under the `Interactive Installer` section: <br/>
+<a href='https://cloud.google.com/sdk/downloads#interactive'>Google Cloud SDK</a>
+2. Following this link and perform the steps from 3rd - 5th: <br/>
+<a href='https://cloud.google.com/appengine/docs/standard/python/download'>App Engine extension for Python</a>
+3. `cd <your-local-repository / folder>` in our case `cd ase-boilerplate`
+4. `mkdir -t lib`
+5. `pip install -r requirements.txt -t lib`
+6. `dev_appserver.py ./`
+7. Now, you will be running the application locally (but you are mimicking App Engine framework locally!). So now checkout <a href='http://localhost:8080'>localhost:8080</a>. You should be greeted with `hello` message
 
 ## Licensing
 
