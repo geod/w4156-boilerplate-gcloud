@@ -47,7 +47,7 @@ How? <br/>
     
 ### Step 6: Setting up Google Cloud & Project
 
-Login into <a href='https://cloud.google.com'>gcloud</a> using the account that you used for free credits. (Note: If you signed in using another account, switch account to the one that you used to grab free credits.)
+Login into <a href='https://cloud.google.com'>Google Cloud</a> using the account that you used for free credits. (Note: If you signed in using another account, switch account to the one that you used to grab free credits.)
 
 1. If you are using google cloud first time, it will ask you to accept some terms, please do so.
 2. On the top left -> click on `select a project`. If you have already used google cloud before and you have also created a project before, then you may see another project name there, even then click on it.
