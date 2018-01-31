@@ -5,18 +5,18 @@ This is a boilerplate python flask code with configurations for Circle CI and go
 
 Please log into github before progressing with the next steps.
 
-### Step1: First things first!
+### Step 1: First things first!
 
 Grab your free google credits by following <a href='www.google.com'> this post </a> in piazza.
 
-### Step2: Fork
+### Step 2: Fork
 
 Fork this repository into your github. From now on, we will be working on your forked repository. 
 
 How to fork ? <br/>
 Look out for a button called `fork` in the top right of this page. It will create a replica of this repository and put in your github account. 
 
-### Step3: Clone
+### Step 3: Clone
 
 Open termnal -> go to any folder -> clone your forked repository into your local folder. 
 
@@ -79,7 +79,7 @@ Login into <a href='https://cloud.google.com'>gcloud</a> using the account that 
    It encodes the file into base64 format and copies into your clipboard. 
 8. Now go back to browser and for value: press the paste buttons (CMD + V on Mac / CTRL + V on windows)
 
-### step 8: Update circle.yaml file
+### step 9: Update circle.yaml file
 In your local repository, update `circle.yaml` file by replacing the `<your-gcloud-project-id>` with your project id from google cloud.
 
 Then,
@@ -92,7 +92,7 @@ How do I find my project Id? <br/>
 1. Go to <a href='https://cloud.google.com'>gcloud</a> and on top left select the project.
 2. It opens a new pane, in that look for the Project ID corresponding to the project name you gave. In our case, it is `ase-boilerplate`
 
-### step9: Verify build in CircleCI
+### step 10: Verify build in CircleCI
 Step 8 would trigger a new build and release in Circle CI. 
 To verify:
 1. Go to `projects` -> `your project` -> open the lates build which will be like `master #some-number`
