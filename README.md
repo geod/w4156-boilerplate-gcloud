@@ -52,8 +52,8 @@ Login into <a href='https://cloud.google.com'>gcloud</a> using the account that 
 2. On the top left -> click on `select a project`. If you have already used google cloud before and you created a project before then you may see another project name there, even then click on it.
 3. It will open a small pane -> Ensure that organization is `columbia.edu`, if not then select that.
 4. Then, click on `+` button 
-4. Give a project name say in this case `advse-boilerplate`.
-5. Also, edit the project id and set it also to `advse-boilerplate` other wise, google adds some randome digits to the ID and we need this ID through out. So it is better if ID and project names are same.
+4. Give a project name say in this case `ase-boilerplate`.
+5. Also, edit the project id and set it also to `ase-boilerplate` other wise, google adds some randome digits to the ID and we need this ID through out. So it is better if ID and project names are same.
 6. click `Create`.
 
 ## Step 7: Enable App Engine Admin API & get Client Secret
@@ -69,17 +69,17 @@ Login into <a href='https://cloud.google.com'>gcloud</a> using the account that 
 ### step 8: Setting secret in Circle CI
 1. Go to <a href='https://circleci.com'> CircleCI </a> -> click on `app`
 2. Click on `Projects`
-3. Click on little gear (notation for settings!) that is next to your project which is `advse-boilerplate`
+3. Click on little gear (notation for settings!) that is next to your project which is `ase-boilerplate`
 4. Click on `Environment Variables`
 5. Click on `Add Variable`
 6. For Name: `CLIENT_SECRET`
 7. Now, go to the folder where JSON file is downloaded previously and run this command: <br/>
-    `base64 <advse-boilerplate-some-number>.json | pbcopy`
+    `base64 <ase-boilerplate-some-number>.json | pbcopy`
    It encodes the file into base64 format and copies into your clipboard. 
 8. Now go back to browser and for value: press the paste buttons (CMD + V on Mac / CTRL + V on windows)
 
 ### step 8: Update circle.yaml file
-In your local repository, update `circle.yaml` file by replacing the <your-project-id> in `gcloud config set project` with your project id from google cloud.
+In your local repository, update `circle.yaml` file by replacing the `<your-gcloud-project-id>` with your project id from google cloud.
 
 Then,
 
@@ -89,7 +89,7 @@ Then,
 
 How do I find my project Id? <br/>
 1. Go to <a href='https://cloud.google.com'>gcloud</a> and on top left select the project.
-2. It opens a new pane, in that look for the project Id corresponding to the project name you gave. In our case, it is `advse-boilerplate`
+2. It opens a new pane, in that look for the project Id corresponding to the project name you gave. In our case, it is `ase-boilerplate`
 
 ### step9: Verify build in CircleCI
 Step 8 would trigger a new build and release in Circle CI. 
