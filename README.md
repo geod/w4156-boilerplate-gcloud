@@ -114,7 +114,7 @@ To verify:
 5. `pip install -r requirements.txt -t lib`
 6. `dev_appserver.py ./`
 7. Now, you will be running the application locally (in locally mimicked App Engine framework!). So now checkout <a href='http://localhost:8080'>localhost:8080</a>. You should be greeted with `hello` message
-8. After you are done, press `ctrl+c` to stop the server. 
+8. After you are done, press `ctrl+c` to stop the local server. 
 
 ## Licensing
 
