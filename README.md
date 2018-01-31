@@ -38,7 +38,7 @@ How? <br/>
 
 1. Go to <a href='https://circleci.com'> CircleCI </a>
 2. Sign up for a free account. You can login using github (easy way). Else, you can signup and later authorize github account. 
-3. Click on `projects` on the left pane -> `Add Project` -> `Setup Project` (Note: it might take sometime to sync the projects in your github into the Circl CI.)
+3. Click on `projects` on the left pane -> `Add Project` -> `Setup Project` (Note: it might take sometime to sync the projects in your github into the Circle CI.)
 4. Choose the following:
     * Operating System - Linux
     * Platform - 2.0
@@ -48,12 +48,13 @@ How? <br/>
 ### Step 6: Setting up Google Cloud & Project
 
 Login into <a href='https://cloud.google.com'>gcloud</a> using the account that you used for free credits. (Note: If you signed in using another account, switch account to the one that you used to grab free credits.)
-1. If you are first time to google cloud, it will ask you to accept some terms, please do so.
-2. On the top left -> click on `select a project`. If you have already used google cloud before and you created a project before then you may see another project name there, even then click on it.
+
+1. If you are using google cloud first time, it will ask you to accept some terms, please do so.
+2. On the top left -> click on `select a project`. If you have already used google cloud before and you have also created a project before, then you may see another project name there, even then click on it.
 3. It will open a small pane -> Ensure that organization is `columbia.edu`, if not then select that.
 4. Then, click on `+` button 
 4. Give a project name say in this case `ase-boilerplate`.
-5. Also, edit the project id and set it also to `ase-boilerplate` other wise, google adds some randome digits to the ID and we need this ID through out. So it is better if ID and project names are same.
+5. Also, edit the Project ID and set it also to `ase-boilerplate` other wise, google adds some randome digits to the Project ID and we need this Project ID through out. So it is better if Project ID and Project Names are same.
 6. click `Create`.
 
 ## Step 7: Enable App Engine Admin API & get Client Secret
@@ -64,7 +65,7 @@ Login into <a href='https://cloud.google.com'>gcloud</a> using the account that 
 4. From the drop down of Service Account -> select `Compute Engine default service account`
 5. For the Key Type: select JSON
 6. click `create`.
-7. A json file will be downloaded on to your system. Remember the folder it is downloaded, we need this later.
+7. A json file with name similar to `<ase-boilerplate-some-number>.json` will be downloaded on to your system. Remember the folder it is downloaded to, we need this later.
 
 ### step 8: Setting secret in Circle CI
 1. Go to <a href='https://circleci.com'> CircleCI </a> -> click on `app`
@@ -89,14 +90,14 @@ Then,
 
 How do I find my project Id? <br/>
 1. Go to <a href='https://cloud.google.com'>gcloud</a> and on top left select the project.
-2. It opens a new pane, in that look for the project Id corresponding to the project name you gave. In our case, it is `ase-boilerplate`
+2. It opens a new pane, in that look for the Project ID corresponding to the project name you gave. In our case, it is `ase-boilerplate`
 
 ### step9: Verify build in CircleCI
 Step 8 would trigger a new build and release in Circle CI. 
 To verify:
 1. Go to `projects` -> `your project` -> open the lates build which will be like `master #some-number`
 2. If everything is good -> build will succeed and the app will be deployed into google app engine. 
-3. you can also verify that by going to `https://<your-gcloud-project-id>.appspot.com`
+3. you can also verify that by going to `https://<your-gcloud-project-id>.appspot.com` which will show a message like starting with `hello`
 
 
 ## Licensing
