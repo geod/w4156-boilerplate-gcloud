@@ -113,8 +113,6 @@ To verify:
     * 5th step
     
 3. In your local system -> `cd <your-repository>` in our case `cd ase-boilerplate` <br/>
-
-Then,
 4. `mkdir -t lib`
 5. `pip install -r requirements.txt -t lib`
 6. `dev_appserver.py ./`
