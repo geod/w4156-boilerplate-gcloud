@@ -57,7 +57,7 @@ Login into <a href='https://cloud.google.com'>Google Cloud</a> using the account
 5. Also, edit the Project ID and set it also to `ase-boilerplate` other wise, google adds some randome digits to the Project ID and we need this Project ID through out. So it is better if Project ID and Project Names are same.
 6. click `Create`.
 
-## Step 7: Enable App Engine Admin API & retrieve Client Secret
+### Step 7: Enable App Engine Admin API & retrieve Client Secret
 
 1. click on `Console`
 2. In the Search Bar -> search for `Google App Engine Admin API` -> click `Enable`
@@ -67,7 +67,7 @@ Login into <a href='https://cloud.google.com'>Google Cloud</a> using the account
 6. click `create`.
 7. A json file with name similar to `<ase-boilerplate-some-number>.json` will be downloaded on to your system. Remember the folder it is downloaded to, we need this later.
 
-### step 8: Setup Client Secret in Circle CI
+### Step 8: Setup Client Secret in Circle CI
 
 1. Go to <a href='https://circleci.com'> CircleCI </a> -> click on `app`
 2. Click on `Projects`
@@ -80,7 +80,7 @@ Login into <a href='https://cloud.google.com'>Google Cloud</a> using the account
    It encodes the file into base64 format and copies into your clipboard. 
 8. Now go back to browser and for value: press the paste buttons (CMD + V on Mac / CTRL + V on windows)
 
-### step 9: Update circle.yaml file with Google Cloud Project ID
+### Step 9: Update circle.yaml file with Google Cloud Project ID
 
 In your local repository, update `circle.yaml` file by replacing the `<your-gcloud-project-id>` at two places with your Project ID from google cloud. 
 
@@ -94,7 +94,7 @@ How do I find my project Id? <br/>
 1. Go to <a href='https://cloud.google.com'>Google Cloud</a> and on top left select the project.
 2. It opens a new pane, in that look for the Project ID corresponding to the project name you gave. In our case, it is `ase-boilerplate`
 
-### step 10: Verify build in CircleCI
+### Step 10: Verify build in CircleCI
 
 Step 8 would trigger a new build and release in Circle CI. 
 To verify:
@@ -102,7 +102,7 @@ To verify:
 2. If everything is good -> build will succeed and the app will be deployed into google app engine. 
 3. you can also verify that by going to `https://<your-gcloud-project-id>.appspot.com` which will show a message like starting with `hello`
 
-### step 11: Setup Google Cloud SDK & App Engine SDK in your local system
+### Step 11: Setup Google Cloud SDK & App Engine SDK in your local system
 
 1. Following this link and perform the 3 steps under the `Interactive Installer` section corresponging to your operating system. For our case it is Mac OS (vice versa you can choose Linux / windows based on your OS): <br/>
 <a href='https://cloud.google.com/sdk/downloads#interactive'>Google Cloud SDK</a>
