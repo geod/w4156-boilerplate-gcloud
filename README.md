@@ -109,7 +109,7 @@ To verify:
     * 4th step (if you don't have git in your system. You can verify by typing `git` )
     * 5th step
     
-3. `cd <your-local-repository / folder>` in our case `cd ase-boilerplate`
+3. In your local system -> `cd <your-repository>` in our case `cd ase-boilerplate`
 4. `mkdir -t lib`
 5. `pip install -r requirements.txt -t lib`
 6. `dev_appserver.py ./`
