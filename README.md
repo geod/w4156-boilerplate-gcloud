@@ -96,7 +96,7 @@ Step 8 would trigger a new build and release in Circle CI.
 To verify:
 1. Go to `projects` -> `your project` -> open the lates build which will be like `master #some-number`
 2. If everything is good -> build will succeed and the app will be deployed into google app engine. 
-3. you can also verify that by going to `https://your-project-id.appspot.com`
+3. you can also verify that by going to `https://<your-gcloud-project-id>.appspot.com`
 
 
 ## Licensing
