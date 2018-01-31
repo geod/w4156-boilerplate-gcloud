@@ -14,7 +14,7 @@ Grab your free google credits by following <a href='www.google.com'> this post <
 Fork this repository into your github. From now on, we will be working on your forked repository. 
 
 How to fork ? <br/>
-Look out for a button called `fork` in the top right of this page. It will create a replica of this repository and put in your github account. 
+Look out for a button called `fork` in the top right of this page. It will create a replica of this repository and put it in your github account. 
 
 ### Step 3: Clone
 
