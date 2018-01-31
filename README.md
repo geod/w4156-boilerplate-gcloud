@@ -89,7 +89,7 @@ Then,
 `git push origin master` <br/>
 
 How do I find my project Id? <br/>
-1. Go to <a href='https://cloud.google.com'>gcloud</a> and on top left select the project.
+1. Go to <a href='https://cloud.google.com'>Google Cloud</a> and on top left select the project.
 2. It opens a new pane, in that look for the Project ID corresponding to the project name you gave. In our case, it is `ase-boilerplate`
 
 ### step 10: Verify build in CircleCI
