@@ -101,7 +101,7 @@ To verify:
 
 ### step 11: Setting up Google Cloud SDK & App Engine SDK in your local system
 
-1. Following this link and perform the 3 steps under the `Interactive Installer` section: <br/>
+1. Following this link and perform the 3 steps under the `Interactive Installer` section corresponging to your operating system. For our case it is Mac OS (vice versa you can choose Linux / windows based on your OS): <br/>
 <a href='https://cloud.google.com/sdk/downloads#interactive'>Google Cloud SDK</a>
 2. Following this link and perform the steps from 3rd - 5th: <br/>
 <a href='https://cloud.google.com/appengine/docs/standard/python/download'>App Engine extension for Python</a>
