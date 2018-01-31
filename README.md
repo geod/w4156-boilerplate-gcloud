@@ -1,7 +1,7 @@
 This code is used for the purposes of COMS 4156 - Advanced Software Engineering course at Columbia University. 
 This is a boilerplate python flask code with configurations for Circle CI and Google Cloud.
 
-# Tutorial 
+# Setup Instructions 
 
 Please log into github before progressing with the next steps.
 
