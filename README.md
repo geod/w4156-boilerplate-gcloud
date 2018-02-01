@@ -76,9 +76,9 @@ Login into <a href='https://cloud.google.com'>Google Cloud</a> using the account
 5. Click on `Add Variable`
 6. For Name: `CLIENT_SECRET`
 7. Now, go to the folder where JSON file is downloaded previously and run this command: <br/>
-    `base64 <ase-boilerplate-some-number>.json | pbcopy`
+    `base64 <ase-boilerplate-some-number>.json | pbcopy` <br/>
    It encodes the file into base64 format and copies into your clipboard. 
-8. Now go back to browser and for value: press the paste buttons (CMD + V on Mac / CTRL + V on windows)
+9. Now go back to browser and for value: press the paste buttons (CMD + V on Mac / CTRL + V on windows)
 
 ### Step 9: Update circle.yaml file with Google Cloud Project ID
 
