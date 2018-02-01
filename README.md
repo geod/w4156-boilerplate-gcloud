@@ -107,10 +107,10 @@ To verify:
 1. Following this link and perform the 3 steps under the `Interactive Installer` section corresponging to your operating system. For our case it is Mac OS (vice versa you can choose Linux / windows based on your OS): <br/>
 <a href='https://cloud.google.com/sdk/downloads#interactive'>Google Cloud SDK</a>
 2. Following this link <a href='https://cloud.google.com/appengine/docs/standard/python/download'>App Engine extension for Python</a> and perform the steps below (and skip if you already have it): 
-    * 1st step (Check your python version by typing  `python --version` in you terminal / shell. If it python 2.7, skip the step else check out optional Step 12 in this file.)
-    * 3rd step
-    * 4th step (Check if you have git installed by typing `git`. If yes skip, else perfrom this step. )
-    * 5th step
+    * 1st step (Check your python version by typing  `python --version` in you terminal / shell. If it is python 2.7, then skip the step, else check out optional Step 12 in this file.)
+    * 3rd step (perform this step)
+    * 4th step (Check if you have git installed by typing `git`. If yes, then skip, else perfrom this step. )
+    * 5th step (perform this step)
     
 3. In your local system -> `cd <your-repository>` in our case `cd ase-boilerplate` <br/>
 4. `mkdir -t lib`
