@@ -125,7 +125,7 @@ If you don't have Python 2.7 in your system, then follow along:
 2. Install Anaconda by double clicking the .dmg file 
 3. After installation -> Terminal -> `conda create -n python2env python=2.7`
 4. `source activate python2env`
-5. At this point you have activated virtual environment named python2env with packages python=2.7. So now if you test `python --version` you will see `python 2.7` as output 
+5. At this point you have activated virtual environment named `python2env` with packages `python=2.7`. So now if you test `python --version` you will see `python 2.7` as output 
 6. At this point, continue your previous work with this virtual environment active. 
 7. Once you are done, deactivate the environment with `source deactivate`
 8. Fun Check: try `python --version` now! (it will show your default python version installed in your system)
