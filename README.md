@@ -107,7 +107,7 @@ To verify:
 1. Following this link and perform the 3 steps under the `Interactive Installer` section corresponging to your operating system. For our case it is Mac OS (vice versa you can choose Linux / windows based on your OS): <br/>
 <a href='https://cloud.google.com/sdk/downloads#interactive'>Google Cloud SDK</a>
 2. Following this link <a href='https://cloud.google.com/appengine/docs/standard/python/download'>App Engine extension for Python</a> and perform the steps below (and skip if you already have it): 
-    * 1st step (only if you don't have Python with version 2.7 in your system. You can verify by typing  `python --version` in you terminal / shell)
+    * 1st step (if you don't have Python with version 2.7 in your system check out optional Step 12 in this file. You can verify by typing  `python --version` in you terminal / shell)
     * 3rd step
     * 4th step (only if you don't have git in your system. You can verify by typing `git` )
     * 5th step
@@ -118,6 +118,19 @@ To verify:
 6. `dev_appserver.py ./`
 7. Now, you will be running the application locally (in locally mimicked App Engine framework!). So now checkout <a href='http://localhost:8080'>localhost:8080</a>. You should be greeted with `hello` message
 8. After you are done, press `ctrl+c` to stop the local server. 
+
+### Step 12: Setup Anaconda
+If you don't have Python 2.7 in your system, then follow along:
+1. Download <a href='https://www.anaconda.com/download/#macos'>Anaconda</a> with Python version 3.6 (Don't get confused about 3.6 here!! We will be creating virtual environment with 2.7 instead of using Anaconda with Python 2.7 version which is a good practice!)
+2. Install Anaconda by double clicking the .dmg file 
+3. After installation -> Terminal -> `conda create -n python2env python=2.7`
+4. `source activate python2env`
+5. At this point you have activated virtual environment named python2env with packages python=2.7. So now if you test `python --version` you will see `python 2.7` as output 
+6. At this point, continue your previous work with this virtual environment active. 
+7. Once you are done, deactivate the environment with `source deactivate`
+8. Fun Check: try `python --version` now! (it will show your default python version installed in your system)
+
+
 
 ## Licensing
 
