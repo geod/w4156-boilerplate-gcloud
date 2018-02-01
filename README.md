@@ -56,6 +56,7 @@ Login into <a href='https://cloud.google.com'>Google Cloud</a> using the account
 4. Give a project name say in this case `ase-boilerplate`.
 5. Also, edit the Project ID and set it also to `ase-boilerplate` other wise, google adds some randome digits to the Project ID and we need this Project ID through out. So it is better if Project ID and Project Names are same.
 6. click `Create`.
+7. Search for `App Engine` -> Create one. 
 
 ### Step 7: Enable App Engine Admin API & retrieve Client Secret
 
