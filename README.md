@@ -33,19 +33,8 @@ Now set this repository as your origin.
 How? <br/>
 
 `git remote add origin <your-forked-repository-GIT-URL>`
-    
-### Step 5: Set up CIRCLE CI. 
 
-1. Go to <a href='https://circleci.com'> CircleCI </a>
-2. Sign up for a free account. You can login using github (easy way). Else, you can signup and later authorize github account. 
-3. Click on `projects` on the left pane -> `Add Project` -> `Setup Project` (Note: it might take sometime to sync the projects in your github into the Circle CI.)
-4. Choose the following:
-    * Operating System - Linux
-    * Platform - 2.0
-    * Language - Python
-5. click `start building`
-    
-### Step 6: Set up Google Cloud & Project
+### Step 5: Set up Google Cloud & Project
 
 Login into <a href='https://cloud.google.com'>Google Cloud</a> using the account that you used for free credits. (Note: If you signed in using another account, switch account to the one that you used to grab free credits.)
 
@@ -58,6 +47,17 @@ Login into <a href='https://cloud.google.com'>Google Cloud</a> using the account
 6. click `Create`.
 7. Search for `App Engine` -> Create one. 
 
+### Step 6: Set up CIRCLE CI. 
+
+1. Go to <a href='https://circleci.com'> CircleCI </a>
+2. Sign up for a free account. You can login using github (easy way). Else, you can signup and later authorize github account. 
+3. Click on `projects` on the left pane -> `Add Project` -> `Setup Project` (Note: it might take sometime to sync the projects in your github into the Circle CI.)
+4. Choose the following:
+    * Operating System - Linux
+    * Platform - 2.0
+    * Language - Python
+5. click `start building`
+    
 ### Step 7: Enable App Engine Admin API & retrieve Client Secret
 
 1. click on `Console`
