@@ -81,14 +81,14 @@ Login into <a href='https://cloud.google.com'>Google Cloud</a> using the account
    It encodes the file into base64 format and copies into your clipboard. 
 9. Now go back to browser and for value: press the paste buttons (CMD + V on Mac / CTRL + V on windows)
 
-### Step 9: Update circle.yaml file with Google Cloud Project ID
+### Step 9: Update circle.yml file with Google Cloud Project ID
 
-In your local repository, update `circle.yaml` file by replacing the `<your-gcloud-project-id>` at two places with your Project ID from google cloud. 
+In your local repository, update `circle.yml` file by replacing the `<your-gcloud-project-id>` at two places with your Project ID from google cloud. 
 
 Then,
 
-`git add circle.yaml` <br/>
-`git commit -m 'updating circle.yaml with project id'` <br/>
+`git add circle.yml` <br/>
+`git commit -m 'updating circle.yml with project id'` <br/>
 `git push origin master` <br/>
 
 How do I find my project Id? <br/>
