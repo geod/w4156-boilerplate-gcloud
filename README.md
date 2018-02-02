@@ -34,7 +34,7 @@ How? <br/>
 
 `git remote add origin <your-forked-repository-GIT-URL>`
 
-### Step 5: Set up Google Cloud & Project
+### Step 5: Set up Google Cloud, Project & App Engine
 
 Login into <a href='https://cloud.google.com'>Google Cloud</a> using the account that you used for free credits. (Note: If you signed in using another account, switch account to the one that you used to grab free credits.)
 
