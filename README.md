@@ -7,7 +7,7 @@ Please log into github before progressing with the next steps.
 
 ### Step 1: First things first!
 
-Grab your free google credits by following <a href='https://piazza.com/class/jchzhd6cdxz4dy?cid=31'> this post </a> in piazza.
+Grab your free google credits by following <a href='https://piazza.com/class/jchzhd6cdxz4dy?cid=31' target="_blank"> this post </a> in piazza.
 
 ### Step 2: Fork
 
