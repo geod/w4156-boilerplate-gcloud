@@ -68,7 +68,7 @@ Login into <a href='https://cloud.google.com'>Google Cloud</a> using the account
 6. click `create`.
 7. A json file with name similar to `<ase-boilerplate-some-number>.json` will be downloaded on to your system. Remember the folder it is downloaded to, we need this later.
 
-### Step 8: Setup Client Secret in Circle CI
+### Step 8: Setup CLIENT_SECRET and GCLOUD_PROJECT_ID variables in Circle CI
 
 1. Go to <a href='https://circleci.com'> CircleCI </a> -> click on `app`
 2. Click on `Projects`
@@ -80,22 +80,15 @@ Login into <a href='https://cloud.google.com'>Google Cloud</a> using the account
     `base64 <ase-boilerplate-some-number>.json | pbcopy` <br/>
    It encodes the file into base64 format and copies into your clipboard. 
 9. Now go back to browser and for value: press the paste buttons (CMD + V on Mac / CTRL + V on windows)
-
-### Step 9: Update circle.yml file with Google Cloud Project ID
-
-In your local repository, update `circle.yml` file by replacing the `<your-gcloud-project-id>` at two places with your Project ID from google cloud. 
-
-Then,
-
-`git add circle.yml` <br/>
-`git commit -m 'updating circle.yml with project id'` <br/>
-`git push origin master` <br/>
+10. Again Click on `Add Variable`
+11. For Name: `GCLOUD_PROJECT_ID`
+12. For Value: put your your Project ID from google cloud.
 
 How do I find my project Id? <br/>
 1. Go to <a href='https://cloud.google.com'>Google Cloud</a> and on top left select the project.
 2. It opens a new pane, in that look for the Project ID corresponding to the project name you gave. In our case, it is `ase-boilerplate`
 
-### Step 10: Verify build in CircleCI
+### Step 9: Verify build in CircleCI
 
 Step 8 would trigger a new build and release in Circle CI. 
 To verify:
@@ -103,7 +96,7 @@ To verify:
 2. If everything is good -> build will succeed and the app will be deployed into google app engine. 
 3. you can also verify that by going to `https://<your-gcloud-project-id>.appspot.com` which will show a message like starting with `hello`
 
-### Step 11: Setup Google Cloud SDK & App Engine SDK in your local system
+### Step 10: Setup Google Cloud SDK & App Engine SDK in your local system
 
 1. Following this link and perform the 3 steps under the `Interactive Installer` section corresponging to your operating system. For our case it is Mac OS (vice versa you can choose Linux / windows based on your OS): <br/>
 <a href='https://cloud.google.com/sdk/downloads#interactive'>Google Cloud SDK</a>
@@ -120,7 +113,7 @@ To verify:
 7. Now, you will be running the application locally (in locally mimicked App Engine framework!). So now checkout <a href='http://localhost:8080'>localhost:8080</a>. You should be greeted with `hello` message
 8. After you are done, press `ctrl+c` to stop the local server. 
 
-### Step 12: (optional) Setup Anaconda
+### Step 11: (optional) Setup Anaconda
 If you don't have Python 2.7 in your system, then follow along:
 1. Download <a href='https://www.anaconda.com/download/#macos'>Anaconda</a> with Python version 3.6 (Don't get confused about 3.6 here!! We will be creating virtual environment with 2.7 instead of using Anaconda with Python 2.7 version which is a good practice!)
 2. Install Anaconda by double clicking the .dmg file 
