@@ -124,7 +124,8 @@ If you don't have Python 2.7 in your system, then follow along:
 7. Once you are done, deactivate the environment with `source deactivate`
 8. Fun Check: try `python --version` now! (it will show your default python version installed in your system)
 
-
+### Next Steps: Database Setup 
+Follow this link to setup a database for your project: https://cloud.google.com/python/getting-started/using-cloud-sql
 ## Licensing
 
 Copyright (C) 2018 Columbia University.
