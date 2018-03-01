@@ -1,0 +1,209 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css" />
+  <link rel="stylesheet" href="https://cdn.rawgit.com/kybarg/mdl-selectfield/mdl-menu-implementation/mdl-selectfield.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
+  <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"> </script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>All Listings | CU@Lunch</title>
+</head>
+
+<body>
+<div class="new-listing">
+  <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent gradientbg">
+    New Listing
+  </button>
+</div>
+
+
+<div class="mdl-layout mdl-js-layout dotbg">
+  <header class="mdl-layout__header mdl-layout__header--transparent">
+    <div class="mdl-layout__header-row">
+      <!-- Title -->
+      <span class="mdl-layout-title">All Listings</span>
+      <!-- Add spacer, to align navigation to the right -->
+      <div class="mdl-layout-spacer"></div>
+      <!-- Navigation -->
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="">Home</a>
+        <a class="mdl-navigation__link" href="../settings/index.html">Settings</a>
+        <a class="mdl-navigation__link" href="../index.html">Logout</a>
+      </nav>
+    </div>
+  </header>
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">Navigation</span>
+    <nav class="mdl-navigation">
+      <a class="mdl-navigation__link" href="../settings/index.HTML">My Profile</a>
+      <a class="mdl-navigation__link" href="">All Listings</a>
+      <a class="mdl-navigation__link" href="../settings/index.html">Settings</a>
+    </nav>
+  </div>
+  <main class="mdl-layout__content">
+
+    <div class="container mdl-grid">
+
+      <div class='mdl-cell mdl-cell--3-col'></div>
+
+      <div class='mdl-cell mdl-cell--6-col' >
+          <ul id="post-container">
+            <li>
+                <div class="mdl-card mdl-shadow--2dp posting-title">
+                  <div class="mdl-card__title">
+                    <h2 class='mdl-card__title-text'>All Listings</h2>
+                  </div>
+                  <div class="mdl-card__supporting-text post-description">
+                    Filter by:
+                    <form class="filter-form" action="#">
+                      <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="text" id="name">
+                        <label class="mdl-textfield__label" for="name">Student Name</label>
+                      </div>
+
+                      <div>
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="sameyear">
+                          <input type="checkbox" id="sameyear" class="mdl-checkbox__input">
+                          <span class="mdl-checkbox__label">Only My Year</span>
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                      </div>
+                    </form>
+                  </div>
+                  <button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="register-button">
+                      Search
+                  </button>
+                </div>
+              </li>
+              <li>
+                <div class="mdl-card mdl-shadow--2dp posting" onclick="expandPost(this);">
+                  <div class="mdl-card__title lunch">
+                    <h2 class='mdl-card__title-text'>Wednesday, 12:30 PM</h2>
+                  </div>
+                  <div class="mdl-card__supporting-text post-description">
+                    Offered by: Adrian Garza
+                  </div>
+                  <div class="panel-hidden">
+                    <div class="personal-info">
+                      <div class="mdl-card__supporting-text info-list">
+                        <h3>Adrian Garza</h3>
+                        <p><b>School: </b>Columbia College</p>
+                        <p><b>Year: </b>Senior</p>
+                        <p><b>Interests: </b>Running, hiking, complaining about things</p>
+                        <p><b>Bio: </b>I'm a second-semester senior who has completed all his core requirements like a good boy</p>
+                      </div>
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="mailto:ahg2142@columbia.edu">
+                          ahg2142@columbia.edu
+                        </a>
+                    </div>
+                  </div>
+
+                  <i class="material-icons bottomright expander" onclick="contractPost(this);">expand_more</i>
+                </div>
+              </li>
+
+              <li>
+                <div class="mdl-card mdl-shadow--2dp posting" onclick="expandPost(this);">
+                  <div class="mdl-card__title dinner">
+                    <h2 class='mdl-card__title-text'>Thursday, 11:55 PM</h2>
+                  </div>
+                  <div class="mdl-card__supporting-text post-description">
+                    Offered by: Hob
+                  </div>
+                  <div class="panel-hidden">
+                    <div class="personal-info">
+                      <div class="mdl-card__supporting-text info-list">
+                        <h3>Hob</h3>
+                        <p><b>School: </b>General Studies</p>
+                        <p><b>Year: </b>Extreme Senior</p>
+                        <p><b>Interests: </b>Flexing, competitive eating</p>
+                        <p><b>Bio: </b>I got fired from my job as an arbys santa yesterday. Just looking for other cool, like-minded people who also worked as arbys santas.</p>
+                      </div>
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="mailto:ahg2142@columbia.edu">
+                          rhb1209@columbia.edu
+                        </a>
+                    </div>
+                  </div>
+
+                  <i class="material-icons bottomright expander" onclick="contractPost(this);">expand_more</i>
+                </div>
+              </li> 
+
+              <li>
+                <div class="mdl-card mdl-shadow--2dp posting" onclick="expandPost(this);">
+                  <div class="mdl-card__title breakfast">
+                    <h2 class='mdl-card__title-text'>Friday, 9:30 AM</h2>
+                  </div>
+                  <div class="mdl-card__supporting-text post-description">
+                    Offered by: Chunk
+                  </div>
+                  <div class="panel-hidden">
+                    <div class="personal-info">
+                      <div class="mdl-card__supporting-text info-list">
+                        <h3>Chunk</h3>
+                        <p><b>School: </b>SEAS</p>
+                        <p><b>Year: </b>Freshman</p>
+                        <p><b>Interests: </b>Power posing in front of Hartley</p>
+                        <p><b>Bio: </b>After my morning workout, I like to share breakfast with someone before my afternoon workout.</p>
+                      </div>
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="mailto:ahg2142@columbia.edu">
+                          lump@columbia.edu
+                        </a>
+                    </div>
+                  </div>
+
+                  <i class="material-icons bottomright expander" onclick="contractPost(this);">expand_more</i>
+                </div>
+              </li> 
+
+              <li>
+                <div class="mdl-card mdl-shadow--2dp posting" onclick="expandPost(this);">
+                  <div class="mdl-card__title lunch">
+                    <h2 class='mdl-card__title-text'>Saturday, 2:45 PM</h2>
+                  </div>
+                  <div class="mdl-card__supporting-text post-description">
+                    Offered by: Ted Cruz
+                  </div>
+                  <div class="panel-hidden">
+                    <div class="personal-info">
+                      <div class="mdl-card__supporting-text info-list">
+                        <h3>Ted Cruz</h3>
+                        <p><b>School: </b>Barnard</p>
+                        <p><b>Year: </b>Sophomore</p>
+                        <p><b>Interests: </b>Chasing down and eating rats, politics, pretending to be a human</p>
+                        <p><b>Bio: </b>Mother promised me a bowl of tapioca if I swiped someone into JJs</p>
+                      </div>
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="mailto:ahg2142@columbia.edu">
+                          tcruz@barnard.edu
+                        </a>
+                    </div>
+                  </div>
+
+                  <i class="material-icons bottomright expander" onclick="contractPost(this);">expand_more</i>
+                </div>
+              </li>              
+          </ul>
+      </div>
+
+      <div class='mdl-cell mdl-cell--3-col'></div>
+
+    </div>
+  </main>
+</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js "></script>
+    <script src="listings.js"></script>
+</body>
+
+</html>

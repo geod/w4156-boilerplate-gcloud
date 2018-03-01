@@ -2,7 +2,7 @@ from google.appengine.ext import vendor
 vendor.add('lib')
 
 from flask import Flask
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 
 
 # dynamodb = boto3.resource(
@@ -14,9 +14,10 @@ app = Flask(__name__)
 #     verify=False)
 
 
-@app.route('/')
-def index():
-    return "Hello, World (lets see how long a change takes III)!"
+@app.route('/<path:path>')
+def static_file(path):
+    return app.send_static_file(path)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

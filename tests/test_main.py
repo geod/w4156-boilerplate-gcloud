@@ -19,6 +19,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 import main
 import unittest
 
+
 class MainTest(unittest.TestCase):
     """This class uses the Flask tests app to run an integration test against a
     local instance of the server."""
