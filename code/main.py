@@ -13,13 +13,10 @@ app = Flask(__name__, static_url_path='')
 #     aws_secret_access_key='dummy_secret_key',
 #     verify=False)
 
-@app.route('/')
-def index():
-    return app.send_static_file("index.html")
-
 
 @app.route('/<path:path>')
 def static_file(path):
+
     return app.send_static_file(path)
 
 
