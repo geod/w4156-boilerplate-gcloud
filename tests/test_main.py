@@ -31,7 +31,7 @@ class MainTest(unittest.TestCase):
         self.app = main.app.test_client()
 
     def test_index(self):
-        rv = self.app.get('/')
+        rv = self.app.get('/index.html')
         self.check_culunch(rv)
 
     def test_listings(self):
