@@ -125,8 +125,6 @@ If you don't have Python 2.7 in your system, then follow along:
 8. Fun Check: try `python --version` now! (it will show your default python version installed in your system)
 
 ### Next Steps: Database Setup 
-Follow this link to setup a database for your project: https://cloud.google.com/python/getting-started/using-cloud-sql
-You can refer this github demo project for the same: https://github.com/GoogleCloudPlatform/getting-started-python/tree/master/2-structured-data
 
 ## Licensing
 
