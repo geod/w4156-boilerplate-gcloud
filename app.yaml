@@ -23,6 +23,10 @@ env_variables:
     CLOUDSQL_PASSWORD: root
 # [END env_variables]
 
+libraries:
+- name: MySQLdb
+  version: "latest"
+  
 # temporary workaround around gcloud issue
 skip_files:
 - ^venv/.*$
