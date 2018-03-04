@@ -138,8 +138,8 @@ If you don't have Python 2.7 in your system, then follow along:
 1. Go to your code
 2. go to app.yaml -> update `<YOUR_CONNECTION_NAME>`  with `Instance connection name` you copied in previous step
 3. likewise update `<YOUR_USERNAME>` with username and `<YOUR_PASSWORD>` with password.
-4. Commit your code and push it to repo. It will trigger a build in Circle CI
-5. Then go to `https://<your-gcloud-project-id>.appspot.com/databases` and you should see a list of schemas/databases that come by default in your mysql instance.
+4. Commit your code and push it to repo. It will trigger a build in Circle CI.
+5. Once your build has succeeded, then go to `https://<your-gcloud-project-id>.appspot.com/databases` and you should see a list of schemas/databases that come by default in your mysql instance.
 
 #### (optional) connecting to SQL instance locally 
 1. Go to Home Page -> Menu -> SQL -> "mysql1" (or your instance name)
