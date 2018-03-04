@@ -124,8 +124,21 @@ If you don't have Python 2.7 in your system, then follow along:
 7. Once you are done, deactivate the environment with `source deactivate`
 8. Fun Check: try `python --version` now! (it will show your default python version installed in your system)
 
-### Next Steps: Database Setup 
+## Step 12: Database Setup (if required for your project)
+### Create a SQL instance.
+1. Home Page -> Menu -> SQL
+2. Create Instance -> Select MySQL -> Select Second Generation 
+3. give a name (may be "mysql1" )-> and give a simple password (may be "root").
+4. Next, wait for couple of minutes for google cloud to process your request and create an instance
+5. Once, it is ready, you will get a green tick next to it. 
+6. Click on "mysql1" (or your instance name). 
 
+### 
+1. Go to your code
+2. go to app.yaml -> update `<YOUR_CONNECTION_NAME>`  with connection name you copied in previous step
+3. likewise update `<YOUR_USERNAME>` with username and `<YOUR_PASSWORD>` with password.
+4. Commit your code and push it to repo. It will trigger a build in Circle CI
+5. Then go to `https://<your-gcloud-project-id>.appspot.com/databases` and you should see a list of schemas/databases that come by default in your mysql instance.
 ## Licensing
 
 Copyright (C) 2018 Columbia University.
