@@ -131,14 +131,24 @@ If you don't have Python 2.7 in your system, then follow along:
 3. give a name (may be "mysql1" )-> and give a simple password (may be "root").
 4. Next, wait for couple of minutes for google cloud to process your request and create an instance
 5. Once, it is ready, you will get a green tick next to it. 
-6. Click on "mysql1" (or your instance name). 
+6. Click on "mysql1" (or your instance name) once you see a green tick next to it. 
+7. There will be a pane called `Connect to this instance`. In that copy the value of `Instance connection name`.
 
-### 
+### Setting configuration in your code
 1. Go to your code
-2. go to app.yaml -> update `<YOUR_CONNECTION_NAME>`  with connection name you copied in previous step
+2. go to app.yaml -> update `<YOUR_CONNECTION_NAME>`  with `Instance connection name` you copied in previous step
 3. likewise update `<YOUR_USERNAME>` with username and `<YOUR_PASSWORD>` with password.
 4. Commit your code and push it to repo. It will trigger a build in Circle CI
 5. Then go to `https://<your-gcloud-project-id>.appspot.com/databases` and you should see a list of schemas/databases that come by default in your mysql instance.
+
+### (optional) connecting to SQL instance locally 
+1. Go to Home Page -> Menu -> SQL -> "mysql1" (or your instance name)
+2. Click on Authorization tab -> For `name` put something like "HOME IP" -> for `Network` put your public IP address. This is called whitelisting IP address. Google cloud or any cloud providers by default block access from new IP addresses to their services. How do you find your public IP ? Google Search -> "myip"
+3. Then click save.
+4. Go to `overview` tab -> `Connect to this instance` -> `IPv4 address` -> copy IP Address. You need this to connect to mysql from you local computer. 
+5. Open Terminal -> `mysql --host=<IP_ADRESS_YOU_COPIED_PREIVOUSLY> --user=root --password=<YOUR_MYSQL_INSTANCE_PASSWORD>`
+6. Once you login succefully: try `show schemas`
+7. That will give you the same result as going to `https://<your-gcloud-project-id>.appspot.com/databases`
 ## Licensing
 
 Copyright (C) 2018 Columbia University.
