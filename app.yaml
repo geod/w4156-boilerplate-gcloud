@@ -16,6 +16,13 @@ handlers:
 - url: .*  # This regex directs all routes to main.app
   script: code.main.app
 
+# [START env_variables]
+env_variables:
+    CLOUDSQL_CONNECTION_NAME: advse-boilerplate:us-east1:mysql1
+    CLOUDSQL_USER: root
+    CLOUDSQL_PASSWORD: root
+# [END env_variables]
+
 # temporary workaround around gcloud issue
 skip_files:
 - ^venv/.*$
