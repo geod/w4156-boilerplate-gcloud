@@ -6,3 +6,5 @@ lib/*
 .idea/**/tasks.xml 
 .idea/dictionaries
 .idea/
+*.pyc
+lib/*

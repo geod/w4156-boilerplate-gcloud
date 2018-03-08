@@ -16,6 +16,17 @@ handlers:
 - url: .*  # This regex directs all routes to main.app
   script: code.main.app
 
+# [START env_variables]
+env_variables:
+    CLOUDSQL_CONNECTION_NAME: <YOUR_CONNECTION_NAME>
+    CLOUDSQL_USER: <YOUR_USERNAME>
+    CLOUDSQL_PASSWORD: <YOUE_PASSWORD>
+# [END env_variables]
+
+libraries:
+- name: MySQLdb
+  version: "latest"
+
 # temporary workaround around gcloud issue
 skip_files:
 - ^venv/.*$
