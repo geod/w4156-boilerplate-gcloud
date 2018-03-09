@@ -3,16 +3,20 @@
 {% block body %}
 <h2>Login</h2>
 
-<form action="" method="POST">
-  {{ form.csrf_token }}
-  <div>
-    {{ form.name.label}}
-    {{ form.name }}
-  </div>
-  <div>
-    {{ form.password.label }}
-    {{ form.password }}
-  </div>
-  <input type="submit" value="Login">
-</form>
+<div>
+
+  <form action="" method="post" style="width:80%;margin-left:auto;margin-right:auto;">
+    <input type="text" placeholder="Username" name="username" value="{{
+      request.form.username }}">
+     <input type="password" placeholder="Password" name="password" value="{{
+      request.form.password }}">
+    <input class="btn btn-default" type="submit" value="Login">
+  </form>
+  {% if error %}
+    <p class="error"><strong>Error:</strong> {{ error }}
+  {% endif %}
+
+</div>
+
+
 {% endblock %}
