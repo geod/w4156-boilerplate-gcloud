@@ -18,9 +18,9 @@ handlers:
 
 # [START env_variables]
 env_variables:
-    CLOUDSQL_CONNECTION_NAME: <YOUR_CONNECTION_NAME>
-    CLOUDSQL_USER: <YOUR_USERNAME>
-    CLOUDSQL_PASSWORD: <YOUE_PASSWORD>
+    CLOUDSQL_CONNECTION_NAME: gennyc-dev:us-central1:mysqldev  
+    CLOUDSQL_USER: root
+    CLOUDSQL_PASSWORD: root
 # [END env_variables]
 
 libraries:

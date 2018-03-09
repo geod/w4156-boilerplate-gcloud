@@ -1,7 +1,7 @@
 from google.appengine.ext import vendor
-vendor.add('lib')
+vendor.add('my_lib')
 
-from flask import Flask, make_response
+from flask import Flask, render_template, redirect, url_for, request, make_response
 app = Flask(__name__)
 
 import os
@@ -43,7 +43,17 @@ def connect_to_cloudsql():
 
 @app.route('/')
 def index():
-    return "Hello, World (lets see how long a change takes III)!"
+    return render_template("hello.html")
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != 'kayvon' or request.form['password'] != 'kavyon':
+            error = 'Invalid Credentials. Please try again.'
+        else:
+            return redirect(url_for('home'))
+    return render_template('login.html', error=error)
 
 @app.route('/databases')
 def showDatabases():
@@ -64,5 +74,3 @@ def showDatabases():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
