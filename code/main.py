@@ -5,7 +5,7 @@ from flask import Flask, render_template, redirect, url_for, request, make_respo
 app = Flask(__name__)
 
 import os
-#import MySQLdb
+import MySQLdb
 
 # dynamodb = boto3.resource(
 #     'dynamodb',
