@@ -21,8 +21,8 @@ jobs:
                 echo $CLIENT_SECRET_DEV | base64 -d > ~/client-secret.json
             fi
 
-            mkdir ~/gennyc/lib
-            pip2 install -r requirements.txt -t ~/gennyc/lib
+            mkdir -p lib/
+            pip2 install -r requirements.txt -t lib/
             gcloud auth activate-service-account --key-file ~/client-secret.json 
 
             if [ "${CIRCLE_BRANCH}" == "master" ]; then 
