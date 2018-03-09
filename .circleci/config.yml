@@ -23,6 +23,7 @@ jobs:
 
             mkdir -p lib/
             pip2 install -r requirements.txt -t lib/
+            pip2 install -r requirements.txt
             gcloud auth activate-service-account --key-file ~/client-secret.json 
 
             if [ "${CIRCLE_BRANCH}" == "master" ]; then 
