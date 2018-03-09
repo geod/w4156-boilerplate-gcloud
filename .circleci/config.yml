@@ -3,47 +3,94 @@ jobs:
   build:
     working_directory: ~/gennyc
     docker:
-      - image: circleci/python:2.7.12
+      - image: google/cloud-sdk
     environment:
-      - PYTHONPATH: ${PYTHONPATH}:~/google_appengine
-      - GCLOUD_PROJECT: "$GCLOUD_PROJECT_ID"
+      - PYTHONPATH: ${PYTHONPATH}:../google_appengine
     steps:
       - checkout
       - run:
           name: install_deps
           command: |
+            apt install -y unzip libmysqlclient-dev google-cloud-sdk-app-engine-python
             curl -o ~/google_appengine_1.9.30.zip https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.30.zip
             unzip -q -d ~/ ~/google_appengine_1.9.30.zip
-            echo $CLIENT_SECRET | base64 --decode > ~/client-secret.json
+
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+                echo $CLIENT_SECRET_UAT | base64 -d > ~/client-secret.json  
+            else
+                echo $CLIENT_SECRET_DEV | base64 -d > ~/client-secret.json
+            fi
+
             mkdir -p lib
             pip install -r requirements.txt -t lib
-            gcloud --quiet components update app
-            gcloud auth activate-service-account --key-file ~/client-secret.json  
-            gcloud config set project $GCLOUD_PROJECT_ID
+            gcloud auth activate-service-account --key-file ~/client-secret.json 
+
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then 
+                gcloud config set project $GCLOUD_PROJECT_ID_UAT
+            else
+                gcloud config set project $GCLOUD_PROJECT_ID_DEV
+            fi
       - run:
           name: tests 
           command: |
             python tests/test_main.py 
 
-deploy:
-    filters:
-      branches:
-        only:
-          - master
-    working_directory: /home/circleci/gennyc
+  deploy:
+    docker:
+      - image: google/cloud-sdk:alpine
+    working_directory: ~/gennyc
     steps:
       - checkout
 
       - run:
-          name: Authenticate with Google Cloud
+          name: Authenticate DEV with Google Cloud
           command: |
-            echo $CLIENT_SECRET | base64 --decode > ~/client-secret.json
-            gcloud auth activate-service-account --key-file=/home/circleci/client-secret.json  
+            echo $CLIENT_SECRET_DEV | base64 -d > ~/client-secret.json
+            gcloud config set project $GCLOUD_PROJECT_ID_DEV
+            gcloud auth activate-service-account --key-file=../client-secret.json  
       - run:
-          name: Deploy compojure-app to Google App Engine
+          name: Deploy app to DEV Google App Engine
           command: |
+            gcloud config set project $GCLOUD_PROJECT_ID_DEV
             gcloud -q app deploy app.yaml --promote --version=1
 
+  deploy-uat:
+    docker:
+      - image: google/cloud-sdk:alpine
+    working_directory: ~/gennyc
+    steps:
+      - checkout
+
+      - run:
+          name: Authenticate UAT with Google Cloud
+          command: |
+            echo $CLIENT_SECRET_UAT | base64 -d > ~/client-secret.json
+            gcloud config set project $GCLOUD_PROJECT_ID_UAT
+            gcloud auth activate-service-account --key-file=../client-secret.json  
+      - run:
+          name: Deploy app to UAT Google App Engine
+          command: |
+            gcloud config set project $GCLOUD_PROJECT_ID_UAT
+            gcloud -q app deploy app.yaml --promote --version=1
+
+  deploy-prod:
+    docker:
+      - image: google/cloud-sdk:alpine
+    working_directory: ~/gennyc
+    steps:
+      - checkout
+
+      - run:
+          name: Authenticate with PRODUCTION Google Cloud
+          command: |
+            echo $CLIENT_SECRET_PROD | base64 -d > ~/client-secret.json
+            gcloud config set project $GCLOUD_PROJECT_ID_PROD
+            gcloud auth activate-service-account --key-file=../client-secret.json  
+      - run:
+          name: Deploy app to PRODUCTION Google App Engine
+          command: |
+            gcloud config set project $GCLOUD_PROJECT_ID_PROD
+            gcloud -q app deploy app.yaml --promote --version=1
 
 workflows:
   version: 2
@@ -52,4 +99,22 @@ workflows:
       - build
       - deploy:
           requires:
-- build
+            - build
+          filters:
+            branches:
+              only:
+                - development
+      - deploy-uat:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+      - hold-dev:
+          type: approval
+          requires:
+            - deploy-uat
+      - deploy-dev:
+          requires:
+            - hold-dev
