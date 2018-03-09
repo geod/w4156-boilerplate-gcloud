@@ -1,5 +1,5 @@
-from google.appengine.ext import vendor
-vendor.add('lib')
+# from google.appengine.ext import vendor
+# vendor.add('lib')
 
 from flask import Flask, render_template, redirect, url_for, request, make_response
 app = Flask(__name__)
@@ -20,6 +20,7 @@ CLOUDSQL_CONNECTION_NAME = os.environ.get('CLOUDSQL_CONNECTION_NAME')
 CLOUDSQL_USER = os.environ.get('CLOUDSQL_USER')
 CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 
+print("change")
 
 def connect_to_cloudsql():
     # When deployed to App Engine, the `SERVER_SOFTWARE` environment variable
