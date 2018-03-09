@@ -5,8 +5,9 @@ from flask import Flask, render_template, redirect, url_for, request, make_respo
 app = Flask(__name__)
 
 import os
-# import MySQLdb
+import MySQLdb
 from user_class import User
+from event import Event
 
 # dynamodb = boto3.resource(
 #     'dynamodb',
@@ -23,6 +24,8 @@ CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 
 
 MOCK_USERS = [User('kayvon', 'kayvon'), User('james', 'james'), User('ivy', 'ivy')]
+MOCK_EVENTS = [Event('Rollerblading Tour of Central Park', 2018, 3, 20, 'Join this fun NYC tour and get some exercise!'),
+                Event('Rollerblading Tour of Central Park Round 2', 2018, 3, 22, 'Join this fun NYC tour and get some exercise again!')]
 
 
 def connect_to_cloudsql():
@@ -62,7 +65,7 @@ def login():
 
 @app.route('/home')
 def home():
-    return render_template("hello.html")
+    return render_template("results.html", MOCK_EVENTS=MOCK_EVENTS)
 
 
 @app.route('/databases')

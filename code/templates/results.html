@@ -1,0 +1,17 @@
+{% extends "search.html" %}
+{% block results %}
+<div class="results">
+	{% if MOCK_EVENTS %}
+		<ul>
+		{% for event in MOCK_EVENTS %}
+			<li>
+				<h3>{{ event.title }}</h3></a>
+				<h5>{{ event.description }}</h5>
+			</li>
+		{% endfor %}
+		</ul>
+	{% else %}
+		<p>There were no events found.</p>
+	{% endif %}
+</div>
+{% endblock %}
