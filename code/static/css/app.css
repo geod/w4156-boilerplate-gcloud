@@ -1,0 +1,56 @@
+/* app.css */
+
+body, html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    background: black url(https://www.seedinvest.com/wp-content/uploads/2015/05/new_york_skyline_20_wallpaper_hd.jpg) no-repeat fixed center center;
+}
+
+.panel {
+    margin-top: 80px;
+    text-align: center;
+    background-color: rgba(242, 242, 242, 0.9);
+    padding: 15px 0px 70px 0px;
+}
+
+.panel h1 {
+    font-size: 3rem;
+}
+
+.panel p {
+    font-size: 1.3rem;
+    padding: 20px 0px;
+}
+
+button {
+    background-color: #FF9900;
+    color: #EEEEEE;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+button:hover {
+    background-color: #D77E22;
+}
+
+.launch-button {
+    margin-top: 25px;
+    padding: 30px;
+}
+
+.search-button {
+    padding: 5px 20px;
+}
+
+.results {
+    text-align: left;
+    margin-top: 100px;
+}
+
+li {
+    list-style-type: none;
+    padding-bottom: 25px;
+}
