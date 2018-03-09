@@ -45,13 +45,13 @@ jobs:
       - run:
           name: Authenticate with Google Cloud
           command: |
-            echo $CLIENT_SECRET_MASTER | base64 -d > ~/client-secret.json
-            gcloud config set project $GCLOUD_PROJECT_ID_MASTER
+            echo $CLIENT_SECRET_DEV | base64 -d > ~/client-secret.json
+            gcloud config set project $GCLOUD_PROJECT_ID_DEV
             gcloud auth activate-service-account --key-file=../client-secret.json  
       - run:
           name: Deploy app to Google App Engine
           command: |
-            gcloud config set project $GCLOUD_PROJECT_ID_MASTER
+            gcloud config set project $GCLOUD_PROJECT_ID_DEV
             gcloud -q app deploy app.yaml --promote --version=1
 
   deploy-uat:
