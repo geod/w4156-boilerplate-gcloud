@@ -1,0 +1,58 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/gennyc
+    docker:
+      - image: google/cloud-sdk
+    environment:
+      - PYTHONPATH: ${PYTHONPATH}:../google_appengine
+    steps:
+      - checkout
+      - run:
+          name: install_deps
+          command: |
+            apt install -y unzip libmysqlclient-dev google-cloud-sdk-app-engine-python
+            curl -o ~/google_appengine_1.9.30.zip https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.30.zip
+            unzip -q -d ~/ ~/google_appengine_1.9.30.zip
+            echo $CLIENT_SECRET | base64 -d > ~/client-secret.json
+            mkdir -p lib
+            pip install -r requirements.txt -t lib
+            gcloud auth activate-service-account --key-file ~/client-secret.json  
+            gcloud config set project $GCLOUD_PROJECT_ID
+      - run:
+          name: tests 
+          command: |
+            python tests/test_main.py 
+
+  deploy:
+    docker:
+      - image: google/cloud-sdk:alpine
+    working_directory: ~/gennyc
+    steps:
+      - checkout
+
+      - run:
+          name: Authenticate with Google Cloud
+          command: |
+            echo $CLIENT_SECRET | base64 -d > ~/client-secret.json
+            gcloud config set project $GCLOUD_PROJECT_ID
+            gcloud auth activate-service-account --key-file=../client-secret.json  
+      - run:
+          name: Deploy app to Google App Engine
+          command: |
+            gcloud config set project gennyc-dev
+            gcloud -q app deploy app.yaml --promote --version=1
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+                - development
