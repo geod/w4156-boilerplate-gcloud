@@ -35,7 +35,7 @@ jobs:
           command: |
             python tests/test_main.py 
 
-  deploy-dev:
+  deploy:
     docker:
       - image: google/cloud-sdk:alpine
     working_directory: ~/gennyc
@@ -43,13 +43,13 @@ jobs:
       - checkout
 
       - run:
-          name: Authenticate with Google Cloud
+          name: Authenticate DEV with Google Cloud
           command: |
             echo $CLIENT_SECRET_DEV | base64 -d > ~/client-secret.json
             gcloud config set project $GCLOUD_PROJECT_ID_DEV
             gcloud auth activate-service-account --key-file=../client-secret.json  
       - run:
-          name: Deploy app to Google App Engine
+          name: Deploy app to DEV Google App Engine
           command: |
             gcloud config set project $GCLOUD_PROJECT_ID_DEV
             gcloud -q app deploy app.yaml --promote --version=1
@@ -62,13 +62,13 @@ jobs:
       - checkout
 
       - run:
-          name: Authenticate with Google Cloud
+          name: Authenticate UAT with Google Cloud
           command: |
             echo $CLIENT_SECRET_UAT | base64 -d > ~/client-secret.json
             gcloud config set project $GCLOUD_PROJECT_ID_UAT
             gcloud auth activate-service-account --key-file=../client-secret.json  
       - run:
-          name: Deploy app to Google App Engine
+          name: Deploy app to UAT Google App Engine
           command: |
             gcloud config set project $GCLOUD_PROJECT_ID_UAT
             gcloud -q app deploy app.yaml --promote --version=1
@@ -81,13 +81,13 @@ jobs:
       - checkout
 
       - run:
-          name: Authenticate with Google Cloud
+          name: Authenticate with PRODUCTION Google Cloud
           command: |
             echo $CLIENT_SECRET_PROD | base64 -d > ~/client-secret.json
             gcloud config set project $GCLOUD_PROJECT_ID_PROD
             gcloud auth activate-service-account --key-file=../client-secret.json  
       - run:
-          name: Deploy app to Google App Engine
+          name: Deploy app to PRODUCTION Google App Engine
           command: |
             gcloud config set project $GCLOUD_PROJECT_ID_PROD
             gcloud -q app deploy app.yaml --promote --version=1
@@ -97,7 +97,7 @@ workflows:
   build-and-deploy:
     jobs:
       - build
-      - deploy-dev:
+      - deploy:
           requires:
             - build
           filters:
