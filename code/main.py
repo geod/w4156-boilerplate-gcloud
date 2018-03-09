@@ -5,7 +5,8 @@ from flask import Flask, render_template, redirect, url_for, request, make_respo
 app = Flask(__name__)
 
 import os
-import MySQLdb
+# import MySQLdb
+from user_class import User
 
 # dynamodb = boto3.resource(
 #     'dynamodb',
@@ -19,6 +20,9 @@ import MySQLdb
 CLOUDSQL_CONNECTION_NAME = os.environ.get('CLOUDSQL_CONNECTION_NAME')
 CLOUDSQL_USER = os.environ.get('CLOUDSQL_USER')
 CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
+
+
+MOCK_USERS = [User('kayvon', 'kayvon'), User('james', 'james'), User('ivy', 'ivy')]
 
 
 def connect_to_cloudsql():
@@ -49,11 +53,17 @@ def index():
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != 'kayvon' or request.form['password'] != 'kavyon':
+        test_user = User(request.form['username'], request.form['password'])
+        if test_user not in MOCK_USERS:
             error = 'Invalid Credentials. Please try again.'
         else:
             return redirect(url_for('home'))
     return render_template('login.html', error=error)
+
+@app.route('/home')
+def home():
+    return render_template("hello.html")
+
 
 @app.route('/databases')
 def showDatabases():
