@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: google/cloud-sdk
     environment:
-      - PYTHONPATH: ${PYTHONPATH}:../google_appengine
+      - PYTHONPATH: ${PYTHONPATH}:../google_appengine:/usr/local/google_appengine:/usr/local/google_appengine/lib/:/usr/local/google_appengine/lib/yaml/
     steps:
       - checkout
       - run:
