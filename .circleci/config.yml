@@ -35,7 +35,7 @@ jobs:
           command: |
             python tests/test_main.py 
 
-  deploy:
+  deploy-dev:
     docker:
       - image: google/cloud-sdk:alpine
     working_directory: ~/gennyc
@@ -97,7 +97,7 @@ workflows:
   build-and-deploy:
     jobs:
       - build
-      - deploy:
+      - deploy-dev:
           requires:
             - build
           filters:
@@ -111,10 +111,10 @@ workflows:
             branches:
               only:
                 - master
-      - hold-dev:
+      - hold-prod:
           type: approval
           requires:
             - deploy-uat
-      - deploy-dev:
+      - deploy-prod:
           requires:
-            - hold-dev
+            - hold-prod
