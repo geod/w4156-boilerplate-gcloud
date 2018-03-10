@@ -1,3 +1,6 @@
+import google
+print(google.__path__)
+
 from google.appengine.ext import vendor
 vendor.add('lib')
 
