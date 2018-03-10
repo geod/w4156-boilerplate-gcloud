@@ -44,9 +44,40 @@ def connect_to_cloudsql():
 
     else:
         db = MySQLdb.connect(
-            host='127.0.0.1', user=CLOUDSQL_USER, passwd=CLOUDSQL_PASSWORD)
+            host='35.193.223.145', user='xxxx', passwd='xxxx')
 
     return db
+
+# def auth_user_mock(user: User) -> bool:
+#     return user in MOCK_USERS
+
+def query_for_user(user):
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute("SELECT * from Dev.User where Username='" + user.username + "' and Password='" + user.password + "'")
+    data = cursor.fetchone()
+    db.close()
+    return data
+
+def authenticate_user(user):
+    if query_for_user(user):
+        return True
+    return False
+
+def insert_new_user(user):
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    query = "insert into Dev.User values(0, '" + user.username + "','" + user.password + "')"
+    cursor.execute(query)
+    db.commit()
+    db.close()
+
+def register_user(user):
+    if query_for_user(user):
+        return False
+    insert_new_user(user)
+    if query_for_user(user):
+        return True
 
 @app.route('/')
 def index():
@@ -57,11 +88,26 @@ def login():
     error = None
     if request.method == 'POST':
         test_user = User(request.form['username'], request.form['password'])
-        if test_user not in MOCK_USERS:
-            error = 'Invalid Credentials. Please try again.'
-        else:
+
+        if authenticate_user(test_user):
             return redirect(url_for('home'))
+        else:
+            error = 'Invalid Credentials. Please try again.'
+
     return render_template('login.html', error=error)
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    error = None
+    if request.method == 'POST':
+        new_user = User(request.form['username'], request.form['password'])
+
+        if (register_user(new_user)):
+            return redirect(url_for('home'))
+        else:
+            error = 'Something went wrong.'
+
+    return render_template('register.html')
 
 @app.route('/home')
 def home():
