@@ -3,24 +3,25 @@ vendor.add('lib')
 
 from flask import Flask, render_template, redirect, url_for, request, make_response
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secretkey123984392032'
 
 import os
 import MySQLdb
 from user_class import User
 from event import Event
+from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 
-# dynamodb = boto3.resource(
-#     'dynamodb',
-#     endpoint_url='http://localhost:8000',
-#     region_name='dummy_region',
-#     aws_access_key_id='dummy_access_key',
-#     aws_secret_access_key='dummy_secret_key',
-#     verify=False)
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 # These environment variables are configured in app.yaml.
 CLOUDSQL_CONNECTION_NAME = os.environ.get('CLOUDSQL_CONNECTION_NAME')
 CLOUDSQL_USER = os.environ.get('CLOUDSQL_USER')
 CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
+
+DB_HOST_DEV = '35.193.223.145'
+DV_HOST_LOCAL = ''
+
 
 
 MOCK_USERS = [User('kayvon', 'kayvon'), User('james', 'james'), User('ivy', 'ivy')]
@@ -44,7 +45,7 @@ def connect_to_cloudsql():
 
     else:
         db = MySQLdb.connect(
-            host='35.193.223.145', user='xxxx', passwd='xxxx')
+            host=DB_HOST_DEV, user='kayvon', passwd='kayvon')
 
     return db
 
@@ -54,13 +55,13 @@ def connect_to_cloudsql():
 def query_for_user(user):
     db = connect_to_cloudsql()
     cursor = db.cursor()
-    cursor.execute("SELECT * from Dev.User where Username='" + user.username + "' and Password='" + user.password + "'")
+    cursor.execute("SELECT * from Dev.User where Username='" + user.username + "'")
     data = cursor.fetchone()
     db.close()
     return data
 
 def authenticate_user(user):
-    if query_for_user(user):
+    if query_for_user(user)[2] == user.password:
         return True
     return False
 
@@ -75,26 +76,25 @@ def insert_new_user(user):
 def register_user(user):
     if query_for_user(user):
         return False
+
     insert_new_user(user)
     if query_for_user(user):
         return True
 
+@login_manager.user_loader
+def load_user(user_name):
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute("SELECT * from Dev.User where Username='" + user_name + "'")
+    data = cursor.fetchone()
+    db.close()
+    if data is None:
+        return None
+    return User(data[1], data[2])
+
 @app.route('/')
 def index():
     return render_template("hello.html")
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        test_user = User(request.form['username'], request.form['password'])
-
-        if authenticate_user(test_user):
-            return redirect(url_for('home'))
-        else:
-            error = 'Invalid Credentials. Please try again.'
-
-    return render_template('login.html', error=error)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -105,31 +105,41 @@ def register():
         if (register_user(new_user)):
             return redirect(url_for('home'))
         else:
-            error = 'Something went wrong.'
+            error = 'Try a new username.'
 
-    return render_template('register.html')
+    return render_template('register.html', error = error)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        test_user = User(request.form['username'], request.form['password'])
+
+        if authenticate_user(test_user):
+            login_user(test_user)
+            return redirect(url_for('home'))
+        else:
+            error = 'Invalid Credentials. Please try again.'
+
+    return render_template('login.html', error=error)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect('/')
+
 
 @app.route('/home')
+@login_required
 def home():
+    print(current_user.username)
     return render_template("results.html", MOCK_EVENTS=MOCK_EVENTS)
 
-
-@app.route('/databases')
-def showDatabases():
-    """Simple request handler that shows all of the MySQL SCHEMAS/DATABASES."""
-
-    db = connect_to_cloudsql()
-    cursor = db.cursor()
-    cursor.execute('SHOW SCHEMAS')
-
-    res = ""
-    for r in cursor.fetchall():
-        res+= ('{}\n'.format(r[0]))
-
-    response = make_response(res)
-    response.headers['Content-Type'] = 'text/json'
-
-    return response
+@app.errorhandler(401)
+def page_not_found(e):
+    error = 'You must be logged in to view this page.'
+    return render_template('error.html', error=error)
 
 if __name__ == '__main__':
     app.run(debug=True)

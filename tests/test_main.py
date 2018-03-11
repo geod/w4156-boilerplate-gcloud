@@ -50,8 +50,5 @@ class MainTest(unittest.TestCase):
         rv = self.login('test', 'testwrong')
         assert b'Error' in rv.data
 
-
-
-
 if __name__ == '__main__':
     unittest.main()
