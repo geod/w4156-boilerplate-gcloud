@@ -30,7 +30,7 @@ DB_HOST_DEV = '35.193.223.145'
 #
 
 
-# ENV_DB = ENV
+ENV_DB = 'Dev'
 # print (os.environ.get('BRANCH'))
 
 MOCK_USERS = [User('kayvon', 'kayvon'), User('james', 'james'), User('ivy', 'ivy')]
