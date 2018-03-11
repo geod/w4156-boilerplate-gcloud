@@ -103,6 +103,7 @@ def register():
         new_user = User(request.form['username'], request.form['password'])
 
         if (register_user(new_user)):
+            login_user(test_user)
             return redirect(url_for('home'))
         else:
             error = 'Try a new username.'

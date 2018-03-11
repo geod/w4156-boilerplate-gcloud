@@ -26,25 +26,18 @@ test:
 
 deployment:
     staging:
-        branch: test/circleci1
+        branch: master
         commands:
-        # create AppEngine
-        #gcloud app create --region=us-central
-        # deploy to AppEngine
-        # Retrieve our secrets from the CircleCI environment
         - echo $CLIENT_SECRET_DEV | base64 --decode > ${HOME}/client-secret.json
         # authenticate gcloud
         - gcloud auth activate-service-account --key-file ${HOME}/client-secret.json
-        # Replace <your-project-id>
         - gcloud config set project $GCLOUD_PROJECT_ID_DEV
         - gcloud -q app deploy app.yaml --promote --version=1
     uat:
         branch: test/circleci1
         commands:
-        # Retrieve our secrets from the CircleCI environment
         - echo $CLIENT_SECRET_UAT | base64 --decode > ${HOME}/client-secret.json
         # authenticate gcloud
         - gcloud auth activate-service-account --key-file ${HOME}/client-secret.json
-        # Replace <your-project-id>
         - gcloud config set project $GCLOUD_PROJECT_ID_UAT
         - gcloud -q app deploy app.yaml --promote --version=1
