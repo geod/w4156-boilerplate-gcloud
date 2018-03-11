@@ -10,8 +10,8 @@ jobs:
       - run:
           name: PATH update
           command: |
-            echo "export PATH=\$PATH:/usr/lib/google-cloud-sdk/platform/google_appengine" >> $BASH_ENV
-            echo "export PYTHONPATH=\$PYTHONPATH:/usr/lib/google-cloud-sdk/platform/google_appengine:~/google-cloud-sdk/platform/google_appengine:~/google_appengine:~/google_appengine/lib/yaml/:/usr/local/google_appengine:/usr/local/google_appengine/lib/:/usr/local/google_appengine/lib/yaml/" >> $BASH_ENV
+            echo "export PATH=/usr/lib/google-cloud-sdk/platform/google_appengine:$PATH" >> $BASH_ENV
+            echo "export PYTHONPATH=/usr/lib/google-cloud-sdk/platform/google_appengine:~/google_appengine:~/google_appengine/lib/yaml/:$PYTHONPATH" >> $BASH_ENV
             cat $BASH_ENV
       - run:
           name: install_deps
@@ -19,13 +19,12 @@ jobs:
             echo $PATH
             echo $PYTHONPATH
             apt install -y unzip libmysqlclient-dev google-cloud-sdk-app-engine-python
-            curl -o ~/google_appengine_1.9.30.zip https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.30.zip
-            unzip -q -d ~/ ~/google_appengine_1.9.30.zip
             
             ls /usr/lib/google-cloud-sdk
-            ls /usr/lib/google-cloud-sdk/platform
+            ls /usr/lib/google-cloud-sdk/platform/google_appengine
+
             ls ~/
-            ls ~/google_appengine
+            
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
                 echo $CLIENT_SECRET_UAT | base64 -d > ~/client-secret.json  
             else
