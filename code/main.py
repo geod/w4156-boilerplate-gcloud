@@ -26,6 +26,9 @@ if os.environ.get('BRANCH') != 'master':
     ENV = 'Dev'
 else:
     ENV = 'Uat'
+    CLOUDSQL_CONNECTION_NAME = 'gennyc-uat:us-central1:mysqluat'
+
+
 
 ENV_DB = ENV
 
@@ -99,6 +102,7 @@ def load_user(user_name):
 
 @app.route('/')
 def index():
+    # print(os.environ.get('BRANCH'), file=sys.stderr)
     return render_template("hello.html")
 
 @app.route('/register', methods=['GET', 'POST'])
