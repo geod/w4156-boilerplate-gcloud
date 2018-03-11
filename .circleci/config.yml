@@ -3,53 +3,143 @@ jobs:
   build:
     working_directory: ~/gennyc
     docker:
-      - image: circleci/python:2.7.12
+      - image: google/cloud-sdk
+      - image: circleci/python:2.7
     environment:
-      - PYTHONPATH: ${PYTHONPATH}:~/google_appengine
-      - GCLOUD_PROJECT: "$GCLOUD_PROJECT_ID"
-    steps:
-      - checkout
-      - run:
-          name: install_deps
-          command: |
-            curl -o ~/google_appengine_1.9.30.zip https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.30.zip
-            unzip -q -d ~/ ~/google_appengine_1.9.30.zip
-            echo $CLIENT_SECRET | base64 --decode > ~/client-secret.json
-            mkdir -p lib
-            pip install -r requirements.txt -t lib
-            gcloud --quiet components update app
-            gcloud auth activate-service-account --key-file ~/client-secret.json  
-            gcloud config set project $GCLOUD_PROJECT_ID
-      - run:
-          name: tests 
-          command: |
-            python tests/test_main.py 
-
-deploy:
-    filters:
-      branches:
-        only:
-          - master
-    working_directory: /home/circleci/gennyc
+      - PYTHONPATH: /usr/lib/google-cloud-sdk/platform/google_appengine
     steps:
       - checkout
 
+      - restore_cache:
+          keys:
+            - venv-{{ checksum "requirements.txt" }}
+            - venv- # used if checksum fails
+
       - run:
-          name: Authenticate with Google Cloud
+          name: PATH update
           command: |
-            echo $CLIENT_SECRET | base64 --decode > ~/client-secret.json
-            gcloud auth activate-service-account --key-file=/home/circleci/client-secret.json  
+            echo "export PATH=/usr/lib/google-cloud-sdk/platform/google_appengine:$PATH" >> $BASH_ENV
+            echo "export PYTHONPATH=/usr/lib/google-cloud-sdk/platform/google_appengine:~/google_appengine:~/google_appengine/lib/yaml/:$PYTHONPATH" >> $BASH_ENV
+            cat $BASH_ENV
       - run:
-          name: Deploy compojure-app to Google App Engine
+          name: Install Dependencies
           command: |
+            echo $PYTHONPATH
+            apt install -y unzip libmysqlclient-dev google-cloud-sdk-app-engine-python
+            apt-get install google-cloud-sdk-app-engine-python-extras
+
+            ls /usr/local/lib/python2.7/dist-packages
+            ls /usr/lib/google-cloud-sdk
+
+            pip install virtualenv
+            virtualenv env
+            . env/bin/activate
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+                echo $CLIENT_SECRET_UAT | base64 -d > ~/client-secret.json
+            else
+                echo $CLIENT_SECRET_DEV | base64 -d > ~/client-secret.json
+            fi
+            mkdir -p lib/
+            pip install -r requirements.txt -t lib/
+            pip install -r requirements.txt
+            gcloud auth activate-service-account --key-file ~/client-secret.json
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+                gcloud config set project $GCLOUD_PROJECT_ID_UAT
+            else
+                gcloud config set project $GCLOUD_PROJECT_ID_DEV
+            fi
+      - run:
+          name: tests
+          command: |
+            . env/bin/activate
+            python tests/test_main.py
+
+      - save_cache:
+          key: venv-{{ checksum "requirements.txt" }}
+          paths: "env"
+
+  deploy-dev:
+    docker:
+      - image: google/cloud-sdk
+    working_directory: ~/gennyc
+    steps:
+      - checkout
+
+      - run:
+          name: Authenticate DEV with Google Cloud
+          command: |
+            echo $CLIENT_SECRET_DEV | base64 -d > ~/client-secret.json
+            gcloud config set project $GCLOUD_PROJECT_ID_DEV
+            gcloud auth activate-service-account --key-file=../client-secret.json
+      - run:
+          name: Print Google Cloud settings
+          command: |
+            gcloud auth list
+            gcloud config list
+      - run:
+          name: Deploy app to DEV Google App Engine
+          command: |
+            gcloud config set project $GCLOUD_PROJECT_ID_DEV
             gcloud -q app deploy app.yaml --promote --version=1
+  deploy-uat:
+    docker:
+      - image: google/cloud-sdk:alpine
+    working_directory: ~/gennyc
+    steps:
+      - checkout
 
+      - run:
+          name: Authenticate UAT with Google Cloud
+          command: |
+            echo $CLIENT_SECRET_UAT | base64 -d > ~/client-secret.json
+            gcloud config set project $GCLOUD_PROJECT_ID_UAT
+            gcloud auth activate-service-account --key-file=../client-secret.json
+      - run:
+          name: Deploy app to UAT Google App Engine
+          command: |
+            gcloud config set project $GCLOUD_PROJECT_ID_UAT
+            gcloud -q app deploy app.yaml --promote --version=1
+  deploy-prod:
+    docker:
+      - image: google/cloud-sdk:alpine
+    working_directory: ~/gennyc
+    steps:
+      - checkout
 
+      - run:
+          name: Authenticate with PRODUCTION Google Cloud
+          command: |
+            echo $CLIENT_SECRET_PROD | base64 -d > ~/client-secret.json
+            gcloud config set project $GCLOUD_PROJECT_ID_PROD
+            gcloud auth activate-service-account --key-file=../client-secret.json
+      - run:
+          name: Deploy app to PRODUCTION Google App Engine
+          command: |
+            gcloud config set project $GCLOUD_PROJECT_ID_PROD
+            gcloud -q app deploy app.yaml --promote --version=1
 workflows:
   version: 2
   build-and-deploy:
     jobs:
       - build
-      - deploy:
+      - deploy-dev:
           requires:
-- build
+            - build
+          filters:
+            branches:
+              only:
+                - development
+      - deploy-uat:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+      - hold-prod:
+          type: approval
+          requires:
+            - deploy-uat
+      - deploy-prod:
+          requires:
+            - hold-prod
