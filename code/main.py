@@ -31,6 +31,7 @@ else:
 
 
 ENV_DB = ENV
+print (os.environ.get('BRANCH'))
 
 MOCK_USERS = [User('kayvon', 'kayvon'), User('james', 'james'), User('ivy', 'ivy')]
 MOCK_EVENTS = [Event('Rollerblading Tour of Central Park', 2018, 3, 20, 'Join this fun NYC tour and get some exercise!'),
