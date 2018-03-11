@@ -1,7 +1,11 @@
 import sys
-print(sys.path)
-print(sys.modules)
 
+print("sys paths:")
+print(sys.path)
+
+print("sys modules")
+print(sys.modules)
+sys.modules.pop('google')
 
 import google
 print(google.__path__)
