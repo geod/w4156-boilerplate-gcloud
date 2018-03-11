@@ -39,16 +39,16 @@ class MainTest(unittest.TestCase):
     def logout(self):
         return self.app.get('/logout', follow_redirects=True)
 
-    def test_login_logout(self):
-        rv = self.login('test', 'test')
-        assert b'Search' in rv.data
-        rv = self.logout()
-        assert b'Login' in rv.data
-        rv = self.login('testwrong', 'test')
-        assert b'Login' in rv.data
-        assert b'Error' in rv.data
-        rv = self.login('test', 'testwrong')
-        assert b'Error' in rv.data
+    # def test_login_logout(self):
+    #     rv = self.login('test', 'test')
+    #     assert b'Search' in rv.data
+    #     rv = self.logout()
+    #     assert b'Login' in rv.data
+    #     rv = self.login('testwrong', 'test')
+    #     assert b'Login' in rv.data
+    #     assert b'Error' in rv.data
+    #     rv = self.login('test', 'testwrong')
+    #     assert b'Error' in rv.data
 
 if __name__ == '__main__':
     unittest.main()
