@@ -4,9 +4,15 @@ jobs:
     working_directory: ~/gennyc
     docker:
       - image: google/cloud-sdk
+      - image: circleci/python:2.7
     environment:
+      - PYTHONPATH: /usr/lib/google-cloud-sdk/platform/google_appengine
     steps:
       - checkout
+
+      - restore_cache:
+          keys: venv-{{ .Branch }}-{{ checksum "requirements.txt" }}
+      
       - run:
           name: PATH update
           command: |
@@ -14,15 +20,23 @@ jobs:
             echo "export PYTHONPATH=/usr/lib/google-cloud-sdk/platform/google_appengine:~/google_appengine:~/google_appengine/lib/yaml/:$PYTHONPATH" >> $BASH_ENV
             cat $BASH_ENV
       - run:
-          name: install_deps
+          name: Install Dependencies
           command: |
             echo $PYTHONPATH
             apt install -y unzip libmysqlclient-dev google-cloud-sdk-app-engine-python
+            apt-get install google-cloud-sdk-app-engine-python-extras
             
             ls /usr/local/lib/python2.7/dist-packages
 
             ls /usr/lib/google-cloud-sdk
             
+            pip install virtualenv
+
+            virtualenv env
+
+            . env/bin/activate
+
+
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
                 echo $CLIENT_SECRET_UAT | base64 -d > ~/client-secret.json  
             else
@@ -30,8 +44,8 @@ jobs:
             fi
 
             mkdir -p lib/
-            pip2 install -r requirements.txt -t lib/
-            pip2 install -r requirements.txt
+            pip install -r requirements.txt -t lib/
+            pip install -r requirements.txt
             gcloud auth activate-service-account --key-file ~/client-secret.json 
 
             if [ "${CIRCLE_BRANCH}" == "master" ]; then 
@@ -42,8 +56,13 @@ jobs:
       - run:
           name: tests 
           command: |
-            export PYTHONPATH=/usr/lib/google-cloud-sdk/platform/google_appengine
+            # export PYTHONPATH=/usr/lib/google-cloud-sdk/platform/google_appengine
+            . env/bin/activate
             python tests/test_main.py 
+      
+      - save_cache:
+          key: venv-{{ .Branch }}-{{ checksum "requirements.txt" }}
+          paths: "env"
 
   deploy-dev:
     docker:
