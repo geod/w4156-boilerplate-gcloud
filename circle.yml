@@ -6,6 +6,8 @@ machine:
     # Replace this with your project ID
     GCLOUD_PROJECT: "$GCLOUD_PROJECT_ID"
 
+    BRANCH: $(echo $CIRCLE_BRANCH)
+
 dependencies:
   pre:
     # Download App Engine SDK
