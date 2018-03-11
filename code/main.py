@@ -1,6 +1,3 @@
-import google
-print(google.__path__)
-
 import sys
 print(sys.path)
 

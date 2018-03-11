@@ -16,16 +16,13 @@ jobs:
       - run:
           name: install_deps
           command: |
-            echo $PATH
             echo $PYTHONPATH
             apt install -y unzip libmysqlclient-dev google-cloud-sdk-app-engine-python
             
-            ls /usr/local/lib/
+            ls /usr/local/lib/python2.7/dist-packages
 
             ls /usr/lib/google-cloud-sdk
             
-            ls -alF
-
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
                 echo $CLIENT_SECRET_UAT | base64 -d > ~/client-secret.json  
             else
@@ -45,7 +42,7 @@ jobs:
       - run:
           name: tests 
           command: |
-            echo $PYTHONPATH
+            export PYTHONPATH=/usr/lib/google-cloud-sdk/platform/google_appengine
             python tests/test_main.py 
 
   deploy-dev:
