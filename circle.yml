@@ -39,7 +39,7 @@ deployment:
         - gcloud config set project $GCLOUD_PROJECT_ID_DEV
         - gcloud -q app deploy app.yaml --promote --version=1
     uat:
-        branch: master
+        branch: test/circleci1
         commands:
         # Retrieve our secrets from the CircleCI environment
         - echo $CLIENT_SECRET_UAT | base64 --decode > ${HOME}/client-secret.json
