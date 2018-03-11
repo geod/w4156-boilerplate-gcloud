@@ -28,15 +28,17 @@ test:
 
 deployment:
     staging:
-        branch: master
+        branches:
+          ignore:
+            - master
         commands:
         - echo $CLIENT_SECRET_DEV | base64 --decode > ${HOME}/client-secret.json
         # authenticate gcloud
         - gcloud auth activate-service-account --key-file ${HOME}/client-secret.json
         - gcloud config set project $GCLOUD_PROJECT_ID_DEV
         - gcloud -q app deploy app.yaml --promote --version=1
-    uat:
-        branch: test/circleci1
+    uat-or-prod:
+        branch: master
         commands:
           - >
             if [ -n "${DEPLOY_STAGING_TO_PRODUCTION}" ]; then
