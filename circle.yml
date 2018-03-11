@@ -28,9 +28,7 @@ test:
 
 deployment:
     staging:
-        branches:
-          ignore:
-            - master
+        branch: dev  # /^(?!master).*/
         commands:
         - echo $CLIENT_SECRET_DEV | base64 --decode > ${HOME}/client-secret.json
         # authenticate gcloud
