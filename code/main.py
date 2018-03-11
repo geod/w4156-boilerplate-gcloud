@@ -1,20 +1,18 @@
 import sys
+import os
+import MySQLdb
 
-print("sys paths:")
-print(sys.path)
-
-print("sys modules")
-print(sys.modules)
+# print(sys.path)
+# print(sys.modules)
 sys.modules.pop('google')
 
 from google.appengine.ext import vendor
-vendor.add('lib')
+# vendor.add('lib')
+vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
+
 
 from flask import Flask, render_template, redirect, url_for, request, make_response
 app = Flask(__name__)
-
-import os
-import MySQLdb
 
 # dynamodb = boto3.resource(
 #     'dynamodb',
@@ -28,8 +26,6 @@ import MySQLdb
 CLOUDSQL_CONNECTION_NAME = os.environ.get('CLOUDSQL_CONNECTION_NAME')
 CLOUDSQL_USER = os.environ.get('CLOUDSQL_USER')
 CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
-
-print("change")
 
 def connect_to_cloudsql():
     # When deployed to App Engine, the `SERVER_SOFTWARE` environment variable
