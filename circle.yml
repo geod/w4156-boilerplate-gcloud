@@ -32,9 +32,9 @@ dependencies:
           gcloud config set project $GCLOUD_PROJECT_ID_UAT
         fi
       else
-        - echo $CLIENT_SECRET_DEV | base64 --decode > ${HOME}/client-secret.json
-        - gcloud auth activate-service-account --key-file ${HOME}/client-secret.json
-        - gcloud config set project $GCLOUD_PROJECT_ID_DEV
+        echo $CLIENT_SECRET_DEV | base64 --decode > ${HOME}/client-secret.json
+        gcloud auth activate-service-account --key-file ${HOME}/client-secret.json
+        gcloud config set project $GCLOUD_PROJECT_ID_DEV
       fi
 
 
