@@ -11,7 +11,9 @@ jobs:
       - checkout
 
       - restore_cache:
-          keys: venv-{{ checksum "requirements.txt" }}
+          keys:
+            - venv-{{ checksum "requirements.txt" }}
+            - venv- # used if checksum fails
       
       - run:
           name: PATH update
