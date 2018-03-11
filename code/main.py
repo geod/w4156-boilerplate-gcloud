@@ -21,17 +21,17 @@ CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 
 DB_HOST_DEV = '35.193.223.145'
 
-ENV = ''
-if os.environ.get('BRANCH') != 'master':
-    ENV = 'Dev'
-else:
-    ENV = 'Uat'
-    CLOUDSQL_CONNECTION_NAME = 'gennyc-uat:us-central1:mysqluat'
+# ENV = ''
+# if os.environ.get('BRANCH') != 'master':
+#     ENV = 'Dev'
+# else:
+#     ENV = 'Uat'
+#     CLOUDSQL_CONNECTION_NAME = 'gennyc-uat:us-central1:mysqluat'
+#
 
 
-
-ENV_DB = ENV
-print (os.environ.get('BRANCH'))
+# ENV_DB = ENV
+# print (os.environ.get('BRANCH'))
 
 MOCK_USERS = [User('kayvon', 'kayvon'), User('james', 'james'), User('ivy', 'ivy')]
 MOCK_EVENTS = [Event('Rollerblading Tour of Central Park', 2018, 3, 20, 'Join this fun NYC tour and get some exercise!'),
@@ -103,7 +103,6 @@ def load_user(user_name):
 
 @app.route('/')
 def index():
-    # print(os.environ.get('BRANCH'), file=sys.stderr)
     return render_template("hello.html")
 
 @app.route('/register', methods=['GET', 'POST'])
