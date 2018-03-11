@@ -19,8 +19,12 @@ jobs:
             echo $PATH
             echo $PYTHONPATH
             apt install -y unzip libmysqlclient-dev google-cloud-sdk-app-engine-python
-            ls /usr/lib/
-            ls /usr/local/
+            curl -o ~/google_appengine_1.9.30.zip https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.30.zip
+            unzip -q -d ~/ ~/google_appengine_1.9.30.zip
+            
+            ls /usr/lib/google-cloud-sdk
+            ls /usr/lib/google-cloud-sdk/platform
+            ls ~/
             ls ~/google_appengine
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
                 echo $CLIENT_SECRET_UAT | base64 -d > ~/client-secret.json  
