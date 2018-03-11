@@ -11,7 +11,7 @@ jobs:
           name: PATH update
           command: |
             echo "export PATH=\$PATH:/usr/lib/google-cloud-sdk/platform/google_appengine" >> $BASH_ENV
-            echo "export PYTHONPATH=\$PYTHONPATH:/usr/lib/google-cloud-sdk/platform/google_appengine:~/google-cloud-sdk/platform/google_appengine:~/google_appengine:~/google_appengine/lib/yaml/:/usr/local/google_appengine:/usr/local/google_appengine/lib/:/usr/local/google_appengine/lib/yaml/"
+            echo "export PYTHONPATH=\$PYTHONPATH:/usr/lib/google-cloud-sdk/platform/google_appengine:~/google-cloud-sdk/platform/google_appengine:~/google_appengine:~/google_appengine/lib/yaml/:/usr/local/google_appengine:/usr/local/google_appengine/lib/:/usr/local/google_appengine/lib/yaml/" >> $BASH_ENV
             cat $BASH_ENV
       - run:
           name: install_deps
