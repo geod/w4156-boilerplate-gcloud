@@ -8,7 +8,8 @@ sys.modules.pop('google')
 
 from google.appengine.ext import vendor
 # vendor.add('lib')
-vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
+print(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'lib'))
+vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'lib'))
 
 
 from flask import Flask, render_template, redirect, url_for, request, make_response
