@@ -20,9 +20,18 @@ CLOUDSQL_USER = os.environ.get('CLOUDSQL_USER')
 CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 
 DB_HOST_DEV = '35.193.223.145'
-DV_HOST_LOCAL = ''
+
+# ENV = ''
+# if os.environ.get('BRANCH') != 'master':
+#     ENV = 'Dev'
+# else:
+#     ENV = 'Uat'
+#     CLOUDSQL_CONNECTION_NAME = 'gennyc-uat:us-central1:mysqluat'
+#
 
 
+ENV_DB = 'Dev'
+# print (os.environ.get('BRANCH'))
 
 MOCK_USERS = [User('kayvon', 'kayvon'), User('james', 'james'), User('ivy', 'ivy')]
 MOCK_EVENTS = [Event('Rollerblading Tour of Central Park', 2018, 3, 20, 'Join this fun NYC tour and get some exercise!'),
@@ -55,7 +64,7 @@ def connect_to_cloudsql():
 def query_for_user(user):
     db = connect_to_cloudsql()
     cursor = db.cursor()
-    cursor.execute("SELECT * from Dev.User where Username='" + user.username + "'")
+    cursor.execute("SELECT * from " + ENV_DB + ".User where Username='" + user.username + "'")
     data = cursor.fetchone()
     db.close()
     return data
@@ -68,7 +77,7 @@ def authenticate_user(user):
 def insert_new_user(user):
     db = connect_to_cloudsql()
     cursor = db.cursor()
-    query = "insert into Dev.User values(0, '" + user.username + "','" + user.password + "')"
+    query = "insert into "+ ENV_DB + ".User values(0, '" + user.username + "','" + user.password + "')"
     cursor.execute(query)
     db.commit()
     db.close()
@@ -85,7 +94,7 @@ def register_user(user):
 def load_user(user_name):
     db = connect_to_cloudsql()
     cursor = db.cursor()
-    cursor.execute("SELECT * from Dev.User where Username='" + user_name + "'")
+    cursor.execute("SELECT * from " + ENV_DB + ".User where Username='" + user_name + "'")
     data = cursor.fetchone()
     db.close()
     if data is None:
@@ -103,6 +112,7 @@ def register():
         new_user = User(request.form['username'], request.form['password'])
 
         if (register_user(new_user)):
+            login_user(test_user)
             return redirect(url_for('home'))
         else:
             error = 'Try a new username.'
