@@ -11,7 +11,7 @@ jobs:
       - checkout
 
       - restore_cache:
-          keys: venv-{{ .Branch }}-{{ checksum "requirements.txt" }}
+          keys: venv-{{ checksum "requirements.txt" }}
       
       - run:
           name: PATH update
@@ -58,12 +58,11 @@ jobs:
       - run:
           name: tests 
           command: |
-            # export PYTHONPATH=/usr/lib/google-cloud-sdk/platform/google_appengine
             . env/bin/activate
             python tests/test_main.py 
       
       - save_cache:
-          key: venv-{{ .Branch }}-{{ checksum "requirements.txt" }}
+          key: venv-{{ checksum "requirements.txt" }}
           paths: "env"
 
   deploy-dev:
