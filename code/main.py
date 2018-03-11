@@ -2,11 +2,7 @@ import google
 print(google.__path__)
 
 import sys
-
 print(sys.path)
-
-import google.appengine
-print(google.appengine.__path__)
 
 from google.appengine.ext import vendor
 vendor.add('lib')
