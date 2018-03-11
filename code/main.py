@@ -1,5 +1,7 @@
 import sys
 print(sys.path)
+print(sys.modules)
+
 
 import google
 print(google.__path__)
