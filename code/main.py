@@ -1,11 +1,12 @@
-from google.appengine.ext import vendor
-vendor.add('lib')
+import os
+if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
+    from google.appengine.ext import vendor
+    vendor.add('lib')
 
 from flask import Flask, render_template, redirect, url_for, request, make_response
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secretkey123984392032'
 
-import os
 import MySQLdb
 from user_class import User
 from event import Event
@@ -70,7 +71,10 @@ def query_for_user(user):
     return data
 
 def authenticate_user(user):
-    if query_for_user(user)[2] == user.password:
+    result = query_for_user(user)
+    if result is None:
+        return False
+    elif result[2] == user.password:
         return True
     return False
 
@@ -112,7 +116,7 @@ def register():
         new_user = User(request.form['username'], request.form['password'])
 
         if (register_user(new_user)):
-            login_user(test_user)
+            login_user(new_user)
             return redirect(url_for('home'))
         else:
             error = 'Try a new username.'
