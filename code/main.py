@@ -70,7 +70,10 @@ def query_for_user(user):
     return data
 
 def authenticate_user(user):
-    if query_for_user(user)[2] == user.password:
+    result = query_for_user(user)
+    if result is None:
+        return False
+    elif result[2] == user.password:
         return True
     return False
 
@@ -112,7 +115,7 @@ def register():
         new_user = User(request.form['username'], request.form['password'])
 
         if (register_user(new_user)):
-            login_user(test_user)
+            login_user(new_user)
             return redirect(url_for('home'))
         else:
             error = 'Try a new username.'
