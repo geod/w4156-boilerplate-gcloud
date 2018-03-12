@@ -1,7 +1,6 @@
 from google.appengine.ext import vendor
 vendor.add('lib')
 
-
 from flask import Flask, render_template, redirect, url_for, request, make_response
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secretkey123984392032'
