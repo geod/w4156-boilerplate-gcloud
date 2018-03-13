@@ -105,7 +105,8 @@ jobs:
 
   deploy-uat:
     docker:
-      - image: google/cloud-sdk:alpine
+      - image: google/cloud-sdk
+      - image: circleci/python:2.7
     working_directory: ~/gennyc
     steps:
       - checkout
@@ -124,7 +125,8 @@ jobs:
 
   deploy-prod:
     docker:
-      - image: google/cloud-sdk:alpine
+      - image: google/cloud-sdk
+      - image: circleci/python:2.7
     working_directory: ~/gennyc
     steps:
       - checkout
