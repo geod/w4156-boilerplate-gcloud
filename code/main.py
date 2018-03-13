@@ -1,12 +1,17 @@
-import os
-if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
+import logging
+
+try:
     from google.appengine.ext import vendor
     vendor.add('lib')
+except ImportError:
+    logging.warning('google app engine unable to be imported')
+
 
 from flask import Flask, render_template, redirect, url_for, request, make_response
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secretkey123984392032'
 
+import os
 import MySQLdb
 from user_class import User
 from event import Event
