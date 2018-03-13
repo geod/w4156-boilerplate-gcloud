@@ -29,16 +29,9 @@ jobs:
             apt install -y unzip libmysqlclient-dev google-cloud-sdk-app-engine-python
             apt-get install google-cloud-sdk-app-engine-python-extras
             
-            ls /usr/local/lib/python2.7/dist-packages
-
-            ls /usr/lib/google-cloud-sdk
-            
             pip install virtualenv
-
-            virtualenv env
-
-            . env/bin/activate
-
+            virtualenv venv
+            . venv/bin/activate
 
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
                 echo $CLIENT_SECRET_UAT | base64 -d > ~/client-secret.json  
@@ -60,20 +53,39 @@ jobs:
       - run:
           name: tests 
           command: |
-            . env/bin/activate
+            . venv/bin/activate
             python tests/test_main.py 
       
       - save_cache:
           key: venv-{{ checksum "requirements.txt" }}
-          paths: "env"
+          paths: "venv"
 
   deploy-dev:
     docker:
       - image: google/cloud-sdk
+      - image: circleci/python:2.7
     working_directory: ~/gennyc
     steps:
       - checkout
 
+      - restore_cache:
+          keys:
+          - deploy-dep-{{ checksum "requirements.txt" }}
+          - deploy-dep-
+      - run:
+          name: Install dependencies
+          command: |
+            pip install virtualenv
+            virtualenv venv
+            . venv/bin/activate
+            
+            mkdir -p lib/
+            pip install -t lib/ -r requirements.txt
+            pip install -r requirements.txt
+      - save_cache:
+          key: deploy_dep-{{ checksum "requirements.txt" }}
+          paths:
+            - ./venv
       - run:
           name: Authenticate DEV with Google Cloud
           command: |
@@ -93,7 +105,8 @@ jobs:
 
   deploy-uat:
     docker:
-      - image: google/cloud-sdk:alpine
+      - image: google/cloud-sdk
+      - image: circleci/python:2.7
     working_directory: ~/gennyc
     steps:
       - checkout
@@ -112,7 +125,8 @@ jobs:
 
   deploy-prod:
     docker:
-      - image: google/cloud-sdk:alpine
+      - image: google/cloud-sdk
+      - image: circleci/python:2.7
     working_directory: ~/gennyc
     steps:
       - checkout
