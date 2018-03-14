@@ -19,8 +19,8 @@ handlers:
 # [START env_variables]
 env_variables:
     CLOUDSQL_CONNECTION_NAME: cu-lunch-cicd:us-east1:oursql1
-    CLOUDSQL_USER: cck2127@columbia.edu
-    CLOUDSQL_PASSWORD: bacharach88$
+    CLOUDSQL_USER: oursql1
+    CLOUDSQL_PASSWORD: lunch
 # [END env_variables]
 
 libraries:
