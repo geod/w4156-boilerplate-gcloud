@@ -87,7 +87,7 @@ jobs:
             pip install -t lib/ -r requirements.txt
             pip install -r requirements.txt
       - save_cache:
-          key: deploy_dep-{{ checksum "requirements.txt" }}
+          key: deploy-dep-{{ checksum "requirements.txt" }}
           paths:
             - ./venv
       - run:
@@ -114,7 +114,30 @@ jobs:
     working_directory: ~/gennyc
     steps:
       - checkout
+      
+      - restore_cache:
+          keys:
+            - deploy-dep-{{ checksum "requirements.txt" }}
+            - deploy-dep-
 
+      - run:
+          name: Install dependencies
+          command: |
+            apt install -y unzip libmysqlclient-dev google-cloud-sdk-app-engine
+            apt-get install google-cloud-sdk-app-engine-python-extras
+
+            pip install virtualenv
+            virtualenv venv
+            . venv/bin/activate
+
+            mkdir -p lib/
+            pip install -t lib/ -r requirements.txt
+            pip install -r requirements.txt
+
+      - save_cache:
+          key: deploy-dep-{{ checksum "requirements.txt" }}
+          paths:
+            - ./venv
       - run:
           name: Authenticate UAT with Google Cloud
           command: |
@@ -135,12 +158,37 @@ jobs:
     steps:
       - checkout
 
+      - restore_cache:
+          keys:
+            - deploy-dep-{{ checksum "requirements.txt" }}
+            - deploy-dep-
+              
+      - run:
+          name: Install dependencies
+          command: |
+            apt install -y unzip libmysqlclient-dev google-cloud-sdk-app-engine-python
+            apt-get install google-cloud-sdk-app-engine-python-extras
+
+            pip install virtualenv
+            virtualenv venv
+            . venv/bin/activate
+            
+            mkdir -p lib/
+            pip install -t lib/ -r requirements.txt
+            pip install -r requirements.txt
+
+      - save_cache:
+          key: deploy-dep-{{ checksum "requirements.txt" }}
+          paths:
+            - ./venv
+
       - run:
           name: Authenticate with PRODUCTION Google Cloud
           command: |
             echo $CLIENT_SECRET_PROD | base64 -d > ~/client-secret.json
             gcloud config set project $GCLOUD_PROJECT_ID_PROD
             gcloud auth activate-service-account --key-file=../client-secret.json  
+
       - run:
           name: Deploy app to PRODUCTION Google App Engine
           command: |
