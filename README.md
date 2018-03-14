@@ -1,3 +1,28 @@
+# genNYC
+
+Master branch
+
+[![CircleCI](https://circleci.com/gh/js4785/gennyc/tree/master.svg?style=svg&circle-token=124081d210b8e259fcd3b53281fe4aac26cc6776)](https://circleci.com/gh/js4785/gennyc/tree/master)
+
+Development branch
+
+[![CircleCI](https://circleci.com/gh/js4785/gennyc/tree/development.svg?style=svg&circle-token=124081d210b8e259fcd3b53281fe4aac26cc6776)](https://circleci.com/gh/js4785/gennyc/tree/development)
+
+COMS4156 Advanced Software Engineering  | Spring 2018
+
+## Team:
+Ivy Chen (ic2389)
+James Shin (js4785)
+Kayvon Seif-Naraghi (kss2153)
+Teresa Choe (tc2716)
+
+## Introduction
+
+genNYC is an application to help people discover events in NYC.
+
+This code is used for the purposes of COMS 4156 - Advanced Software Engineering course at Columbia University, New York.
+This is a boilerplate python flask code along with configurations for Circle CI and Google Cloud.
+
 This code is used for the purposes of COMS 4156 - Advanced Software Engineering course at Columbia University, New York. 
 This is a boilerplate python flask code along with configurations for Circle CI and Google Cloud.
 

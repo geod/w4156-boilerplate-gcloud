@@ -5,5 +5,8 @@
 #
 # Note: The `lib` directory is added to `sys.path` by `appengine_config.py`.
 Flask==0.10
+Werkzeug<0.13.0,>=0.12.0
 MySQL-python
+google-api-python-client
+google-cloud
 flask-login==0.2.7
