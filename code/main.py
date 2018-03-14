@@ -1,13 +1,8 @@
 from google.appengine.ext import vendor
 vendor.add('lib')
 
-<<<<<<< HEAD
-from flask import Flask
-app = Flask(__name__, static_url_path='')
-=======
 from flask import Flask, make_response
-app = Flask(__name__)
->>>>>>> 654b346d24cb5e68c2b148f33b1c0b8214bb7169
+app = Flask(__name__, static_url_path='')
 
 import os
 import MySQLdb
