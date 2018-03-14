@@ -15,17 +15,17 @@ threadsafe: yes
 handlers:
 - url: .*  # This regex directs all routes to main.app
   script: code.main.app
-
+  
+libraries:
+- name: MySQLdb
+  version: "latest"
+  
 # [START env_variables]
 env_variables:
     CLOUDSQL_CONNECTION_NAME: cu-lunch-cicd:us-east1:oursql1
     CLOUDSQL_USER: oursql1
     CLOUDSQL_PASSWORD: lunch
 # [END env_variables]
-
-libraries:
-- name: MySQLdb
-  version: "latest"
 
 # temporary workaround around gcloud issue
 skip_files:
