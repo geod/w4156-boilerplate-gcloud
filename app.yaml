@@ -22,9 +22,9 @@ libraries:
   
 # [START env_variables]
 env_variables:
-    CLOUDSQL_CONNECTION_NAME: cu-lunch-cicd:us-east1:oursql1
-    CLOUDSQL_USER: oursql1
-    CLOUDSQL_PASSWORD: lunch
+    CLOUDSQL_CONNECTION_NAME: 
+    CLOUDSQL_USER: 
+    CLOUDSQL_PASSWORD:
 # [END env_variables]
 
 # temporary workaround around gcloud issue
