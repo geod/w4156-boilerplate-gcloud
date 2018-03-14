@@ -3,3 +3,5 @@
 *.pyc
 lib/*
 log.md
+setup.cfg
+circle.yml

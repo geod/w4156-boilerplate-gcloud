@@ -28,8 +28,27 @@ class MainTest(unittest.TestCase):
 
     def test_hello_world(self):
         rv = self.app.get('/')
-        print(rv.data)
-        
+        assert b'Welcome to a new experience.' in rv.data
+
+    def login(self, username, password):
+        return self.app.post('/login', data=dict(
+            username=username,
+            password=password
+        ), follow_redirects=True)
+
+    def logout(self):
+        return self.app.get('/logout', follow_redirects=True)
+
+    # def test_login_logout(self):
+    #     rv = self.login('test', 'test')
+    #     assert b'Search' in rv.data
+    #     rv = self.logout()
+    #     assert b'Login' in rv.data
+    #     rv = self.login('testwrong', 'test')
+    #     assert b'Login' in rv.data
+    #     assert b'Error' in rv.data
+    #     rv = self.login('test', 'testwrong')
+    #     assert b'Error' in rv.data
 
 if __name__ == '__main__':
     unittest.main()

@@ -9,3 +9,4 @@ Werkzeug<0.13.0,>=0.12.0
 MySQL-python
 google-api-python-client
 google-cloud
+flask-login==0.2.7
