@@ -1,5 +1,6 @@
 from google.appengine.ext import vendor
-vendor.add('lib')
+import os
+vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
 
 from flask import Flask, make_response
 app = Flask(__name__, static_url_path='')
