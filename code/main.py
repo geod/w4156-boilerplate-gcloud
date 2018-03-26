@@ -2,8 +2,8 @@ import logging
 import recommender
 
 #try:
-from google.appengine.ext import vendor
-vendor.add('lib')
+# from google.appengine.ext import vendor
+# vendor.add('lib')
 #except ImportError:
 #    logging.warning('google app engine unable to be imported')
 
