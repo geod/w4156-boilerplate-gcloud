@@ -40,7 +40,6 @@ DB_HOST_DEV = '35.193.223.145'
 ENV_DB = 'Dev'
 # print (os.environ.get('BRANCH'))
 
-MOCK_USERS = [User('kayvon', 'kayvon'), User('james', 'james'), User('ivy', 'ivy'), User('teresa', 'teresa')]
 MOCK_EVENTS = [Event('Rollerblading Tour of Central Park', 2018, 3, 20, 'Join this fun NYC tour and get some exercise!'),
                 Event('Rollerblading Tour of Central Park Round 2', 2018, 3, 22, 'Join this fun NYC tour and get some exercise again!')]
 
@@ -72,7 +71,7 @@ def connect_to_cloudsql():
 def query_for_user(user):
     db = connect_to_cloudsql()
     cursor = db.cursor()
-    cursor.execute("SELECT * from " + ENV_DB + ".User where Username='" + user.username + "'")
+    cursor.execute("SELECT * FROM " + ENV_DB + ".Users WHERE username='" + user.username + "'")
     data = cursor.fetchone()
     db.close()
     return data
@@ -90,7 +89,17 @@ def authenticate_user(user):
 def insert_new_user(user):
     db = connect_to_cloudsql()
     cursor = db.cursor()
-    query = "insert into "+ ENV_DB + ".User values(0, '" + user.username + "','" + user.password + "')"
+
+    query = "INSERT INTO "+ ENV_DB + ".Users(username, password, fname, lname, dob, date_joined, timezone, email) VALUES('{}', '{}', {}, {}, {}, {}, {}, {}".format(
+            user.username, 
+            user.password, 
+            "'" + user.fname + "'" if user.fname else 'NULL',
+            "'" + user.lname + "'" if user.lname else 'NULL',
+            user.dob if user.dob else 'NULL',
+            user.date_joined if user.date_joined else 'NULL',
+            "'" + user.timezone + "'" if user.timezone else 'NULL',
+            "'" + user.email + "'" if user.email else 'NULL')
+
     cursor.execute(query)
     db.commit()
     db.close()
@@ -109,7 +118,7 @@ def register_user(user):
 def load_user(user_name):
     db = connect_to_cloudsql()
     cursor = db.cursor()
-    cursor.execute("SELECT * from " + ENV_DB + ".User where Username='" + user_name + "'")
+    cursor.execute("SELECT * FROM " + ENV_DB + ".Users WHERE username='" + user_name + "'")
     data = cursor.fetchone()
     db.close()
     if data is None:
@@ -126,13 +135,23 @@ def index():
 def register():
     error = None
     if request.method == 'POST':
-        new_user = User(request.form['username'], request.form['password'])
+        try:
+            new_user = User(request.form['username'], 
+                            request.form['password'],
+                            request.form['email'],
+                            request.form['fname'],
+                            request.form['lname'],
+                            request.form['dob'],
+                            request.form['timezone']
+                            )
+        except ValueError:
+            error = 'Username or Password is empty.'
 
         if (register_user(new_user)):
             login_user(new_user)
             return redirect(url_for('home'))
         else:
-            error = 'Try a new username.'
+            error = 'Username taken.'
 
     return render_template('register.html', error = error)
 
