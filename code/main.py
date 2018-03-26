@@ -168,6 +168,7 @@ def home():
 
 
 @app.route('/recommendations')
+@login_required
 def recommend():
     kayvon = User("kayvon", "kayvon")
     rec = recommender.Recommend(kayvon)
