@@ -16,7 +16,7 @@ class SurveyTestQuestion(Form):
                                            ('Grad', 'Graduate degree (Masters, Doctorate, etc.)'),
                                            ('O', 'Other')],
                                   validators=[validators.InputRequired()])
-    language = fields.TextField('What is your native language', validators=[validators.InputRequired()])
+    language = fields.StringField('What is your native language', validators=[validators.InputRequired()])
 
 
 class UserInterests(Form):

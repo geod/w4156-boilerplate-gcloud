@@ -15,7 +15,16 @@
 		<div class="form-group">
 		{{ field(**kwargs) }} {{ field.label(class="control-label", for=field.name) }}
 		</div>
-
+    {% elif field.type == 'DateField' %}
+        <div class="form-group">
+		{{ field.label(class="control-label", for=field.name) }}<br>
+		{{ field(type="datetime-local", **kwargs) }}
+		</div>
+    {% elif field.type == 'IntegerField' %}
+        <div class="form-group">
+		{{ field.label(class="control-label", for=field.name) }}<br>
+		{{ field(type="number", **kwargs) }}
+		</div>
 	{% else %}
 		<div class="form-group">
 		{{ field.label(class="control-label", for=field.name) }}<br>
