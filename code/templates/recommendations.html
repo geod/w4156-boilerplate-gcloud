@@ -8,8 +8,10 @@
     <h4>Events that have to do with <font color="blue">{{ interest }}:</font></h4>
     <br>
     <ul>
-        {% for eid, ename, start_date, end_date, num_cap, num_attending in events %}
-            <li>{{ename}}, {{start_date}} to {{end_date}}, {{num_attending}}/{{num_cap}} filled</li>
+        {% for eid, ename, start_date, end_date, num_cap, num_attending, tag in events %}
+            {% if tag == interest %}
+                <li>{{ename}}, {{start_date}} to {{end_date}}, {{num_attending}}/{{num_cap}} filled</li>    
+            {% endif %}
         {% endfor %}
     </ul>
     {% endfor %}
