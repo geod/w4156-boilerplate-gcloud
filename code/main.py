@@ -89,6 +89,17 @@ def authenticate_user(user):
         return True
     return False
 
+@login_manager.user_loader
+def load_user(user_name):
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute("SELECT username, password, email, fname, lname, dob, timezone FROM " + ENV_DB + ".Users WHERE username='" + user_name + "'")
+    data = cursor.fetchone()
+    db.close()
+    if data is None:
+        return None
+    return User(*data)
+
 
 def insert_new_user(user):
     db = connect_to_cloudsql()
