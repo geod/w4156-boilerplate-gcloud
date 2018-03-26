@@ -12,7 +12,7 @@ class Recommend:
     def get_user_interests(self):
         db = main.connect_to_cloudsql()
         cursor = db.cursor()
-        cursor.execute("SELECT tag FROM " + ENV_DB + ".UserTags WHERE username='" + self.user.user_name + "'")
+        cursor.execute("SELECT tag FROM " + ENV_DB + ".UserTags WHERE username='" + self.user.username + "'")
         data = cursor.fetchall()
         db.close()
 
@@ -46,7 +46,7 @@ class Recommend:
                 """.format(
                         ENV_DB,
                         ENV_DB,
-                        self.user.user_name
+                        self.user.username
                     )
 
         cursor.execute(query)
