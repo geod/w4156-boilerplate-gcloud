@@ -85,7 +85,7 @@ def authenticate_user(user):
     result = query_for_user(user)
     if result is None:
         return False
-    elif result[2] == user.password:
+    elif result[1] == user.password:
         return True
     return False
 
