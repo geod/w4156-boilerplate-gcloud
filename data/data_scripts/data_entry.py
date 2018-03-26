@@ -11,7 +11,7 @@ db = MySQLdb.connect(host="gennyc-dev:us-central1:mysqldev",
 cursor = db.cursor()
 
 os.chdir('../')
-for file in ('Events.csv', 'Users.csv', 'UserTags.csv', 'EventTags.csv', 'Attends.csv'):
+for file in ('Events.csv', 'Users.csv', 'UserTags.csv', 'EventTags.csv'):
     table_name = file[:-4]
     cursor.execute("DELETE FROM " + table_name)
     with open(file, 'r') as fp:
