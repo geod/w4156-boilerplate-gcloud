@@ -10,3 +10,5 @@ MySQL-python
 google-api-python-client
 google-cloud
 flask-login==0.2.7
+flask-wtf
+wtforms
