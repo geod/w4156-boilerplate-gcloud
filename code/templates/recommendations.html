@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %} Recommendations {% endblock %}
+{% block body %}
+    <h1>Find your next experience.</h1>
+
+    {% for interest in survey_results %}
+    <h3>You seem to like <font color="blue">{{ interest }}</font></h3>
+    <h4>Events that have to do with <font color="blue">{{ interest }}:</font></h4>
+    <br>
+    <ul>
+        {% for eid, ename, start_date, end_date, num_cap, num_attending, tag in events %}
+            {% if tag == interest %}
+                <li>{{ename}}, {{start_date}} to {{end_date}}, {{num_attending}}/{{num_cap}} filled</li>    
+            {% endif %}
+        {% endfor %}
+    </ul>
+    {% endfor %}
+
+{% endblock %}
