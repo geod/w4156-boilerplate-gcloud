@@ -192,7 +192,7 @@ def home():
 @app.route('/recommendations')
 @login_required
 def recommend():
-    rec = recommender.Recommend(current_user, db_conn_func = connect_to_cloudsql)
+    rec = recommender.Recommend(current_user, connect_to_cloudsql)
     interests = rec.get_user_interests()
     events = rec.get_events()
 
@@ -206,7 +206,7 @@ def fill_user_tags(user, survey):
     for items, cname in [
                             (survey.food_and_drinks, "food_drink"),
                             (survey.sports, "sports"),
-                            ([survey.adrenaline], "adrenaline"),
+                            (["adrenaline"] if survey.adrenaline else [], "adrenaline"),
                             (survey.location, "location"),
                             (survey.fitness, "fitness"),
                             (survey.arts_and_culture, "arts_culture"),

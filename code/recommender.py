@@ -5,13 +5,12 @@ ENV_DB = 'Dev'
 
 class Recommend:
 
-    def __init__(self, user, db_conn_func):
-        self.db_conn_func = db_conn_func
+    def __init__(self, user):
         self.user = user
         self.most_interested = []
 
     def get_user_interests(self):
-        db = db_conn_func()
+        db = main.connect_to_cloudsql()
         cursor = db.cursor()
         cursor.execute("SELECT tag FROM " + ENV_DB + ".UserTags WHERE username='" + self.user.user_name + "'")
         data = cursor.fetchall()
@@ -36,7 +35,7 @@ class Recommend:
 
 
     def get_events(self):
-        db = db_conn_func()
+        db = main.connect_to_cloudsql()
         cursor = db.cursor()
 
         query = """
