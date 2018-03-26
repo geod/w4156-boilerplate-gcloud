@@ -19,9 +19,9 @@ import sys
 #     verify=False)
 
 # These environment variables are configured in app.yaml.
-CLOUDSQL_CONNECTION_NAME = os.environ.get('CLOUDSQL_DBNAME')
-CLOUDSQL_USER = os.environ.get('CLOUDSQL_DBUSER')
-CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_DBPASSWORD')
+CLOUDSQL_CONNECTION_NAME = os.environ.get('CLOUDSQL_CONNECTION_NAME')
+CLOUDSQL_USER = os.environ.get('CLOUDSQL_USER')
+CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 
 
 def connect_to_cloudsql():
