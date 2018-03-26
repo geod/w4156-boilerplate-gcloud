@@ -118,18 +118,6 @@ def register_user(user):
         return True
 
 
-@login_manager.user_loader
-def load_user(user_name):
-    db = connect_to_cloudsql()
-    cursor = db.cursor()
-    cursor.execute("SELECT * FROM " + ENV_DB + ".Users WHERE username='" + user_name + "'")
-    data = cursor.fetchone()
-    db.close()
-    if data is None:
-        return None
-    return User(data[1], data[2])
-
-
 @app.route('/')
 def index():
     return render_template("hello.html")
@@ -193,8 +181,7 @@ def home():
 @app.route('/recommendations')
 @login_required
 def recommend():
-    kayvon = User("kayvon", "kayvon")
-    rec = recommender.Recommend(kayvon)
+    rec = recommender.Recommend(current_user, db_conn_func = connect_to_cloudsql)
     interests = rec.get_user_interests()
     events = rec.get_events()
 
@@ -209,9 +196,9 @@ def fill_user_tags(user, survey):
                             (survey.food_and_drinks, "food_drink"),
                             (survey.sports, "sports"),
                             ([survey.adrenaline], "adrenaline"),
-                            (survey.location, "location")
-                            (survey.fitness, "fitness")
-                            (survey.arts_and_culture, "arts_culture")
+                            (survey.location, "location"),
+                            (survey.fitness, "fitness"),
+                            (survey.arts_and_culture, "arts_culture"),
                             (survey.music, "music")
                         ]:
 
