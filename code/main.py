@@ -94,13 +94,13 @@ def insert_new_user(user):
     db = connect_to_cloudsql()
     cursor = db.cursor()
 
-    query = "INSERT INTO "+ ENV_DB + ".Users(username, password, fname, lname, dob, date_joined, timezone, email) VALUES('{}', '{}', {}, {}, {}, {}, {}, {}".format(
+    query = "INSERT INTO "+ ENV_DB + ".Users(username, password, fname, lname, dob, date_joined, timezone, email) VALUES('{}', '{}', {}, {}, {}, {}, {}, {})".format(
             user.username, 
             user.password, 
             "'" + user.fname + "'" if user.fname else 'NULL',
             "'" + user.lname + "'" if user.lname else 'NULL',
-            user.dob if user.dob else 'NULL',
-            user.join_date if user.join_date else 'NULL',
+            "'" + user.dob + "'" if user.dob else 'NULL',
+            "'" + str(user.join_date) + "'" if user.join_date else 'NULL',
             "'" + user.timezone + "'" if user.timezone else 'NULL',
             "'" + user.email + "'" if user.email else 'NULL')
 
