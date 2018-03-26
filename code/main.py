@@ -13,6 +13,7 @@ app.config['SECRET_KEY'] = 'secretkey123984392032'
 import os
 import MySQLdb
 from user_class import User
+from surveys import UserInterests
 from event import Event
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 
@@ -151,8 +152,59 @@ def logout():
 @app.route('/home')
 @login_required
 def home():
-    print(current_user.username)
+    if not user_is_tagged(current_user):
+        return redirect('survey')
     return render_template("results.html", MOCK_EVENTS=MOCK_EVENTS)
+
+def fill_user_tags(user, survey):
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+
+    food_and_drinks = ':'.join(survey.food_and_drinks)
+    sports = ':'.join(survey.sports)
+    adrenaline = 0
+    if survey.adrenaline:
+        adrenaline = 1
+    location = ':'.join(survey.location)
+    fitness = ':'.join(survey.fitness)
+    arts_and_culture = ':'.join(survey.arts_and_culture)
+    music = ':'.join(survey.music)
+    query = "insert into "+ ENV_DB + ".Surveys values('" + user.username + "','" + food_and_drinks + "','" + sports + "'," + str(adrenaline) + ",'" + location + "','" + fitness + "','" + arts_and_culture + "','" + music + "')"
+    cursor.execute(query)
+    db.commit()
+    db.close()
+
+def query_for_survey(user):
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute("SELECT * from " + ENV_DB + ".Surveys where Username='" + user.username + "'")
+    data = cursor.fetchone()
+    db.close()
+    return data
+
+def user_is_tagged(user):
+    result = query_for_survey(user)
+    if result is None:
+        return False
+    else:
+        return True
+
+
+@app.route('/survey', methods=['GET', 'POST'])
+@login_required
+def survey():
+    form = UserInterests(request.form)
+
+    if request.method == 'POST' and form.validate():
+        survey_obj = UserInterests()
+        form.populate_obj(survey_obj)
+
+        fill_user_tags(current_user, survey_obj)
+
+        return redirect(url_for('home'))
+
+    return render_template('survey.html', title='Survey', form=form)
+
 
 @app.errorhandler(401)
 def page_not_found(e):
