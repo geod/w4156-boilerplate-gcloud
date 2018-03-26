@@ -6,7 +6,7 @@
 {{ field(**kwargs)|safe }}
 
 {% for error in field.errors %}
-<span class="error">{{ error|e }}</span>
+<span class="error" style="color: #ec5840;">{{ error|e }}</span>
 {% endfor %}
 </div>
 
@@ -24,5 +24,5 @@
 	{% endif %}
 
 {% endif %}
-
+<br>
 {% endmacro %}

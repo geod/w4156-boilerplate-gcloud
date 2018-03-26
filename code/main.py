@@ -152,7 +152,8 @@ def logout():
 @app.route('/home')
 @login_required
 def home():
-    print(current_user.username)
+    if not user_is_tagged(current_user):
+        return redirect('survey')
     return render_template("results.html", MOCK_EVENTS=MOCK_EVENTS)
 
 def fill_user_tags(user, survey):
@@ -172,6 +173,21 @@ def fill_user_tags(user, survey):
     cursor.execute(query)
     db.commit()
     db.close()
+
+def query_for_survey(user):
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute("SELECT * from " + ENV_DB + ".Surveys where Username='" + user.username + "'")
+    data = cursor.fetchone()
+    db.close()
+    return data
+
+def user_is_tagged(user):
+    result = query_for_survey(user)
+    if result is None:
+        return False
+    else:
+        return True
 
 
 @app.route('/survey', methods=['GET', 'POST'])
