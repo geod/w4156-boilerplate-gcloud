@@ -14,8 +14,8 @@ machine:
 
     # Replace this with your project ID
     GCLOUD_PROJECT: "$GCLOUD_PROJECT_ID"
-    CLOUDSQL_DBNAME: "$CLOUDSQL_CONNECTION_NAME" #cu-lunch-cicd:us-east1:oursql1
-    CLOUDSQL_DBUSER: "$CLOUDSQL_USER" #oursql1
+    CLOUDSQL_DBNAME: "$CLOUDSQL_CONNECTION_NAME" 
+    CLOUDSQL_DBUSER: "$CLOUDSQL_USER" 
     CLOUDSQL_DBPASSWORD: "$CLOUDSQL_PASSWORD"
 
 dependencies:
