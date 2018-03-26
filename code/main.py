@@ -14,7 +14,7 @@ import os
 import MySQLdb
 from user_class import User
 from surveys import UserInterests
-from event import Event
+from event import Event, EventForm
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 
 login_manager = LoginManager()
@@ -204,6 +204,23 @@ def survey():
         return redirect(url_for('home'))
 
     return render_template('survey.html', title='Survey', form=form)
+
+@app.route('/new_event', methods=['GET', 'POST'])
+@login_required
+def create_event():
+    form = EventForm(request.form)
+
+    if request.method == 'POST' and form.validate():
+        event = EventForm()
+        form.populate_obj(event)
+
+        print(event.start)
+
+        return redirect(url_for('home'))
+
+    return render_template('event_form.html', title='New Event', form=form)
+
+
 
 
 @app.errorhandler(401)
