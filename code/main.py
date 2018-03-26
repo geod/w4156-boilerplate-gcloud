@@ -26,6 +26,10 @@ CLOUDSQL_CONNECTION_NAME = os.environ.get('CLOUDSQL_CONNECTION_NAME')
 CLOUDSQL_USER = os.environ.get('CLOUDSQL_USER')
 CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 
+# CLOUDSQL_CONNECTION_NAME = "gennyc-dev:us-central1:mysqldev"
+# CLOUDSQL_USER = "kayvon"
+# CLOUDSQL_PASSWORD = "kayvon"
+
 DB_HOST_DEV = '35.193.223.145'
 
 # ENV = ''
@@ -96,7 +100,7 @@ def insert_new_user(user):
             "'" + user.fname + "'" if user.fname else 'NULL',
             "'" + user.lname + "'" if user.lname else 'NULL',
             user.dob if user.dob else 'NULL',
-            user.date_joined if user.date_joined else 'NULL',
+            user.join_date if user.join_date else 'NULL',
             "'" + user.timezone + "'" if user.timezone else 'NULL',
             "'" + user.email + "'" if user.email else 'NULL')
 
