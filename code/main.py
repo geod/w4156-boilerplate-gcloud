@@ -1,3 +1,4 @@
+from __future__ import print_function
 from google.appengine.ext import vendor
 import os
 vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
@@ -7,6 +8,7 @@ app = Flask(__name__, static_url_path='')
 
 import os
 import MySQLdb
+import sys
 
 # dynamodb = boto3.resource(
 #     'dynamodb',
@@ -17,17 +19,18 @@ import MySQLdb
 #     verify=False)
 
 # These environment variables are configured in app.yaml.
-CLOUDSQL_CONNECTION_NAME = os.environ.get('CLOUDSQL_CONNECTION_NAME')
-CLOUDSQL_USER = os.environ.get('CLOUDSQL_USER')
-CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
+CLOUDSQL_CONNECTION_NAME = os.environ.get('CLOUDSQL_DBNAME')
+CLOUDSQL_USER = os.environ.get('CLOUDSQL_DBUSER')
+CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_DBPASSWORD')
 
 
 def connect_to_cloudsql():
     # When deployed to App Engine, the `SERVER_SOFTWARE` environment variable
     # will be set to 'Google App Engine/version'.
-    if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
+    if os.getenv('SERVER_SOFTWARE', '').startswith('Development/'):
         # Connect using the unix socket located at
         # /cloudsql/cloudsql-connection-name.
+        print("GOT here", file=sys.stderr)
         cloudsql_unix_socket = os.path.join(
             '/cloudsql', CLOUDSQL_CONNECTION_NAME)
 
@@ -37,8 +40,10 @@ def connect_to_cloudsql():
             passwd=CLOUDSQL_PASSWORD)
 
     else:
+        print(os.getenv('SERVER_SOFTWARE', ''), file=sys.stderr)
+        print("OOOOPS", file=sys.stderr)
         db = MySQLdb.connect(
-            host='127.0.0.1', user=CLOUDSQL_USER, passwd=CLOUDSQL_PASSWORD)
+            host='127.0.0.1:', user=CLOUDSQL_USER, passwd=CLOUDSQL_PASSWORD)
 
     return db
 
@@ -49,6 +54,7 @@ def index():
 @app.route('/databases')
 def showDatabases():
     """Simple request handler that shows all of the MySQL SCHEMAS/DATABASES."""
+    print("DBBBBBBBBBBBBBBBBB", file=sys.stderr)
 
     db = connect_to_cloudsql()
     cursor = db.cursor()
