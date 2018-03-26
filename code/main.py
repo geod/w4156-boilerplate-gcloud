@@ -214,7 +214,7 @@ def fill_user_tags(user, survey):
                         ]:
 
         for item in items:
-            query = "INSERT INTO " + ENV_DB + ".UserTags(username, tag, category) VALUES ('{}', '{}', '{}')".format(current_user.username, item, cname)
+            query = "INSERT INTO " + ENV_DB + ".UserTags(username, tag, category) VALUES ('{}', '{}', '{}')".format(user.username, item, cname)
 
             cursor.execute(query)
 
