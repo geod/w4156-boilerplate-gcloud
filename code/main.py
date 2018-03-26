@@ -205,17 +205,21 @@ def fill_user_tags(user, survey):
     db = connect_to_cloudsql()
     cursor = db.cursor()
 
-    food_and_drinks = ':'.join(survey.food_and_drinks)
-    sports = ':'.join(survey.sports)
-    adrenaline = 0
-    if survey.adrenaline:
-        adrenaline = 1
-    location = ':'.join(survey.location)
-    fitness = ':'.join(survey.fitness)
-    arts_and_culture = ':'.join(survey.arts_and_culture)
-    music = ':'.join(survey.music)
-    query = "insert into "+ ENV_DB + ".Surveys values('" + food_and_drinks + "','" + sports + "'," + str(adrenaline) + ",'" + location + "','" + fitness + "','" + arts_and_culture + "','" + music + "')"
-    cursor.execute(query)
+    for items, cname in [
+                            (survey.food_and_drinks, "food_drink"),
+                            (survey.sports, "sports"),
+                            ([survey.adrenaline], "adrenaline"),
+                            (survey.location, "location")
+                            (survey.fitness, "fitness")
+                            (survey.arts_and_culture, "arts_culture")
+                            (survey.music, "music")
+                        ]:
+
+        for item in items:
+            query = "INSERT INTO " + ENV_DB + ".UserTags(username, tag, category) VALUES ('{}', '{}', '{}')".format(current_user.username, item, cname)
+
+            cursor.execute(query)
+
     db.commit()
     db.close()
 
@@ -223,7 +227,7 @@ def fill_user_tags(user, survey):
 def query_for_survey(user):
     db = connect_to_cloudsql()
     cursor = db.cursor()
-    cursor.execute("SELECT * from " + ENV_DB + ".Surveys where Username='" + user.username + "'")
+    cursor.execute("SELECT * FROM " + ENV_DB + ".UserTags where username='" + user.username + "'")
     data = cursor.fetchone()
     db.close()
     return data
@@ -251,6 +255,7 @@ def survey():
         return redirect(url_for('home'))
 
     return render_template('survey.html', title='Survey', form=form)
+
 
 @app.route('/new_event', methods=['GET', 'POST'])
 @login_required
