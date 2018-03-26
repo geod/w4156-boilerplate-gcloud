@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %} Recommendations {% endblock %}
+{% block body %}
+    <h1>Find your next experience.</h1>
+
+    {% for interest in survey_results %}
+    <h3>You seem to like <font color="blue">{{ interest }}</font></h3>
+    <h4>Events that have to do with <font color="blue">{{ interest }}:</font></h4>
+    <br>
+    <ul>
+        {% for key, value in events.items() %}
+            {% if interest == key %}
+                {% for element in value: %}
+                    <li>{{element}}</li>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </ul>
+    {% endfor %}
+
+{% endblock %}

@@ -1,8 +1,9 @@
 import logging
+import recommender
 
 #try:
-#    from google.appengine.ext import vendor
-#    vendor.add('lib')
+# from google.appengine.ext import vendor
+# vendor.add('lib')
 #except ImportError:
 #    logging.warning('google app engine unable to be imported')
 
@@ -39,7 +40,7 @@ DB_HOST_DEV = '35.193.223.145'
 ENV_DB = 'Dev'
 # print (os.environ.get('BRANCH'))
 
-MOCK_USERS = [User('kayvon', 'kayvon'), User('james', 'james'), User('ivy', 'ivy')]
+MOCK_USERS = [User('kayvon', 'kayvon'), User('james', 'james'), User('ivy', 'ivy'), User('teresa', 'teresa')]
 MOCK_EVENTS = [Event('Rollerblading Tour of Central Park', 2018, 3, 20, 'Join this fun NYC tour and get some exercise!'),
                 Event('Rollerblading Tour of Central Park Round 2', 2018, 3, 22, 'Join this fun NYC tour and get some exercise again!')]
 
@@ -67,6 +68,7 @@ def connect_to_cloudsql():
 # def auth_user_mock(user: User) -> bool:
 #     return user in MOCK_USERS
 
+
 def query_for_user(user):
     db = connect_to_cloudsql()
     cursor = db.cursor()
@@ -74,6 +76,7 @@ def query_for_user(user):
     data = cursor.fetchone()
     db.close()
     return data
+
 
 def authenticate_user(user):
     result = query_for_user(user)
@@ -83,6 +86,7 @@ def authenticate_user(user):
         return True
     return False
 
+
 def insert_new_user(user):
     db = connect_to_cloudsql()
     cursor = db.cursor()
@@ -91,6 +95,7 @@ def insert_new_user(user):
     db.commit()
     db.close()
 
+
 def register_user(user):
     if query_for_user(user):
         return False
@@ -98,6 +103,7 @@ def register_user(user):
     insert_new_user(user)
     if query_for_user(user):
         return True
+
 
 @login_manager.user_loader
 def load_user(user_name):
@@ -110,9 +116,11 @@ def load_user(user_name):
         return None
     return User(data[1], data[2])
 
+
 @app.route('/')
 def index():
     return render_template("hello.html")
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -128,6 +136,7 @@ def register():
 
     return render_template('register.html', error = error)
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
@@ -141,6 +150,7 @@ def login():
             error = 'Invalid Credentials. Please try again.'
 
     return render_template('login.html', error=error)
+
 
 @app.route('/logout')
 @login_required
@@ -156,6 +166,18 @@ def home():
         return redirect('survey')
     return render_template("results.html", MOCK_EVENTS=MOCK_EVENTS)
 
+
+@app.route('/recommendations')
+@login_required
+def recommend():
+    kayvon = User("kayvon", "kayvon")
+    rec = recommender.Recommend(kayvon)
+    interests = rec.get_user_interests()
+    events = rec.get_events()
+
+    return render_template("recommendations.html", survey_results=interests, events=events)
+
+
 def fill_user_tags(user, survey):
     db = connect_to_cloudsql()
     cursor = db.cursor()
@@ -169,10 +191,11 @@ def fill_user_tags(user, survey):
     fitness = ':'.join(survey.fitness)
     arts_and_culture = ':'.join(survey.arts_and_culture)
     music = ':'.join(survey.music)
-    query = "insert into "+ ENV_DB + ".Surveys values('" + user.username + "','" + food_and_drinks + "','" + sports + "'," + str(adrenaline) + ",'" + location + "','" + fitness + "','" + arts_and_culture + "','" + music + "')"
+    query = "insert into "+ ENV_DB + ".Surveys values('" + food_and_drinks + "','" + sports + "'," + str(adrenaline) + ",'" + location + "','" + fitness + "','" + arts_and_culture + "','" + music + "')"
     cursor.execute(query)
     db.commit()
     db.close()
+
 
 def query_for_survey(user):
     db = connect_to_cloudsql()
@@ -181,6 +204,7 @@ def query_for_survey(user):
     data = cursor.fetchone()
     db.close()
     return data
+
 
 def user_is_tagged(user):
     result = query_for_survey(user)
