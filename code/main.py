@@ -192,7 +192,7 @@ def home():
 @app.route('/recommendations')
 @login_required
 def recommend():
-    rec = recommender.Recommend(current_user, connect_to_cloudsql)
+    rec = recommender.Recommend(current_user)
     interests = rec.get_user_interests()
     events = rec.get_events()
 
