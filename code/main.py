@@ -1,8 +1,9 @@
 import logging
+import recommender
 
 #try:
-#    from google.appengine.ext import vendor
-#    vendor.add('lib')
+# from google.appengine.ext import vendor
+# vendor.add('lib')
 #except ImportError:
 #    logging.warning('google app engine unable to be imported')
 
@@ -13,7 +14,8 @@ app.config['SECRET_KEY'] = 'secretkey123984392032'
 import os
 import MySQLdb
 from user_class import User
-from event import Event
+from surveys import UserInterests
+from event import Event, EventForm
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 
 login_manager = LoginManager()
@@ -23,6 +25,10 @@ login_manager.init_app(app)
 CLOUDSQL_CONNECTION_NAME = os.environ.get('CLOUDSQL_CONNECTION_NAME')
 CLOUDSQL_USER = os.environ.get('CLOUDSQL_USER')
 CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
+
+# CLOUDSQL_CONNECTION_NAME = "gennyc-dev:us-central1:mysqldev"
+# CLOUDSQL_USER = "kayvon"
+# CLOUDSQL_PASSWORD = "kayvon"
 
 DB_HOST_DEV = '35.193.223.145'
 
@@ -38,7 +44,6 @@ DB_HOST_DEV = '35.193.223.145'
 ENV_DB = 'Dev'
 # print (os.environ.get('BRANCH'))
 
-MOCK_USERS = [User('kayvon', 'kayvon'), User('james', 'james'), User('ivy', 'ivy')]
 MOCK_EVENTS = [Event('Rollerblading Tour of Central Park', 2018, 3, 20, 'Join this fun NYC tour and get some exercise!'),
                 Event('Rollerblading Tour of Central Park Round 2', 2018, 3, 22, 'Join this fun NYC tour and get some exercise again!')]
 
@@ -66,13 +71,15 @@ def connect_to_cloudsql():
 # def auth_user_mock(user: User) -> bool:
 #     return user in MOCK_USERS
 
+
 def query_for_user(user):
     db = connect_to_cloudsql()
     cursor = db.cursor()
-    cursor.execute("SELECT * from " + ENV_DB + ".User where Username='" + user.username + "'")
+    cursor.execute("SELECT * FROM " + ENV_DB + ".Users WHERE username='" + user.username + "'")
     data = cursor.fetchone()
     db.close()
     return data
+
 
 def authenticate_user(user):
     result = query_for_user(user)
@@ -82,13 +89,36 @@ def authenticate_user(user):
         return True
     return False
 
+@login_manager.user_loader
+def load_user(user_name):
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute("SELECT username, password, email, fname, lname, dob, timezone FROM " + ENV_DB + ".Users WHERE username='" + user_name + "'")
+    data = cursor.fetchone()
+    db.close()
+    if data is None:
+        return None
+    return User(*data)
+
+
 def insert_new_user(user):
     db = connect_to_cloudsql()
     cursor = db.cursor()
-    query = "insert into "+ ENV_DB + ".User values(0, '" + user.username + "','" + user.password + "')"
+
+    query = "INSERT INTO "+ ENV_DB + ".Users(username, password, fname, lname, dob, date_joined, timezone, email) VALUES('{}', '{}', {}, {}, {}, {}, {}, {})".format(
+            user.username, 
+            user.password, 
+            "'" + user.fname + "'" if user.fname else 'NULL',
+            "'" + user.lname + "'" if user.lname else 'NULL',
+            "'" + user.dob + "'" if user.dob else 'NULL',
+            "'" + str(user.join_date) + "'" if user.join_date else 'NULL',
+            "'" + user.timezone + "'" if user.timezone else 'NULL',
+            "'" + user.email + "'" if user.email else 'NULL')
+
     cursor.execute(query)
     db.commit()
     db.close()
+
 
 def register_user(user):
     if query_for_user(user):
@@ -98,34 +128,36 @@ def register_user(user):
     if query_for_user(user):
         return True
 
-@login_manager.user_loader
-def load_user(user_name):
-    db = connect_to_cloudsql()
-    cursor = db.cursor()
-    cursor.execute("SELECT * from " + ENV_DB + ".User where Username='" + user_name + "'")
-    data = cursor.fetchone()
-    db.close()
-    if data is None:
-        return None
-    return User(data[1], data[2])
 
 @app.route('/')
 def index():
     return render_template("hello.html")
 
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     error = None
     if request.method == 'POST':
-        new_user = User(request.form['username'], request.form['password'])
+        try:
+            new_user = User(request.form['username'], 
+                            request.form['password'],
+                            request.form['email'],
+                            request.form['fname'],
+                            request.form['lname'],
+                            request.form['dob'],
+                            request.form['timezone']
+                            )
+        except ValueError:
+            error = 'Username or Password is empty.'
 
         if (register_user(new_user)):
             login_user(new_user)
             return redirect(url_for('home'))
         else:
-            error = 'Try a new username.'
+            error = 'Username taken.'
 
     return render_template('register.html', error = error)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -141,6 +173,7 @@ def login():
 
     return render_template('login.html', error=error)
 
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -151,8 +184,94 @@ def logout():
 @app.route('/home')
 @login_required
 def home():
-    print(current_user.username)
+    if not user_is_tagged(current_user):
+        return redirect('survey')
     return render_template("results.html", MOCK_EVENTS=MOCK_EVENTS)
+
+
+@app.route('/recommendations')
+@login_required
+def recommend():
+    rec = recommender.Recommend(current_user)
+    interests = rec.get_user_interests()
+    events = rec.get_events()
+
+    return render_template("recommendations.html", survey_results=interests, events=events)
+
+
+def fill_user_tags(user, survey):
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+
+    for items, cname in [
+                            (survey.food_and_drinks, "food_drink"),
+                            (survey.sports, "sports"),
+                            (["adrenaline"] if survey.adrenaline else [], "adrenaline"),
+                            (survey.location, "location"),
+                            (survey.fitness, "fitness"),
+                            (survey.arts_and_culture, "arts_culture"),
+                            (survey.music, "music")
+                        ]:
+
+        for item in items:
+            query = "INSERT INTO " + ENV_DB + ".UserTags(username, tag, category) VALUES ('{}', '{}', '{}')".format(current_user.username, item, cname)
+
+            cursor.execute(query)
+
+    db.commit()
+    db.close()
+
+
+def query_for_survey(user):
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM " + ENV_DB + ".UserTags where username='" + user.username + "'")
+    data = cursor.fetchone()
+    db.close()
+    return data
+
+
+def user_is_tagged(user):
+    result = query_for_survey(user)
+    if result is None:
+        return False
+    else:
+        return True
+
+
+@app.route('/survey', methods=['GET', 'POST'])
+@login_required
+def survey():
+    form = UserInterests(request.form)
+
+    if request.method == 'POST' and form.validate():
+        survey_obj = UserInterests()
+        form.populate_obj(survey_obj)
+
+        fill_user_tags(current_user, survey_obj)
+
+        return redirect(url_for('home'))
+
+    return render_template('survey.html', title='Survey', form=form)
+
+
+@app.route('/new_event', methods=['GET', 'POST'])
+@login_required
+def create_event():
+    form = EventForm(request.form)
+
+    if request.method == 'POST' and form.validate():
+        event = EventForm()
+        form.populate_obj(event)
+
+        print(event.start)
+
+        return redirect(url_for('home'))
+
+    return render_template('event_form.html', title='New Event', form=form)
+
+
+
 
 @app.errorhandler(401)
 def page_not_found(e):
