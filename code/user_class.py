@@ -18,8 +18,8 @@ class User():
         self.timezone = timezone
         self.join_date = datetime.date.today()
 
-        print self.email, self.dob, self.timezone, self.join_date
-        print type(self.email), type(self.dob), type(self.timezone), type(self.join_date)
+        # print self.email, self.dob, self.timezone, self.join_date
+        # print type(self.email), type(self.dob), type(self.timezone), type(self.join_date)
 
     def __eq__(self, other):
         if self.username == other.username and self.password == other.password:
