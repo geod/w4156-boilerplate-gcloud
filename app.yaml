@@ -20,6 +20,10 @@ libraries:
 - name: MySQLdb
   version: "latest"
 
+env_variables:
+  CLOUDSQL_USER: root
+  CLOUDSQL_PASSWORD: lunch
+  CLOUDSQL_CONNECTION_NAME: cu-lunch-cicd:us-east1:mysql1
 
 # temporary workaround around gcloud issue
 skip_files:
