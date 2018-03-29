@@ -5,5 +5,5 @@ $("#startbutton").click(function() {
 })
 
 $("#register-button").click(function() {
-	window.location.href = "listings/index.html"
+	window.location.href = "listform/index.html"
 })
