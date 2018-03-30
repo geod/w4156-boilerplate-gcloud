@@ -1,15 +1,17 @@
 from __future__ import print_function
 from google.appengine.ext import vendor
 import os
+
 vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
 import os
 import MySQLdb
-import sqlite3
+#import sqlite3
 import sys
+from user import User
 
-from flask import Flask, make_response
+from flask import Flask, make_response, request, url_for, redirect
+
 app = Flask(__name__, static_url_path='')
-
 
 # dynamodb = boto3.resource(
 #     'dynamodb',
@@ -27,18 +29,17 @@ CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 LOCAL_DATABASE = 'cuLunch_main.db'
 SCHEMA_PATH = "../schemas/cuLunch_schema.sql"
 
-def get_db():
+'''def get_db():
     db = getattr(g, '_database', None)
     if db is None:
         db = g._database = sqlite3.connect(LOCAL_DATABASE)
-    return db
+    return db'''
 
-
-@app.teardown_appcontext
+'''@app.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, '_database', None)
     if db is not None:
-        db.close()
+        db.close()'''
 
 
 def init_db():
@@ -61,7 +62,6 @@ def connect_to_cloudsql():
 
         print("trying to connect to {}".format(CLOUDSQL_CONNECTION_NAME), file=sys.stderr)
 
-
         cloudsql_unix_socket = os.path.join(
             '/cloudsql', CLOUDSQL_CONNECTION_NAME)
 
@@ -82,9 +82,11 @@ def connect_to_cloudsql():
 
     return db
 
+
 @app.route('/')
 def index():
     return "Hello, World (lets see how long a change takes III)!"
+
 
 @app.route('/databases')
 def showDatabases():
@@ -97,14 +99,30 @@ def showDatabases():
 
     res = ""
     for r in cursor.fetchall():
-        res+= ('{}\n'.format(r[0]))
+        res += ('{}\n'.format(r[0]))
 
     response = make_response(res)
     response.headers['Content-Type'] = 'text/json'
 
     return response
 
+
+@app.route('/index.html', methods=['POST'])
+def create_user():
+    name = request.form['name_field']
+    uni = request.form['uni_field']
+    password = request.form['password_field']
+    school = request.form['school_field']
+    year = request.form['year_field']
+    interests = request.form['interests_field']
+    user = User(uni, name, year, interests, False, school, password)
+    #need to take in whether user needs swipes
+    #store in database
+
+    if(user.needsSwipes == False):
+        print(user.uni + user.name + user.schoolYear + user.interests + user.schoolName + user.password)
+
+    return redirect(url_for('static', filename='listform/index.html'))
+
 if __name__ == '__main__':
     app.run(debug=True)
-
-
