@@ -1,9 +1,17 @@
 {% extends "base.html" %}
 {% block title %} genNYC {% endblock %}
 {% block body %}
-    <h1>genNYC</h1>
-    <p>Welcome to a new experience.</p>
-    <a href="/login"><button class="launch-button">Login</button></a>
-    <a href="/register"><button class="launch-button">Register</button></a>
-
+<main class="mdl-layout__content panel-wrapper">
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col panel-main">
+      <h1 class='title'>genNYC</h1>
+      <p class='subtitle'>explore your city</p>
+      <p>Find events in your community tailored for you</p>
+      <div class="init-buttons">
+        <a href="/login"><button class="login mdl-button mdl-js-button">Login</button></a>
+        <a href="/register"><button class="signin mdl-button mdl-js-button">Sign Up</button></a>
+      </div>
+    </div>
+  </div>
+</main>
 {% endblock %}

@@ -1,22 +1,32 @@
 {% extends "base.html" %}
 {% block title %}Login{% endblock %}
 {% block body %}
-<h2>Login</h2>
 
-<div>
+<main class="mdl-layout__content panel-wrapper">
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col panel">
+      <div class="modal">
+        <h2>Login</h2>
+        <form action="#" method="post" style="width:80%;margin-left:auto;margin-right:auto;">
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" value="{{
+              request.form.username }}" id="username" required>
+              <label class="mdl-textfield__label" for="username">Username</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+              <input class="mdl-textfield__input" type="password"  name="password" value="{{
+                request.form.password }}" id="password" required>
+                <label class="mdl-textfield__label" for="password">Password</label>
+              </div>
+              <input class="mdl-button mdl-js-button" type="submit" value="Login">
+            </form>
+            {% if error %}
+            <p class="error"><strong>Error:</strong> {{ error }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </main>
 
-  <form action="" method="post" style="width:80%;margin-left:auto;margin-right:auto;">
-    <input type="text" placeholder="Username" name="username" value="{{
-      request.form.username }}" required>
-     <input type="password" placeholder="Password" name="password" value="{{
-      request.form.password }}" required>
-    <input class="btn btn-default" type="submit" value="Login">
-  </form>
-  {% if error %}
-    <p class="error"><strong>Error:</strong> {{ error }}
-  {% endif %}
 
-</div>
-
-
-{% endblock %}
+    {% endblock %}

@@ -9,6 +9,12 @@ import recommender
 
 from flask import Flask, render_template, redirect, url_for, request, make_response
 app = Flask(__name__)
+
+# === Configure sass for app
+from flask_scss import Scss
+Scss(app, static_dir='code/static', asset_dir='code/static')
+
+# === APP CONFIGURATIONS
 app.config['SECRET_KEY'] = 'secretkey123984392032'
 
 import os
@@ -30,7 +36,8 @@ CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 # CLOUDSQL_USER = "kayvon"
 # CLOUDSQL_PASSWORD = "kayvon"
 
-DB_HOST_DEV = '35.193.223.145'
+# DB_HOST_DEV = '35.193.223.145'
+DB_HOST_DEV = "127.0.0.1"
 
 # ENV = ''
 # if os.environ.get('BRANCH') != 'master':
@@ -64,7 +71,7 @@ def connect_to_cloudsql():
 
     else:
         db = MySQLdb.connect(
-            host=DB_HOST_DEV, user='kayvon', passwd='kayvon')
+            host=DB_HOST_DEV, user='kayvon', passwd='kayvon', db='Dev', port=3306)
 
     return db
 
@@ -106,8 +113,8 @@ def insert_new_user(user):
     cursor = db.cursor()
 
     query = "INSERT INTO "+ ENV_DB + ".Users(username, password, fname, lname, dob, date_joined, timezone, email) VALUES('{}', '{}', {}, {}, {}, {}, {}, {})".format(
-            user.username, 
-            user.password, 
+            user.username,
+            user.password,
             "'" + user.fname + "'" if user.fname else 'NULL',
             "'" + user.lname + "'" if user.lname else 'NULL',
             "'" + user.dob + "'" if user.dob else 'NULL',
@@ -139,7 +146,7 @@ def register():
     error = None
     if request.method == 'POST':
         try:
-            new_user = User(request.form['username'], 
+            new_user = User(request.form['username'],
                             request.form['password'],
                             request.form['email'],
                             request.form['fname'],

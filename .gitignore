@@ -5,3 +5,4 @@ lib/*
 log.md
 setup.cfg
 circle.yml
+cloud_sql_proxy
