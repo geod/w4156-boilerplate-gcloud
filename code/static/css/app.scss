@@ -5,6 +5,7 @@
 $GENBLUE: #0097c7cc;
 $GENBLUE-DARK: #0D546B;
 $GENBLACK: rgba(0, 0, 0, 0.8);
+$GENWHITE-OFF: #f1f1f1;
 
 body, html {
   height: 100%;
@@ -38,7 +39,19 @@ nav {
   background-color: $GENBLUE-DARK;
 
   .brand-logo {
+    font-family: 'Allerta Stencil', Helvetica, sans-serif;
     margin-left: 1rem;
+  }
+}
+
+// Container override for main webapp pages
+.container.app-main {
+  height: 100%;
+  width: 100%;
+
+  .mdl-page {
+    height: 100%;
+    width: 100%;
   }
 }
 
@@ -65,6 +78,11 @@ form {
   }
 }
 
+.mdl-page {
+  background: $GENWHITE-OFF;
+  color: #000;
+}
+
 // Home page panel
 .panel-wrapper {
   // overflow: hidden !important;
@@ -81,7 +99,7 @@ form {
 
     .title {
       color: white;
-      font-family: 'Allerta Stencil', serif;
+      font-family: 'Allerta Stencil', Helvetica, sans-serif;
       font-size: 6rem;
     }
 

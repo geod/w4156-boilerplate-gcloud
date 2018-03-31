@@ -9,10 +9,7 @@ import recommender
 
 from flask import Flask, render_template, redirect, url_for, request, make_response
 app = Flask(__name__)
-
-# === Configure sass for app
-from flask_scss import Scss
-Scss(app, static_dir='code/static', asset_dir='code/static')
+app.debug = True
 
 # === APP CONFIGURATIONS
 app.config['SECRET_KEY'] = 'secretkey123984392032'
@@ -171,6 +168,7 @@ def login():
     error = None
     if request.method == 'POST':
         test_user = User(request.form['username'], request.form['password'])
+        print(test_user)
 
         if authenticate_user(test_user):
             login_user(test_user)

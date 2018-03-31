@@ -37,6 +37,9 @@
           <li><a href="badges.html">Components</a></li>
           <li><a href="collapsible.html">Javascript</a></li>
           <li><a href="mobile.html">Mobile</a></li>
+          {% if current_user.is_authenticated %}
+          <li><a href="logout">Logout</a></li>
+          {% endif %}
         </ul>
       </div>
     </nav>
@@ -46,11 +49,18 @@
       <li><a href="badges.html">Components</a></li>
       <li><a href="collapsible.html">Javascript</a></li>
       <li><a href="mobile.html">Mobile</a></li>
+      {% if current_user.is_authenticated %}
+      <li><a href="logout">Logout</a></li>
+      {% endif %}
     </ul>
   </header>
 
   <!-- Main content -->
+  {% if request.path != "/" and request.path != "/login" and request.path != "/register" %}
+  <div class="container app-main">
+  {% else %}
   <div class="container">
+  {% endif %}
     {% block body %}{% endblock %}
   </div>
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>

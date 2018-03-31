@@ -28,7 +28,18 @@ nav {
 }
 
 nav .brand-logo {
+  font-family: 'Allerta Stencil', Helvetica, sans-serif;
   margin-left: 1rem;
+}
+
+.container.app-main {
+  height: 100%;
+  width: 100%;
+}
+
+.container.app-main .mdl-page {
+  height: 100%;
+  width: 100%;
 }
 
 form {
@@ -53,6 +64,11 @@ form {
   color: rgba(0, 0, 0, 0.8) !important;
 }
 
+.mdl-page {
+  background: #f1f1f1;
+  color: #000;
+}
+
 .panel-wrapper .panel, .panel-wrapper .panel-main {
   align-items: center;
   justify-content: center;
@@ -66,7 +82,7 @@ form {
 
 .panel-wrapper .panel .title, .panel-wrapper .panel-main .title {
   color: white;
-  font-family: 'Allerta Stencil', serif;
+  font-family: 'Allerta Stencil', Helvetica, sans-serif;
   font-size: 6rem;
 }
 
