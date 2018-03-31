@@ -92,7 +92,7 @@ def authenticate_user(user):
     result = query_for_user(user)
     if result is None:
         return False
-    elif result[2] == user.password:
+    elif result[1] == user.password:
         return True
     return False
 
@@ -193,17 +193,22 @@ def logout():
 def home():
     if not user_is_tagged(current_user):
         return redirect('survey')
-    return render_template("results.html", MOCK_EVENTS=MOCK_EVENTS)
+    return redirect(url_for('recommend'))
+    # return render_template("results.html", MOCK_EVENTS=MOCK_EVENTS)
 
 
 @app.route('/recommendations')
 @login_required
 def recommend():
     rec = recommender.Recommend(current_user)
-    interests = rec.get_user_interests()
+    # interests = rec.get_user_interests()
     events = rec.get_events()
 
-    return render_template("recommendations.html", survey_results=interests, events=events)
+    interests = set()
+    for e in events:
+        interests.add(e[6])
+
+    return render_template("recommendations.html", survey_results=list(interests), events=events)
 
 
 def fill_user_tags(user, survey):
@@ -221,7 +226,7 @@ def fill_user_tags(user, survey):
                         ]:
 
         for item in items:
-            query = "INSERT INTO " + ENV_DB + ".UserTags(username, tag, category) VALUES ('{}', '{}', '{}')".format(current_user.username, item, cname)
+            query = "INSERT INTO " + ENV_DB + ".UserTags(username, tag, category) VALUES ('{}', '{}', '{}')".format(user.username, item, cname)
 
             cursor.execute(query)
 

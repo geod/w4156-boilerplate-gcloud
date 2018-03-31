@@ -3,17 +3,23 @@
 import MySQLdb
 import glob, os
 
-db = MySQLdb.connect(host="gennyc-dev:us-central1:mysqldev",
-                     user="root",
-                     passwd="root",
+db = MySQLdb.connect(host="35.193.223.145",
+                     user="kayvon",
+                     passwd="kayvon",
                      db="Dev")
+
+print "Connected!"
 
 cursor = db.cursor()
 
 os.chdir('../')
-for file in ('Events.csv', 'Locations.csv', 'Users.csv', 'UserTags.csv', 'EventTags.csv', 'Attends.csv'):
+for file in ('Events.csv', 'Users.csv', 'UserTags.csv', 'EventTags.csv'):
     table_name = file[:-4]
+
+    print "Entering " + file + "..."
+
     cursor.execute("DELETE FROM " + table_name)
+    cursor.execute("ALTER TABLE " + table_name + "AUTOINCREMENT = 1")
     with open(file, 'r') as fp:
         columns = fp.read().strip()
         for line in fp:
@@ -26,5 +32,7 @@ for file in ('Events.csv', 'Locations.csv', 'Users.csv', 'UserTags.csv', 'EventT
             cursor.execute("INSERT INTO {}({}) VALUES ({})".format(
                 table_name, columns, ",".join(processed_line)))
     cursor.commit()
+
+print "Finished."
 
 db.close()

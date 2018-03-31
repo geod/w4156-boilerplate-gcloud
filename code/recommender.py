@@ -39,11 +39,13 @@ class Recommend:
         cursor = db.cursor()
 
         query = """
-                SELECT DISTINCT E.eid 
-                FROM {}.EventTags AS E, {}.UserTags AS U 
+                SELECT DISTINCT E.eid, E1.ename, E1.start_date, E1.end_date, E1.num_cap, E1.num_attending, E.tag
+                FROM {}.EventTags AS E, {}.UserTags AS U, {}.Events as E1
                 WHERE U.username='{}' AND
-                    E.tag = U.tag
+                    E.tag = U.tag AND
+                    E1.eid = E.eid
                 """.format(
+                        ENV_DB,
                         ENV_DB,
                         ENV_DB,
                         self.user.username
@@ -53,7 +55,7 @@ class Recommend:
         data = cursor.fetchall()
         db.close()
 
-        return sorted([i[0] for i in data])
+        return sorted([i for i in data])
 
         # mock_events = {
         #     "wine": ["Wine Tastery", "Vino Wine"],
