@@ -1,3 +1,4 @@
+from listing import Listing
 
 class User:
 

@@ -1,7 +1,6 @@
-from datetime import date, datetime, timedelta
+#from datetime import date, datetime, timedelta
 
 class Listing:
-    expiryTime = timedelta(year=2018)
 
     def __init__(self, expiryTime, uni, place):
         self.expiryTime = expiryTime

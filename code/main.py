@@ -1,15 +1,14 @@
 from __future__ import print_function
 from google.appengine.ext import vendor
 import os
-
 vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
 import os
 import MySQLdb
 #import sqlite3
 import sys
-from user import User
 
 from flask import Flask, make_response, request, url_for, redirect
+from user import *
 
 app = Flask(__name__, static_url_path='')
 
@@ -123,6 +122,14 @@ def create_user():
         print(user.uni + user.name + user.schoolYear + user.interests + user.schoolName + user.password)
 
     return redirect(url_for('static', filename='listform/index.html'))
+
+@app.route('/listform/index.html', methods=['POST'])
+def create_listing():
+    cafeteria = request.form['Cafeteria']
+
+    print(cafeteria)
+
+    return redirect(url_for('static', filename='listing/index.html'))
 
 if __name__ == '__main__':
     app.run(debug=True)
