@@ -162,7 +162,7 @@ def register():
 
         if (register_user(new_user)):
             login_user(new_user)
-            send_mail(new_user.email, new_user.username)
+            send_email(new_user.email, new_user.username)
             return redirect(url_for('home'))
         else:
             error = 'Username taken.'
@@ -297,16 +297,13 @@ def send_email(address, username):
         'genNYC Support <support@{}.appspotmail.com>'.format(
             app_identity.get_application_id()))
     subject = 'Confirm your registration'
-    body = """Thank you for creating an account!
-           Please confirm your email address by clicking on the link below:
-           {}
-           """.format(confirmation_url)
+    body = "Thank you for creating an account!\n\nPlease confirm your email address by clicking on the link below:\n\n{}".format(confirmation_url)
     print(sender_address, address, subject, body)
     mail.send_mail(sender_address, address, subject, body)
 
 @app.route('/email/<address>/<username>')
 def email(address, username):
-    send_mail(address, username)
+    send_email(address, username)
     return redirect(url_for('home'))
 
 
