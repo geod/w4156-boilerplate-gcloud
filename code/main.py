@@ -290,7 +290,7 @@ def create_event():
 def email(address):
     confirmation_url = ''
     sender_address = (
-        'genNYC Support <{}@appspot.gserviceaccount.com>'.format(
+        'genNYC Support <support@{}.appspotmail.com>'.format(
             app_identity.get_application_id()))
     subject = 'Confirm your registration'
     body = """Thank you for creating an account!
