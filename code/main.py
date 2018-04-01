@@ -1,7 +1,7 @@
 from __future__ import print_function
 from google.appengine.ext import vendor
 import os
-from user import User
+from user import *
 
 vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
 from flask import Flask, make_response, request, url_for, redirect
