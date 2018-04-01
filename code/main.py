@@ -108,12 +108,15 @@ def showDatabases():
 
 @app.route('/index.html', methods=['POST'])
 def create_user():
-    name = request.form['name_field']
+    firstname = request.form['first_name_field']
+    lastname = request.form['last_name_field']
     uni = request.form['uni_field']
     password = request.form['password_field']
     school = request.form['school_field']
     year = request.form['year_field']
     interests = request.form['interests_field']
+
+    name = firstname + ' ' + lastname
     user = User(uni, name, year, interests, False, school, password)
     #need to take in whether user needs swipes
     #store in database
