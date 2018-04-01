@@ -1,7 +1,7 @@
+print('running')
+
 import logging
 import recommender
-
-
 
 try:
     from google.appengine.api import mail
@@ -23,6 +23,10 @@ from surveys import UserInterests
 from event import Event, EventForm
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 from flask_restful import Resource, Api
+
+
+import time
+import atexit
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -54,9 +58,7 @@ ENV_DB = 'Dev'
 MOCK_EVENTS = [Event('Rollerblading Tour of Central Park', 2018, 3, 20, 'Join this fun NYC tour and get some exercise!'),
                 Event('Rollerblading Tour of Central Park Round 2', 2018, 3, 22, 'Join this fun NYC tour and get some exercise again!')]
 
-
 api = Api(app)
-
 randomKey= '472389hewhuw873dsa4245193ej23yfehw'
 
 
@@ -316,7 +318,7 @@ def create_event():
 def send_email(address, username):
     confirmation_url = 'gennyc-dev.appspot.com/emailConf/{}/{}'.format(randomKey, username)
     sender_address = (
-        'genNYC Support <support@{}.appspotmail.com>'.format(
+        'genNYC <support@{}.appspotmail.com>'.format(
             app_identity.get_application_id()))
     subject = 'Confirm your registration'
     body = "Thank you for creating an account!\n\nPlease confirm your email address by clicking on the link below:\n\n{}".format(confirmation_url)
@@ -335,8 +337,46 @@ class ConfirmRegistration(Resource):
 
 api.add_resource(ConfirmRegistration, '/api/emailConf/<string:username>')
 
-@app.route('/emailConf/'+ randomKey+'/<string:username>')
-def confirm(username):
+class TestJob(Resource):
+    def get(self):
+        print('job run')
+        return {'test': 'success' }
+api.add_resource(TestJob, '/jobs/test')
+
+def send_events_email(address, email_body):
+    sender_address = (
+        'genNYC events <curator@{}.appspotmail.com>'.format(
+            app_identity.get_application_id()))
+    subject = 'Weekly event recommendations!'
+    print(sender_address, address, subject, email_body)
+    mail.send_mail(sender_address, address, subject, email_body)
+
+class MailBlastJob(Resource):
+    def get(self):
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute("SELECT username, password, email, fname, lname, dob, timezone, email_verified FROM " + ENV_DB + ".Users")
+        rows = cursor.fetchall()
+        for row in rows:
+            user = User(*row)
+            rec = recommender.Recommend(user)
+            events = rec.get_events()
+            event_string = ''
+            for eid, ename, start_date, end_date, num_cap, num_attending, tag in events:
+                event_string += "{}, {} to {}, {}/{} filled\n\n".format(ename, start_date, end_date, num_attending, num_cap)
+            print(event_string)
+            body = 'Hey {},\n\nHere are some upcoming events we think you might be interested in:\n\n\n{}'.format(user.fname, event_string)
+            print(user.email)
+            send_events_email(user.email, body)
+
+        return {'blast': 'success'}
+api.add_resource(MailBlastJob, '/mail/weekly/events')
+
+@app.route('/emailConf/<string:key>/<string:username>')
+def confirm(key, username):
+    if not key == randomKey:
+        return redirect(url_for('login'))
+
     db = connect_to_cloudsql()
     cursor = db.cursor()
     cursor.execute("UPDATE " + ENV_DB + ".Users SET email_verified=TRUE WHERE username='" + username + "'")

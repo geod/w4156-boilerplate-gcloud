@@ -14,7 +14,7 @@ jobs:
           keys:
             - venv-{{ checksum "requirements.txt" }}
             - venv- # used if checksum fails
-      
+
       - run:
           name: PATH update
           command: |
@@ -28,13 +28,13 @@ jobs:
             echo $PYTHONPATH
             apt install -y unzip libmysqlclient-dev google-cloud-sdk-app-engine-python
             apt-get install google-cloud-sdk-app-engine-python-extras
-            
+
             pip install virtualenv
             virtualenv venv
             . venv/bin/activate
 
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-                echo $CLIENT_SECRET_UAT | base64 -d > ~/client-secret.json  
+                echo $CLIENT_SECRET_UAT | base64 -d > ~/client-secret.json
             else
                 echo $CLIENT_SECRET_DEV | base64 -d > ~/client-secret.json
             fi
@@ -42,20 +42,20 @@ jobs:
             mkdir -p lib/
             pip install -r requirements.txt -t lib/
             pip install -r requirements.txt
-            gcloud auth activate-service-account --key-file ~/client-secret.json 
+            gcloud auth activate-service-account --key-file ~/client-secret.json
 
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then 
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
                 gcloud config set project $GCLOUD_PROJECT_ID_UAT
             else
                 gcloud config set project $GCLOUD_PROJECT_ID_DEV
             fi
 
       - run:
-          name: tests 
+          name: tests
           command: |
             . venv/bin/activate
-            python tests/test_main.py 
-      
+            python tests/test_main.py
+
       - save_cache:
           key: venv-{{ checksum "requirements.txt" }}
           paths: "venv"
@@ -82,7 +82,7 @@ jobs:
             pip install virtualenv
             virtualenv venv
             . venv/bin/activate
-            
+
             mkdir -p lib/
             pip install -t lib/ -r requirements.txt
             pip install -r requirements.txt
@@ -95,7 +95,7 @@ jobs:
           command: |
             echo $CLIENT_SECRET_DEV | base64 -d > ~/client-secret.json
             gcloud config set project $GCLOUD_PROJECT_ID_DEV
-            gcloud auth activate-service-account --key-file=../client-secret.json  
+            gcloud auth activate-service-account --key-file=../client-secret.json
       - run:
           name: Print Google Cloud settings
           command: |
@@ -105,7 +105,7 @@ jobs:
           name: Deploy app to DEV Google App Engine
           command: |
             gcloud config set project $GCLOUD_PROJECT_ID_DEV
-            gcloud -q app deploy app.yaml --promote --version=1
+            gcloud -q app deploy cron.yaml app.yaml --promote --version=1
 
   deploy-uat:
     docker:
@@ -114,7 +114,7 @@ jobs:
     working_directory: ~/gennyc
     steps:
       - checkout
-      
+
       - restore_cache:
           keys:
             - deploy-dep-{{ checksum "requirements.txt" }}
@@ -143,7 +143,7 @@ jobs:
           command: |
             echo $CLIENT_SECRET_UAT | base64 -d > ~/client-secret.json
             gcloud config set project $GCLOUD_PROJECT_ID_UAT
-            gcloud auth activate-service-account --key-file=../client-secret.json  
+            gcloud auth activate-service-account --key-file=../client-secret.json
       - run:
           name: Deploy app to UAT Google App Engine
           command: |
@@ -162,7 +162,7 @@ jobs:
           keys:
             - deploy-dep-{{ checksum "requirements.txt" }}
             - deploy-dep-
-              
+
       - run:
           name: Install dependencies
           command: |
@@ -172,7 +172,7 @@ jobs:
             pip install virtualenv
             virtualenv venv
             . venv/bin/activate
-            
+
             mkdir -p lib/
             pip install -t lib/ -r requirements.txt
             pip install -r requirements.txt
@@ -187,7 +187,7 @@ jobs:
           command: |
             echo $CLIENT_SECRET_PROD | base64 -d > ~/client-secret.json
             gcloud config set project $GCLOUD_PROJECT_ID_PROD
-            gcloud auth activate-service-account --key-file=../client-secret.json  
+            gcloud auth activate-service-account --key-file=../client-secret.json
 
       - run:
           name: Deploy app to PRODUCTION Google App Engine

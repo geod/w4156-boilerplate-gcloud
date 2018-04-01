@@ -40,7 +40,7 @@ class UserInterests(Form):
                                           choices=[('indoors', 'Indoors'), ('outdoors', 'Outdoors'),
                                                    ('water', 'On the Water'), ('any', 'Anywhere!')],
                                           validators=[validators.InputRequired()])
-    fitness = fields.SelectMultipleField('What sports do you like?',
+    fitness = fields.SelectMultipleField('What do you like to do for exercise?',
                                          choices=[('dance', 'Dance'), ('pilates', 'Pilates'),
                                                    ('boxing', 'Boxing'), ('yoga', 'Yoga'),
                                                    ('spin', 'Spin'), ('sculpting', 'Body Sculpting'),
@@ -57,9 +57,3 @@ class UserInterests(Form):
                                                 ('karaoke', 'Karaoke'), ('other_music', 'Other'),
                                                 ('none_music', 'Not interested')],
                                        validators=[validators.InputRequired()])
-
-
-
-
-
-
