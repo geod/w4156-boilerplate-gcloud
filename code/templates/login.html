@@ -1,22 +1,27 @@
 {% extends "base.html" %}
 {% block title %}Login{% endblock %}
 {% block body %}
-<h2>Login</h2>
 
-<div>
+<div class="mdl-modal row">
+  <h2>Login</h2>
+  <form action="" class="col s12" method="post">
+    <div class="input-field col s12">
+      <input type="text" value="{{
+        request.form.username }}" name="username" id="username" required>
+        <label for="username">Username</label>
+      </div>
+      <div class="input-field col s12">
+        <input type="password"  name="password" value="{{
+          request.form.password }}" id="password" required>
+          <label for="password">Password</label>
+        </div>
+        <input class="btn waves-effect waves-light" type="submit" value="Login">
+      </form>
+      {% if error %}
+      <p class="error"><strong>Error:</strong> {{ error }}</p>
+      {% endif %}
+    </div>
+  </div>
 
-  <form action="" method="post" style="width:80%;margin-left:auto;margin-right:auto;">
-    <input type="text" placeholder="Username" name="username" value="{{
-      request.form.username }}" required>
-     <input type="password" placeholder="Password" name="password" value="{{
-      request.form.password }}" required>
-    <input class="btn btn-default" type="submit" value="Login">
-  </form>
-  {% if error %}
-    <p class="error"><strong>Error:</strong> {{ error }}
-  {% endif %}
 
-</div>
-
-
-{% endblock %}
+  {% endblock %}

@@ -12,3 +12,4 @@ google-cloud
 flask-login==0.2.7
 flask-wtf
 wtforms
+flask-restful
