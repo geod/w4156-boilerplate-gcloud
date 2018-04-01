@@ -2,7 +2,7 @@ import json
 
 if __name__ == "__main__":
     fp = open("result.json", "r")
-    wp = open("result.txt", "w")
+    wp = open("textrank_output.txt", "w")
 
     for line in fp:
         wd = json.loads(line.strip())

@@ -2,7 +2,7 @@
 
 touch tmp_test.json
 echo -n "{\"id\": \"1\", \"text\": \"" >> tmp_test.json
-cat $1 >> tmp_test.json
+cat textrank_input.txt >> tmp_test.json
 echo "\"}" >> tmp_test.json
 
 python3 stage1.py tmp_test.json > out1.json
