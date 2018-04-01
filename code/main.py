@@ -82,7 +82,7 @@ def create_user():
     user = User(uni, name, year, interests, False, school, password)
     #need to take in whether user needs swipes
 
-    if(user.needsSwipes == False):
+    if not user.needsSwipes:
         print(user.uni + user.name + user.schoolYear + user.interests + user.schoolName + user.password)
 
     #store in database
