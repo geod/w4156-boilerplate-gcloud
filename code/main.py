@@ -356,11 +356,11 @@ def confirm(key, username):
     return redirect(url_for('login'))
 
 @app.route('/jobs/test')
-def test_job:
+def test_job():
     print ('testing cron')
 
 @app.route('/mail/weekly/events')
-def email_blast_job:
+def email_blast_job():
     pass
 
 
