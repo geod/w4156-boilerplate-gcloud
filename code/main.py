@@ -57,6 +57,8 @@ MOCK_EVENTS = [Event('Rollerblading Tour of Central Park', 2018, 3, 20, 'Join th
 
 api = Api(app)
 
+randomKey= '472389hewhuw873dsa4245193ej23yfehw'
+
 
 def connect_to_cloudsql():
     # When deployed to App Engine, the `SERVER_SOFTWARE` environment variable
@@ -103,11 +105,12 @@ def authenticate_user(user):
 def load_user(user_name):
     db = connect_to_cloudsql()
     cursor = db.cursor()
-    cursor.execute("SELECT username, password, email, fname, lname, dob, timezone FROM " + ENV_DB + ".Users WHERE username='" + user_name + "'")
+    cursor.execute("SELECT username, password, email, fname, lname, dob, timezone, email_verified FROM " + ENV_DB + ".Users WHERE username='" + user_name + "'")
     data = cursor.fetchone()
     db.close()
     if data is None:
         return None
+    print(data, User(*data))
     return User(*data)
 
 
@@ -115,7 +118,7 @@ def insert_new_user(user):
     db = connect_to_cloudsql()
     cursor = db.cursor()
 
-    query = "INSERT INTO "+ ENV_DB + ".Users(username, password, fname, lname, dob, date_joined, timezone, email) VALUES('{}', '{}', {}, {}, {}, {}, {}, {})".format(
+    query = "INSERT INTO "+ ENV_DB + ".Users(username, password, fname, lname, dob, date_joined, timezone, email, email_verified) VALUES('{}', '{}', {}, {}, {}, {}, {}, {}, {})".format(
             user.username,
             user.password,
             "'" + user.fname + "'" if user.fname else 'NULL',
@@ -123,7 +126,8 @@ def insert_new_user(user):
             "'" + user.dob + "'" if user.dob else 'NULL',
             "'" + str(user.join_date) + "'" if user.join_date else 'NULL',
             "'" + user.timezone + "'" if user.timezone else 'NULL',
-            "'" + user.email + "'" if user.email else 'NULL')
+            "'" + user.email + "'" if user.email else 'NULL',
+            "TRUE" if user.email_verified else "FALSE")
 
     cursor.execute(query)
     db.commit()
@@ -155,8 +159,8 @@ def register():
                             request.form['fname'],
                             request.form['lname'],
                             request.form['dob'],
-                            request.form['timezone']
-                            )
+                            request.form['timezone'],
+                            False)
         except ValueError:
             error = 'Username or Password is empty.'
 
@@ -169,6 +173,11 @@ def register():
 
     return render_template('register.html', error = error)
 
+@app.route('/verify', methods=['GET','POST'])
+def verify():
+    if (request.method == 'POST'):
+        send_email(current_user.email, current_user.username)
+    return render_template('verify_email.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -196,6 +205,9 @@ def logout():
 @app.route('/home')
 @login_required
 def home():
+    print(current_user.email_verified)
+    if not current_user.email_verified:
+        return redirect('verify')
     if not user_is_tagged(current_user):
         return redirect('survey')
     return redirect(url_for('recommend'))
@@ -292,7 +304,7 @@ def create_event():
     return render_template('event_form.html', title='New Event', form=form)
 
 def send_email(address, username):
-    confirmation_url = 'gennyc-dev.appspot.com/api/emailConf/{}'.format(username)
+    confirmation_url = 'gennyc-dev.appspot.com/emailConf/{}/{}'.format(randomKey, username)
     sender_address = (
         'genNYC Support <support@{}.appspotmail.com>'.format(
             app_identity.get_application_id()))
@@ -312,6 +324,18 @@ class ConfirmRegistration(Resource):
         return {'username': username }
 
 api.add_resource(ConfirmRegistration, '/api/emailConf/<string:username>')
+
+@app.route('/emailConf/'+ randomKey+'/<string:username>')
+def confirm(username):
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute("UPDATE " + ENV_DB + ".Users SET email_verified=TRUE WHERE username='" + username + "'")
+    db.commit()
+    db.close()
+    logout_user()
+
+    return redirect(url_for('login'))
+
 
 
 @app.errorhandler(401)
