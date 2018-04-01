@@ -337,6 +337,18 @@ class ConfirmRegistration(Resource):
 
 api.add_resource(ConfirmRegistration, '/api/emailConf/<string:username>')
 
+class TestJob(Resource):
+    def get(self):
+        print('job run')
+        return {'test': success }
+api.add_resource(TestJob, '/jobs/test')
+
+class MailBlastJob(Resource):
+    def get(self):
+        print('mail job run')
+        return {'test': success }
+api.add_resource(MailBlastJob, '/mail/weekly/events')
+
 @app.route('/emailConf/<string:key>/<string:username>')
 def confirm(key, username):
     if not key == randomKey:
@@ -350,14 +362,6 @@ def confirm(key, username):
     logout_user()
 
     return redirect(url_for('login'))
-
-@app.route('/jobs/test')
-def test_job():
-    print ('testing cron')
-
-@app.route('/mail/weekly/events')
-def email_blast_job():
-    pass
 
 
 
