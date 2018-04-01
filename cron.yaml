@@ -1,0 +1,8 @@
+cron:
+- description: "Sunday event recommendation blast"
+  url: /mail/weekly/events
+  schedule: every monday 09:00
+
+- description: "test job"
+  url: /jobs/test
+  schedule: every 2 minutes
