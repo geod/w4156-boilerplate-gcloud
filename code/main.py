@@ -1,14 +1,13 @@
 import logging
 import recommender
 
-#from google.appengine.api import mail
-#from google.appengine.api import app_identity
 
-#try:
-# from google.appengine.ext import vendor
-# vendor.add('lib')
-#except ImportError:
-#    logging.warning('google app engine unable to be imported')
+
+try:
+    from google.appengine.api import mail
+    from google.appengine.api import app_identity
+except ImportError:
+    logging.warning('google app engine unable to be imported')
 
 from flask import Flask, render_template, redirect, url_for, request, make_response
 app = Flask(__name__)
