@@ -205,7 +205,6 @@ def logout():
 @app.route('/home')
 @login_required
 def home():
-    print(current_user.email_verified)
     if not current_user.email_verified:
         return redirect('verify')
     if not user_is_tagged(current_user):
@@ -221,6 +220,10 @@ def group():
 @app.route('/recommendations')
 @login_required
 def recommend():
+    if not current_user.email_verified:
+        return redirect('verify')
+    if not user_is_tagged(current_user):
+        return redirect('survey')
     rec = recommender.Recommend(current_user)
     # interests = rec.get_user_interests()
     events = rec.get_events()
@@ -275,6 +278,8 @@ def user_is_tagged(user):
 @app.route('/survey', methods=['GET', 'POST'])
 @login_required
 def survey():
+    if not current_user.email_verified:
+        return redirect('verify')
     form = UserInterests(request.form)
 
     if request.method == 'POST' and form.validate():
@@ -291,6 +296,11 @@ def survey():
 @app.route('/new_event', methods=['GET', 'POST'])
 @login_required
 def create_event():
+    if not current_user.email_verified:
+        return redirect('verify')
+    if not user_is_tagged(current_user):
+        return redirect('survey')
+
     form = EventForm(request.form)
 
     if request.method == 'POST' and form.validate():
