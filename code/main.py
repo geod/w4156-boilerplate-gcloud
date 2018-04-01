@@ -1,6 +1,9 @@
 import logging
 import recommender
 
+from google.appengine.api import mail
+from google.appengine.api import app_identity
+
 #try:
 # from google.appengine.ext import vendor
 # vendor.add('lib')
@@ -194,6 +197,10 @@ def home():
     return redirect(url_for('recommend'))
     # return render_template("results.html", MOCK_EVENTS=MOCK_EVENTS)
 
+@app.route('/group')
+def group():
+    return render_template("group.html")
+
 
 @app.route('/recommendations')
 @login_required
@@ -279,6 +286,21 @@ def create_event():
         return redirect(url_for('home'))
 
     return render_template('event_form.html', title='New Event', form=form)
+
+@app.route('/email/<address>')
+def email(address):
+    confirmation_url = ''
+    sender_address = (
+        'genNYC Support <{}@appspot.gserviceaccount.com>'.format(
+            app_identity.get_application_id()))
+    subject = 'Confirm your registration'
+    body = """Thank you for creating an account!
+           Please confirm your email address by clicking on the link below:
+           {}
+           """.format(confirmation_url)
+    print(sender_address, address, subject, body)
+    mail.send_mail(sender_address, address, subject, body)
+    return redirect(url_for('home'))
 
 
 
