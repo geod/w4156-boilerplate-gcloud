@@ -4,6 +4,6 @@ cron:
   schedule: every sunday 17:30
   timezone: US/Eastern
 
-- description: "test job"
-  url: /jobs/test
-  schedule: every 2 minutes
+# - description: "test job"
+#   url: /jobs/test
+#   schedule: every 2 minutes

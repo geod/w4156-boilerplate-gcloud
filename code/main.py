@@ -340,7 +340,7 @@ api.add_resource(ConfirmRegistration, '/api/emailConf/<string:username>')
 class TestJob(Resource):
     def get(self):
         print('job run')
-        return {'test': success }
+        return {'test': 'success' }
 api.add_resource(TestJob, '/jobs/test')
 
 def send_events_email(address, email_body):
