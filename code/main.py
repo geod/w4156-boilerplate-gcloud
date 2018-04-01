@@ -343,10 +343,33 @@ class TestJob(Resource):
         return {'test': success }
 api.add_resource(TestJob, '/jobs/test')
 
+def send_events_email(address, email_body):
+    sender_address = (
+        'genNYC events <curator@{}.appspotmail.com>'.format(
+            app_identity.get_application_id()))
+    subject = 'Weekly event recommendations!'
+    print(sender_address, address, subject, email_body)
+    mail.send_mail(sender_address, address, subject, email_body)
+
 class MailBlastJob(Resource):
     def get(self):
-        print('mail job run')
-        return {'test': success }
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute("SELECT username, password, email, fname, lname, dob, timezone, email_verified FROM " + ENV_DB + ".Users")
+        rows = cursor.fetchall()
+        for row in rows:
+            user = User(*row)
+            rec = recommender.Recommend(user)
+            events = rec.get_events()
+            event_string = ''
+            for eid, ename, start_date, end_date, num_cap, num_attending, tag in events:
+                event_string += "{}, {} to {}, {}/{} filled\n\n".format(ename, start_date, end_date, num_attending, num_cap)
+            print(event_string)
+            body = 'Hey {},\n\nHere are some upcoming events we think you might be interested in:\n\n\n{}'.format(user.fname, event_string)
+            print(user.email)
+            send_events_email(user.email, body)
+
+        return {'blast': 'success'}
 api.add_resource(MailBlastJob, '/mail/weekly/events')
 
 @app.route('/emailConf/<string:key>/<string:username>')
