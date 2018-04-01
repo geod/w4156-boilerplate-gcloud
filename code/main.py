@@ -22,6 +22,7 @@ from user_class import User
 from surveys import UserInterests
 from event import Event, EventForm
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
+from flask_restful import Resource, Api
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -52,6 +53,9 @@ ENV_DB = 'Dev'
 
 MOCK_EVENTS = [Event('Rollerblading Tour of Central Park', 2018, 3, 20, 'Join this fun NYC tour and get some exercise!'),
                 Event('Rollerblading Tour of Central Park Round 2', 2018, 3, 22, 'Join this fun NYC tour and get some exercise again!')]
+
+
+api = Api(app)
 
 
 def connect_to_cloudsql():
@@ -158,6 +162,7 @@ def register():
 
         if (register_user(new_user)):
             login_user(new_user)
+            send_mail(new_user.email, new_user.username)
             return redirect(url_for('home'))
         else:
             error = 'Username taken.'
@@ -286,9 +291,8 @@ def create_event():
 
     return render_template('event_form.html', title='New Event', form=form)
 
-@app.route('/email/<address>')
-def email(address):
-    confirmation_url = ''
+def send_email(address, username):
+    confirmation_url = 'gennyc-dev.appspot.com/api/emailConf/{}'.format(username)
     sender_address = (
         'genNYC Support <support@{}.appspotmail.com>'.format(
             app_identity.get_application_id()))
@@ -299,9 +303,18 @@ def email(address):
            """.format(confirmation_url)
     print(sender_address, address, subject, body)
     mail.send_mail(sender_address, address, subject, body)
+
+@app.route('/email/<address>/<username>')
+def email(address, username):
+    send_mail(address, username)
     return redirect(url_for('home'))
 
 
+class ConfirmRegistration(Resource):
+    def get(self, username):
+        return {'username': username }
+
+api.add_resource(ConfirmRegistration, '/api/emailConf/<string:username>')
 
 
 @app.errorhandler(401)
