@@ -113,6 +113,26 @@ def create_listing():
 
     print(cafeteria)
 
+    #store in database
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute('use cuLunch')
+
+    query = "INSERT INTO listings VALUES ('%s', '%s', '%d', '%s')" % ('2018-04-20 19:00:05', 'cl3403', True, cafeteria)
+    #print('query generated')
+    #print(query)
+
+    try:
+        cursor.execute(query)
+        # commit the changes in the DB
+        db.commit()
+    except:
+        # rollback when an error occurs
+        db.rollback()
+
+    # disconnect from db after use
+    db.close()
+
     return redirect(url_for('static', filename='listings/index.html'))
 
 if __name__ == '__main__':
