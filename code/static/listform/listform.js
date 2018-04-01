@@ -4,6 +4,7 @@ $("#startbutton").click(function() {
 	}, 350);
 })
 
+
 $("#listing-button").click(function() {
-	window.location.href = "/code/static/listings/index.html"
+	window.location.href = "listings/index.html"
 })
