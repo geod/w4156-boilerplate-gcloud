@@ -1,8 +1,8 @@
 import logging
 import recommender
 
-from google.appengine.api import mail
-from google.appengine.api import app_identity
+#from google.appengine.api import mail
+#from google.appengine.api import app_identity
 
 #try:
 # from google.appengine.ext import vendor
