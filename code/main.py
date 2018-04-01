@@ -61,10 +61,6 @@ MOCK_EVENTS = [Event('Rollerblading Tour of Central Park', 2018, 3, 20, 'Join th
 api = Api(app)
 randomKey= '472389hewhuw873dsa4245193ej23yfehw'
 
-scheduler = BackgroundScheduler()
-scheduler.add_job(email_job, 'interval', seconds=1)
-scheduler.start()
-
 
 def connect_to_cloudsql():
     # When deployed to App Engine, the `SERVER_SOFTWARE` environment variable
