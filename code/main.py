@@ -1,66 +1,25 @@
 from __future__ import print_function
 from google.appengine.ext import vendor
 import os
+from user import User
+
 vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
-import os
-import MySQLdb
-#import sqlite3
-import sys
-
 from flask import Flask, make_response, request, url_for, redirect
-from user import *
-
-app = Flask(__name__, static_url_path='')
-
-# dynamodb = boto3.resource(
-#     'dynamodb',
-#     endpoint_url='http://localhost:8000',
-#     region_name='dummy_region',
-#     aws_access_key_id='dummy_access_key',
-#     aws_secret_access_key='dummy_secret_key',
-#     verify=False)
+import MySQLdb
 
 # These environment variables are configured in app.yaml.
 CLOUDSQL_CONNECTION_NAME = os.environ['CLOUDSQL_CONNECTION_NAME']
 CLOUDSQL_USER = os.environ.get('CLOUDSQL_USER')
 CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 
-LOCAL_DATABASE = 'cuLunch_main.db'
-SCHEMA_PATH = "../schemas/cuLunch_schema.sql"
-
-'''def get_db():
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._database = sqlite3.connect(LOCAL_DATABASE)
-    return db'''
-
-'''@app.teardown_appcontext
-def close_connection(exception):
-    db = getattr(g, '_database', None)
-    if db is not None:
-        db.close()'''
-
-
-def init_db():
-    with app.app_context():
-        db = get_db()
-        with app.open_resource(SCHEMA_PATH, mode='r') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
-
+app = Flask(__name__, static_url_path='')
 
 def connect_to_cloudsql():
     # When deployed to App Engine, the `SERVER_SOFTWARE` environment variable
     # will be set to 'Google App Engine/version'.
     if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
-        # this only runs in prod
-
         # Connect using the unix socket located at
         # /cloudsql/cloudsql-connection-name.
-        print("GOT here", file=sys.stderr)
-
-        print("trying to connect to {}".format(CLOUDSQL_CONNECTION_NAME), file=sys.stderr)
-
         cloudsql_unix_socket = os.path.join(
             '/cloudsql', CLOUDSQL_CONNECTION_NAME)
 
@@ -69,15 +28,16 @@ def connect_to_cloudsql():
             user=CLOUDSQL_USER,
             passwd=CLOUDSQL_PASSWORD)
 
+    # If the unix socket is unavailable, then try to connect using TCP. This
+    # will work if you're running a local MySQL server or using the Cloud SQL
+    # proxy, for example:
+    #
+    #   $ cloud_sql_proxy -instances=your-connection-name=tcp:3306
+    #
     else:
-        # devving locally
-        """
-        print(os.getenv('SERVER_SOFTWARE', ''), file=sys.stderr)
+        # just connect directly to cloud SQL lul
         db = MySQLdb.connect(
-            host='127.0.0.1', user=CLOUDSQL_USER, passwd=CLOUDSQL_PASSWORD)
-        """
-        init_db()
-        db = get_db()
+            host='35.227.27.169', user=CLOUDSQL_USER, passwd=CLOUDSQL_PASSWORD)
 
     return db
 
@@ -90,7 +50,6 @@ def index():
 @app.route('/databases')
 def showDatabases():
     """Simple request handler that shows all of the MySQL SCHEMAS/DATABASES."""
-    print("DBBBBBBBBBBBBBBBBB", file=sys.stderr)
 
     db = connect_to_cloudsql()
     cursor = db.cursor()
@@ -102,6 +61,9 @@ def showDatabases():
 
     response = make_response(res)
     response.headers['Content-Type'] = 'text/json'
+
+    # disconnect from db after use
+    db.close()
 
     return response
 
@@ -119,10 +81,29 @@ def create_user():
     name = firstname + ' ' + lastname
     user = User(uni, name, year, interests, False, school, password)
     #need to take in whether user needs swipes
-    #store in database
 
     if(user.needsSwipes == False):
         print(user.uni + user.name + user.schoolYear + user.interests + user.schoolName + user.password)
+
+    #store in database
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute('use cuLunch')
+
+    query = "INSERT INTO users VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % (uni, password, name, year, interests, school)
+    #print('query generated')
+    #print(query)
+
+    try:
+        cursor.execute(query)
+        # commit the changes in the DB
+        db.commit()
+    except:
+        # rollback when an error occurs
+        db.rollback()
+
+    # disconnect from db after use
+    db.close()
 
     return redirect(url_for('static', filename='listform/index.html'))
 
