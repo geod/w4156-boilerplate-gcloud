@@ -3,9 +3,9 @@
 import MySQLdb
 import glob, os
 
-db = MySQLdb.connect(host="35.193.223.145",
-                     user="kayvon",
-                     passwd="kayvon",
+db = MySQLdb.connect(host="127.0.0.1",
+                     user="root",
+                     passwd="root",
                      db="Dev")
 
 print "Connected!"
