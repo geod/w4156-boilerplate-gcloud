@@ -1,7 +1,7 @@
 cron:
 - description: "Sunday event recommendation blast"
   url: /mail/weekly/events
-  schedule: every sunday 17:30
+  schedule: every monday 11:30
   timezone: US/Eastern
 
 # - description: "test job"
