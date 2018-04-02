@@ -105,7 +105,7 @@ jobs:
           name: Deploy app to DEV Google App Engine
           command: |
             gcloud config set project $GCLOUD_PROJECT_ID_DEV
-            gcloud -q app deploy worker.yaml cron.yaml app.yaml --promote --version=1
+            gcloud -q app deploy cron.yaml app.yaml --promote --version=1
 
   deploy-uat:
     docker:
