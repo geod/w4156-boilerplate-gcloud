@@ -122,20 +122,75 @@ if __name__ == "__main__":
                      passwd="root",
                      db="Dev")
 
+    if 'venue' in event_info.keys():
+        if 'name' in event_info['venue'].keys() and event_info['venue']['name']:
+            lname = event_info['venue']['name']
+        else:
+            lname = None
 
-    # event_info['lon']
-    # event_info['lat']
-    # event_info['name']
-    # event_info['venue']['address_1']
-    # event_info['venue']['zip']
-    # event_info['venue']['city']
-    # event_info['venue']['state']
+        if 'lon' in event_info['venue'].keys() and event_info['venue']['lon']:
+            lon = event_info['venue']['lon']
+        else:
+            lon = None
 
+        if 'lat' in event_info['venue'].keys() and event_info['venue']['lat']: 
+            lat = event_info['venue']['lat']
+        else:
+            lat = None
+        
+        if 'address_1' in event_info['venue'].keys() and event_info['venue']['address_1']:
+            address_1 = event_info['venue']['address_1']
+        else:
+            address_1 = None
+        
+        if 'zip' in event_info['venue'].keys() and event_info['venue']['zip']:
+            zip = event_info['venue']['zip']
+        else:
+            zip = None
+        
+        if 'city' in event_info['venue'].keys() and event_info['venue']['city']:
+            city = event_info['venue']['city']
+        else:
+            city = None
+        
+        if 'state' in event_info['venue'].keys() and event_info['venue']['state']:
+            state = event_info['venue']['state']
+        else:
+            state = None
+    else:
+        lname = lon = lat = address_1 = zip = city = state = None
+
+    if 'time' in event_info.keys() and event_info['time']:
+        start_time = event_info['time']
+    else:
+        start_time = None
+
+    if 'duration' in event_info.keys() and event_info['duration']:
+        duration = event_info['duration']
+    else:
+        duration = None
+
+    if 'description' in event_info.keys() and event_info['description']:
+        description = event_info['description']
+    else:
+        description = None
 
     if verbose:
         print "Connected to database"
 
     cursor = db.cursor()
+
+    cursor.execute("""SELECT eid
+                      FROM Events
+                      WHERE mid = %s
+                    """, (EVENT_ID,))
+
+    result = cursor.fetchone()
+
+    if result:
+        print "Event already in database."
+        db.close()
+        sys.exit(1)
 
     loc_query = """
                 INSERT 
@@ -143,13 +198,13 @@ if __name__ == "__main__":
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
                 """
 
-    cursor.execute(loc_query, ( event_info['venue']['name'],
-                                event_info['venue']['lon'],
-                                event_info['venue']['lat'],
-                                event_info['venue']['address_1'],
-                                event_info['venue']['zip'],
-                                event_info['venue']['city'],
-                                event_info['venue']['state']))
+    cursor.execute(loc_query, ( lname,
+                                lon,
+                                lat,
+                                address_1,
+                                zip,
+                                city,
+                                state))
 
     db.commit()
 
@@ -159,22 +214,27 @@ if __name__ == "__main__":
 
     lid = cursor.fetchone()
 
-    start_date = str(datetime.datetime.fromtimestamp(event_info['time'] / 1000))
-    end_date = str(datetime.datetime.fromtimestamp((event_info['time'] + event_info['duration']) / 1000))
+    start_date = str(datetime.datetime.fromtimestamp(start_time / 1000))
+
+    if start_date and duration:
+        end_date = str(datetime.datetime.fromtimestamp((start_time + duration) / 1000))
+    else:
+        end_date = None
 
     ev_query =  """
                 INSERT
                 INTO Events(ename, start_date, end_date, 
-                            num_attending, lid, description)
-                VALUES (%s, %s, %s, %s, %s, %s);
+                            num_attending, lid, description, mid)
+                VALUES (%s, %s, %s, %s, %s, %s, %s);
                 """
 
-    cursor.execute(ev_query,   (event_info['name'].encode('ascii', 'ignore'),
+    cursor.execute(ev_query,   (lname.encode('ascii', 'ignore'),
                                 start_date,
                                 end_date,
                                 0,
                                 lid,
-                                event_info['description'].encode('ascii', 'ignore')))
+                                description.encode('ascii', 'ignore'),
+                                EVENT_ID))
 
     db.commit()
 
