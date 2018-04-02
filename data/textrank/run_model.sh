@@ -1,7 +1,7 @@
 #!/bin/bash
 
 touch tmp_test.json
-echo -n "{\"id\": \"1\", \"text\": \"" >> tmp_test.json
+echo -n "{\"id\": \"1\", \"text\": \"" > tmp_test.json
 cat textrank_input.txt >> tmp_test.json
 echo "\"}" >> tmp_test.json
 
