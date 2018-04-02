@@ -78,8 +78,7 @@ class MailBlastCron(Resource):
     def get(self):
         task = taskqueue.add(
             method='GET',
-            url='/jobs/email_blast_all',
-            target='worker')
+            url='/jobs/mail/email_blast_all')
         return 'Task {} enqueued, ETA {}.'.format(task.name, task.eta), 200
 api.add_resource(MailBlastCron, '/jobs/mail/queue_emails')
 
@@ -116,8 +115,7 @@ class TaskQueueTest(Resource):
     def get(self):
         task = taskqueue.add(
             method='GET',
-            url='/jobs/mail/test_execute',
-            target='worker')
+            url='/jobs/mail/test_execute')
         return 'Task {} enqueued, ETA {}.'.format(task.name, task.eta), 200
 api.add_resource(TaskQueueTest, '/jobs/mail/test')
 
