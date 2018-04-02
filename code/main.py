@@ -209,9 +209,21 @@ def home():
     return redirect(url_for('recommend'))
     # return render_template("results.html", MOCK_EVENTS=MOCK_EVENTS)
 
+
 @app.route('/group')
 def group():
     return render_template("group.html")
+
+
+@app.route('/explore')
+def explore_events():
+    # q = {
+    #     "Wine tastery": "2843 Broadway New York, NY 10027",
+    #      "Picnic at the park": "Morningside Dr, New York, NY 10026",
+    #      "Coffee date": "2194 Frederick Douglass Blvd, New York, NY 10019"
+    # }
+
+    return render_template("explore.html")
 
 
 @app.route('/recommendations')
@@ -310,6 +322,7 @@ def create_event():
 
     return render_template('event_form.html', title='New Event', form=form)
 
+
 def send_email(address, username):
     confirmation_url = 'gennyc-dev.appspot.com/emailConf/{}/{}'.format(randomKey, username)
     sender_address = (
@@ -319,6 +332,7 @@ def send_email(address, username):
     body = "Thank you for creating an account!\n\nPlease confirm your email address by clicking on the link below:\n\n{}".format(confirmation_url)
     print(sender_address, address, subject, body)
     mail.send_mail(sender_address, address, subject, body)
+
 
 @app.route('/email/<address>/<username>')
 def email(address, username):
