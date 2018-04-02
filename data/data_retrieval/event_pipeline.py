@@ -16,6 +16,7 @@ TAG_RE = r'</?([a-z][a-z0-9]*)\b[^>]*>'
 
 CATEGORY_LIMIT = 20
 MIN_CHARS_DESC = 200
+TAG_LENGTH_LIMIT = 100
 
 headers = {'Content-Type': 'application/json'}
 params = {'key' : MEETUP_API_KEY}
@@ -81,15 +82,19 @@ if __name__ == "__main__":
     if interactive:
         print "Press 'enter' to approve, enter any key to reject"
 
+    curr_tags = set()
+
     for line in rp:
-        if line.count(":") > 1:
+        sp_line = line.strip().split(":")
+        if line.count(":") > 1 or len(sp_line[0]) > TAG_LENGTH_LIMIT or sp_line[0] in curr_tags:
             continue
         if interactive:
-            choice = raw_input("Accept tag " + line.split(":")[0] + "? ")
+            choice = raw_input("Accept tag " + sp_line[0] + "? ")
         if interactive and choice != '':
             continue
         else:
-            my_words.append(tuple(line.strip().split(":")))
+            my_words.append(tuple(sp_line))
+            curr_tags.add(sp_line[0])
             counter += 1
         if counter >= CATEGORY_LIMIT:
             break
