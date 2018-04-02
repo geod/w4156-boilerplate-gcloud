@@ -2,12 +2,11 @@ from listing import Listing
 
 class User:
 
-    def __init__(self, uni, name, schoolYear, interests, needsSwipes, schoolName, password):
+    def __init__(self, uni, name, schoolYear, interests, schoolName, password):
         self.uni = uni
         self.name = name
         self.schoolYear = schoolYear
         self.interests = interests
-        self.needsSwipes = needsSwipes
         self.schoolName = schoolName
         self.password = password
         self.listings = []

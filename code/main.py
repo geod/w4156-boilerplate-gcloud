@@ -79,20 +79,21 @@ def create_user():
     interests = request.form['interests_field']
 
     name = firstname + ' ' + lastname
-    user = User(uni, name, year, interests, False, school, password)
-    #need to take in whether user needs swipes
+    user = User(uni, name, year, interests, school, password)
 
-    if not user.needsSwipes:
-        print(user.uni + user.name + user.schoolYear + user.interests + user.schoolName + user.password)
+    # need to take in whether user needs swipes
 
-    #store in database
+    print(user.uni + user.name + user.schoolYear + user.interests + user.schoolName + user.password)
+
+    # store in database
+
     db = connect_to_cloudsql()
     cursor = db.cursor()
     cursor.execute('use cuLunch')
 
     query = "INSERT INTO users VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % (uni, password, name, year, interests, school)
-    #print('query generated')
-    #print(query)
+    # print('query generated')
+    # print(query)
 
     try:
         cursor.execute(query)
@@ -107,13 +108,14 @@ def create_user():
 
     return redirect(url_for('static', filename='listform/index.html'))
 
+
 @app.route('/listform/index.html', methods=['POST'])
 def create_listing():
     cafeteria = request.form['Cafeteria']
 
     print(cafeteria)
 
-    #store in database
+    # store in database
     db = connect_to_cloudsql()
     cursor = db.cursor()
     cursor.execute('use cuLunch')
