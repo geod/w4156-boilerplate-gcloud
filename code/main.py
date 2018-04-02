@@ -2,6 +2,7 @@ from __future__ import print_function
 from google.appengine.ext import vendor
 import os
 from user import *
+#from validation import Validation
 
 vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
 from flask import Flask, make_response, request, url_for, redirect
@@ -78,7 +79,11 @@ def create_user():
     year = request.form['year_field']
     interests = request.form['interests_field']
 
+    #valid = Validation()
+    #user_check = valid.user_valid(firstname, lastname, uni, password)
+    
     name = firstname + ' ' + lastname
+    #if(user_check == True):
     user = User(uni, name, year, interests, school, password)
 
     # need to take in whether user needs swipes
