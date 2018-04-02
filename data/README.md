@@ -1,3 +1,13 @@
+## How to enter data
+Currently, the system pulls events from Meetup's API to server as mock data. To add an event:
+1. Navigate to the event of your choice (`https://www.meetup.com/group_name/events/event_id/`)
+2. `cd data_retrieval`
+3. Make sure your database is running locally! (See below)
+4. `python event_pipeline.py [-v] [-i] <valid-event-url>`
+  - `-v` is verbose (it is on by default)
+  - `-i` is interactive, which lets you hand-pick the tags
+5. The script will then infer tags based on the event's description, and enter those into the database, along with the event's information and its location.
+
 ## How to run database locally
 Google Cloud SQL does not allow you to directly connect using Python's `MySQLdb` package. Instead, you need to run a proxy. In order to do that, follow [this link](https://cloud.google.com/python/getting-started/using-cloud-sql) or read below.
 
