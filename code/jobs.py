@@ -116,7 +116,7 @@ class TaskQueueTest(Resource):
     def get(self):
         task = taskqueue.add(
             method='GET',
-            url='/jobs/test_execute',
+            url='/jobs/mail/test_execute',
             target='worker')
         return 'Task {} enqueued, ETA {}.'.format(task.name, task.eta), 200
 api.add_resource(TaskQueueTest, '/jobs/mail/test')
