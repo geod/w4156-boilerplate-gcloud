@@ -13,6 +13,9 @@ threadsafe: yes
 
 # Handlers define how to route requests to your application.
 handlers:
+- url: /jobs/.*
+  script: code.jobs.app
+  # login: admin
 - url: .*  # This regex directs all routes to main.app
   script: code.main.app
 
