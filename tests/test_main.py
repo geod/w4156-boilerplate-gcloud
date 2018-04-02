@@ -28,7 +28,7 @@ class MainTest(unittest.TestCase):
 
     def test_hello_world(self):
         rv = self.app.get('/')
-        assert b'Welcome to a new experience.' in rv.data
+        assert b'explore your city' in rv.data
 
     def login(self, username, password):
         return self.app.post('/login', data=dict(

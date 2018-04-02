@@ -1,56 +1,154 @@
-/* app.css */
-
+/* app.scss */
 body, html {
-    height: 100%;
-    width: 100%;
+  height: 100%;
+  width: 100%;
 }
 
 body {
-    background: black url(https://www.seedinvest.com/wp-content/uploads/2015/05/new_york_skyline_20_wallpaper_hd.jpg) no-repeat fixed center center;
+  font-family: 'Roboto', Helvetica, sans-serif;
+  background: linear-gradient(rgba(255, 0, 0, 0), rgba(255, 0, 0, 0)), url("../img/newyork.jpg") no-repeat fixed center center;
+  background-size: cover;
 }
 
-.panel {
-    margin-top: 80px;
-    text-align: center;
-    background-color: rgba(242, 242, 242, 0.9);
-    padding: 15px 0px 70px 0px;
+button, input[type="submit"], .btn {
+  font-size: 1.5rem !important;
+  color: white;
+  background: #0097c7cc;
+  box-shadow: none;
+  border-radius: 2px;
 }
 
-.panel h1 {
-    font-size: 3rem;
+button:hover, input[type="submit"]:hover, .btn:hover {
+  background: #0D546B;
 }
 
-.panel p {
-    font-size: 1.3rem;
-    padding: 20px 0px;
+nav {
+  box-shadow: none;
+  background-color: #0D546B;
 }
 
-button {
-    background-color: #FF9900;
-    color: #EEEEEE;
-    font-size: 1.5rem;
-    font-weight: 500;
+nav .brand-logo {
+  font-family: 'Allerta Stencil', Helvetica, sans-serif;
+  margin-left: 1rem;
 }
 
-button:hover {
-    background-color: #D77E22;
+.container.app-main {
+  height: 100%;
+  width: 100%;
 }
 
-.launch-button {
-    margin-top: 25px;
-    padding: 30px;
+.container.app-main .mdl-page {
+  height: 100%;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mdl-modal {
+  background-color: #ffffffe8;
+  width: 70%;
+  border-radius: 4px;
+  padding: 2rem 2rem 4rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem auto;
+}
+
+.mdl-modal h1, .mdl-modal h2, .mdl-modal h3, .mdl-modal h4, .mdl-modal h5, .mdl-modal h6, .mdl-modal p, .mdl-modal label {
+  color: rgba(0, 0, 0, 0.8) !important;
+}
+
+.mdl-page {
+  background: #f1f1f1;
+  color: #000;
+}
+
+.panel-wrapper .panel, .panel-wrapper .panel-main {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+}
+
+.panel-wrapper .panel .title, .panel-wrapper .panel-main .title {
+  color: white;
+  font-family: 'Allerta Stencil', Helvetica, sans-serif;
+  font-size: 6rem;
+}
+
+.panel-wrapper .panel .subtitle, .panel-wrapper .panel-main .subtitle {
+  color: white;
+  font-size: 2rem;
+  padding: 1rem 0px;
+  margin: 0;
+}
+
+.panel-wrapper .panel h2, .panel-wrapper .panel-main h2, .panel-wrapper .panel p, .panel-wrapper .panel-main p, .panel-wrapper .panel label, .panel-wrapper .panel-main label {
+  color: white;
+}
+
+.panel-wrapper .panel h2, .panel-wrapper .panel-main h2 {
+  font-size: 4rem;
+  margin-bottom: 2.5rem;
+}
+
+.panel-wrapper .panel p, .panel-wrapper .panel-main p {
+  font-size: 1.25rem;
+}
+
+.panel-wrapper .panel .init-buttons, .panel-wrapper .panel-main .init-buttons {
+  display: flex;
+  align-self: center;
+  flex-direction: row;
+}
+
+.panel-wrapper .panel .login, .panel-wrapper .panel-main .login, .panel-wrapper .panel .signin, .panel-wrapper .panel-main .signin {
+  font-size: 1.5rem;
+  color: white;
+  margin: 1rem;
+  padding: .5rem 1.5rem;
+  height: auto;
+}
+
+.panel-wrapper .panel .login, .panel-wrapper .panel-main .login {
+  background-color: #0097c7cc;
+}
+
+.panel-wrapper .panel .signin, .panel-wrapper .panel-main .signin {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.panel-wrapper .panel-main {
+  justify-content: center;
 }
 
 .search-button {
-    padding: 5px 20px;
+  padding: 5px 20px;
 }
 
 .results {
-    text-align: left;
-    margin-top: 100px;
+  text-align: left;
+  margin-top: 100px;
 }
 
 li {
-    list-style-type: none;
-    padding-bottom: 25px;
+  list-style-type: none;
+  padding-bottom: 25px;
+}
+
+@media only screen and (max-width: 992px) {
+  nav .brand-logo {
+    margin-left: 0;
+  }
 }

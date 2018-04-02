@@ -1,14 +1,19 @@
+print('running')
+
 import logging
 import recommender
 
-#try:
-# from google.appengine.ext import vendor
-# vendor.add('lib')
-#except ImportError:
-#    logging.warning('google app engine unable to be imported')
+try:
+    from google.appengine.api import mail
+    from google.appengine.api import app_identity
+except ImportError:
+    logging.warning('google app engine unable to be imported')
 
 from flask import Flask, render_template, redirect, url_for, request, make_response
 app = Flask(__name__)
+app.debug = True
+
+# === APP CONFIGURATIONS
 app.config['SECRET_KEY'] = 'secretkey123984392032'
 
 import os
@@ -17,6 +22,11 @@ from user_class import User
 from surveys import UserInterests
 from event import Event, EventForm
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
+from flask_restful import Resource, Api
+
+
+import time
+import atexit
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -31,6 +41,7 @@ CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 # CLOUDSQL_PASSWORD = "kayvon"
 
 DB_HOST_DEV = '35.193.223.145'
+# DB_HOST_DEV = "127.0.0.1" # Using for local setup
 
 # ENV = ''
 # if os.environ.get('BRANCH') != 'master':
@@ -46,6 +57,9 @@ ENV_DB = 'Dev'
 
 MOCK_EVENTS = [Event('Rollerblading Tour of Central Park', 2018, 3, 20, 'Join this fun NYC tour and get some exercise!'),
                 Event('Rollerblading Tour of Central Park Round 2', 2018, 3, 22, 'Join this fun NYC tour and get some exercise again!')]
+
+api = Api(app)
+randomKey= '472389hewhuw873dsa4245193ej23yfehw'
 
 
 def connect_to_cloudsql():
@@ -64,7 +78,7 @@ def connect_to_cloudsql():
 
     else:
         db = MySQLdb.connect(
-            host=DB_HOST_DEV, user='kayvon', passwd='kayvon')
+            host=DB_HOST_DEV, user='kayvon', passwd='kayvon', db='Dev', port=3306)
 
     return db
 
@@ -93,11 +107,12 @@ def authenticate_user(user):
 def load_user(user_name):
     db = connect_to_cloudsql()
     cursor = db.cursor()
-    cursor.execute("SELECT username, password, email, fname, lname, dob, timezone FROM " + ENV_DB + ".Users WHERE username='" + user_name + "'")
+    cursor.execute("SELECT username, password, email, fname, lname, dob, timezone, email_verified FROM " + ENV_DB + ".Users WHERE username='" + user_name + "'")
     data = cursor.fetchone()
     db.close()
     if data is None:
         return None
+    print(data, User(*data))
     return User(*data)
 
 
@@ -105,7 +120,7 @@ def insert_new_user(user):
     db = connect_to_cloudsql()
     cursor = db.cursor()
 
-    query = "INSERT INTO "+ ENV_DB + ".Users(username, password, fname, lname, dob, date_joined, timezone, email) VALUES('{}', '{}', {}, {}, {}, {}, {}, {})".format(
+    query = "INSERT INTO "+ ENV_DB + ".Users(username, password, fname, lname, dob, date_joined, timezone, email, email_verified) VALUES('{}', '{}', {}, {}, {}, {}, {}, {}, {})".format(
             user.username,
             user.password,
             "'" + user.fname + "'" if user.fname else 'NULL',
@@ -113,7 +128,8 @@ def insert_new_user(user):
             "'" + user.dob + "'" if user.dob else 'NULL',
             "'" + str(user.join_date) + "'" if user.join_date else 'NULL',
             "'" + user.timezone + "'" if user.timezone else 'NULL',
-            "'" + user.email + "'" if user.email else 'NULL')
+            "'" + user.email + "'" if user.email else 'NULL',
+            "TRUE" if user.email_verified else "FALSE")
 
     cursor.execute(query)
     db.commit()
@@ -145,25 +161,32 @@ def register():
                             request.form['fname'],
                             request.form['lname'],
                             request.form['dob'],
-                            request.form['timezone']
-                            )
+                            request.form['timezone'],
+                            False)
         except ValueError:
             error = 'Username or Password is empty.'
 
         if (register_user(new_user)):
             login_user(new_user)
+            send_email(new_user.email, new_user.username)
             return redirect(url_for('home'))
         else:
             error = 'Username taken.'
 
     return render_template('register.html', error = error)
 
+@app.route('/verify', methods=['GET','POST'])
+def verify():
+    if (request.method == 'POST'):
+        send_email(current_user.email, current_user.username)
+    return render_template('verify_email.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
         test_user = User(request.form['username'], request.form['password'])
+        print(test_user)
 
         if authenticate_user(test_user):
             login_user(test_user)
@@ -184,15 +207,37 @@ def logout():
 @app.route('/home')
 @login_required
 def home():
+    if not current_user.email_verified:
+        return redirect('verify')
     if not user_is_tagged(current_user):
         return redirect('survey')
     return redirect(url_for('recommend'))
     # return render_template("results.html", MOCK_EVENTS=MOCK_EVENTS)
 
 
+@app.route('/group')
+def group():
+    return render_template("group.html")
+
+
+@app.route('/explore')
+def explore_events():
+    # q = {
+    #     "Wine tastery": "2843 Broadway New York, NY 10027",
+    #      "Picnic at the park": "Morningside Dr, New York, NY 10026",
+    #      "Coffee date": "2194 Frederick Douglass Blvd, New York, NY 10019"
+    # }
+
+    return render_template("explore.html")
+
+
 @app.route('/recommendations')
 @login_required
 def recommend():
+    if not current_user.email_verified:
+        return redirect('verify')
+    if not user_is_tagged(current_user):
+        return redirect('survey')
     rec = recommender.Recommend(current_user)
     # interests = rec.get_user_interests()
     events = rec.get_events()
@@ -247,6 +292,8 @@ def user_is_tagged(user):
 @app.route('/survey', methods=['GET', 'POST'])
 @login_required
 def survey():
+    if not current_user.email_verified:
+        return redirect('verify')
     form = UserInterests(request.form)
 
     if request.method == 'POST' and form.validate():
@@ -263,6 +310,11 @@ def survey():
 @app.route('/new_event', methods=['GET', 'POST'])
 @login_required
 def create_event():
+    if not current_user.email_verified:
+        return redirect('verify')
+    if not user_is_tagged(current_user):
+        return redirect('survey')
+
     form = EventForm(request.form)
 
     if request.method == 'POST' and form.validate():
@@ -275,6 +327,78 @@ def create_event():
 
     return render_template('event_form.html', title='New Event', form=form)
 
+
+def send_email(address, username):
+    confirmation_url = 'gennyc-dev.appspot.com/emailConf/{}/{}'.format(randomKey, username)
+    sender_address = (
+        'genNYC <support@{}.appspotmail.com>'.format(
+            app_identity.get_application_id()))
+    subject = 'Confirm your registration'
+    body = "Thank you for creating an account!\n\nPlease confirm your email address by clicking on the link below:\n\n{}".format(confirmation_url)
+    print(sender_address, address, subject, body)
+    mail.send_mail(sender_address, address, subject, body)
+
+
+@app.route('/email/<address>/<username>')
+def email(address, username):
+    send_email(address, username)
+    return redirect(url_for('home'))
+
+
+class ConfirmRegistration(Resource):
+    def get(self, username):
+        return {'username': username }
+
+api.add_resource(ConfirmRegistration, '/api/emailConf/<string:username>')
+
+class TestJob(Resource):
+    def get(self):
+        print('job run')
+        return {'test': 'success' }
+api.add_resource(TestJob, '/jobs/test')
+
+def send_events_email(address, email_body):
+    sender_address = (
+        'genNYC events <curator@{}.appspotmail.com>'.format(
+            app_identity.get_application_id()))
+    subject = 'Weekly event recommendations!'
+    print(sender_address, address, subject, email_body)
+    mail.send_mail(sender_address, address, subject, email_body)
+
+class MailBlastJob(Resource):
+    def get(self):
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute("SELECT username, password, email, fname, lname, dob, timezone, email_verified FROM " + ENV_DB + ".Users")
+        rows = cursor.fetchall()
+        for row in rows:
+            user = User(*row)
+            rec = recommender.Recommend(user)
+            events = rec.get_events()
+            event_string = ''
+            for eid, ename, start_date, end_date, num_cap, num_attending, tag in events:
+                event_string += "{}, {} to {}, {}/{} filled\n\n".format(ename, start_date, end_date, num_attending, num_cap)
+            print(event_string)
+            body = 'Hey {},\n\nHere are some upcoming events we think you might be interested in:\n\n\n{}'.format(user.fname, event_string)
+            print(user.email)
+            send_events_email(user.email, body)
+
+        return {'blast': 'success'}
+api.add_resource(MailBlastJob, '/mail/weekly/events')
+
+@app.route('/emailConf/<string:key>/<string:username>')
+def confirm(key, username):
+    if not key == randomKey:
+        return redirect(url_for('login'))
+
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute("UPDATE " + ENV_DB + ".Users SET email_verified=TRUE WHERE username='" + username + "'")
+    db.commit()
+    db.close()
+    logout_user()
+
+    return redirect(url_for('login'))
 
 
 

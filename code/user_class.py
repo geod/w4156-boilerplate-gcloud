@@ -2,7 +2,7 @@ import main
 import datetime
 
 class User():
-    def __init__(self, username, password, email=None, fname=None, lname=None, dob=None, timezone=None):
+    def __init__(self, username, password, email=None, fname=None, lname=None, dob=None, timezone=None, email_verified=False):
         if username == "":
             raise ValueError("Username cannot be empty")
         if password == "":
@@ -17,6 +17,7 @@ class User():
         self.dob = dob
         self.timezone = timezone
         self.join_date = datetime.date.today()
+        self.email_verified = email_verified;
 
         # print self.email, self.dob, self.timezone, self.join_date
         # print type(self.email), type(self.dob), type(self.timezone), type(self.join_date)
@@ -31,7 +32,7 @@ class User():
         return self.authenticated
 
     def is_active(self):
-        return True
+        return True;
 
     def is_anonymous(self):
         return False

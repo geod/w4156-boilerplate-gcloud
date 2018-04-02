@@ -1,0 +1,177 @@
+/* app.scss */
+// Need to compile down to app.css
+//
+// === COLORS ===
+$GENBLUE: #0097c7cc;
+$GENBLUE-DARK: #0D546B;
+$GENBLACK: rgba(0, 0, 0, 0.8);
+$GENWHITE-OFF: #f1f1f1;
+
+body, html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: 'Roboto', Helvetica, sans-serif;
+  background: linear-gradient(
+  rgba(255, 0, 0, 0.0),
+  rgba(255, 0, 0, 0.0)
+  ), url('../img/newyork.jpg') no-repeat fixed center center;
+  background-size: cover;
+}
+
+button, input[type="submit"], .btn {
+  font-size: 1.5rem !important;
+  color: white;
+  background: $GENBLUE;
+  box-shadow: none;
+  border-radius: 2px;
+
+  &:hover {
+    background: $GENBLUE-DARK;
+  }
+}
+
+// Navigation
+nav {
+  box-shadow: none;
+  background-color: $GENBLUE-DARK;
+
+  .brand-logo {
+    font-family: 'Allerta Stencil', Helvetica, sans-serif;
+    margin-left: 1rem;
+  }
+}
+
+// Container override for main webapp pages
+.container.app-main {
+  height: 100%;
+  width: 100%;
+
+  .mdl-page {
+    height: 100%;
+    width: 100%;
+    margin-bottom: 0;
+  }
+}
+
+// Form override
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mdl-modal {
+  background-color: #ffffffe8;
+  width: 70%;
+  border-radius: 4px;
+  padding: 2rem 2rem 4rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem auto;
+
+  h1,h2,h3,h4,h5,h6,p,label {
+    color: $GENBLACK !important;
+  }
+}
+
+.mdl-page {
+  background: $GENWHITE-OFF;
+  color: #000;
+}
+
+// Home page panel
+.panel-wrapper {
+  // overflow: hidden !important;
+  .panel {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    // position: absolute;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+
+    .title {
+      color: white;
+      font-family: 'Allerta Stencil', Helvetica, sans-serif;
+      font-size: 6rem;
+    }
+
+    .subtitle {
+      color: white;
+      font-size: 2rem;
+      padding: 1rem 0px;
+      margin: 0;
+    }
+
+    h2, p, label {
+      color: white;
+    }
+
+    h2 {
+      font-size: 4rem;
+      margin-bottom: 2.5rem;
+    }
+
+    p {
+      font-size: 1.25rem;
+    }
+
+    .init-buttons {
+      display: flex;
+      align-self: center;
+      flex-direction: row;
+    }
+
+    // Button overrides
+    .login, .signin {
+      font-size: 1.5rem;
+      color: white;
+      margin: 1rem;
+      padding: .5rem 1.5rem;
+      height: auto;
+    }
+
+    .login {
+      background-color: $GENBLUE;
+    }
+
+    .signin {
+      background-color: $GENBLACK;
+    }
+  }
+
+  .panel-main {
+    @extend .panel;
+    justify-content: center;
+  }
+}
+
+.search-button {
+  padding: 5px 20px;
+}
+
+.results {
+  text-align: left;
+  margin-top: 100px;
+}
+
+li {
+  list-style-type: none;
+  padding-bottom: 25px;
+}
+
+@media only screen and (max-width: 992px) {
+  nav {
+    .brand-logo {
+      margin-left: 0;
+    }
+  }
+}
