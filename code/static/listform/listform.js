@@ -4,7 +4,11 @@ $("#startbutton").click(function() {
 	}, 350);
 })
 
+$("#date").mdldatepicker();
+
 
 $("#listing-button").click(function() {
 	window.location.href = "listings/index.html"
 })
+
+

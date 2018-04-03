@@ -13,6 +13,10 @@
 	<script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"> </script>
 	<script src="https://cdn.rawgit.com/kybarg/mdl-selectfield/mdl-menu-implementation/mdl-selectfield.min.js"></script>
 	<link rel="stylesheet" href="style.css" />
+
+	 <link href='https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en' rel='stylesheet' type='text/css'>
+     <link rel="stylesheet" href="css/mdDateTimePicker.css">
+
 	<title>CU@Lunch</title>
 </head>
 
@@ -46,6 +50,11 @@
 	        </div>
 
             <!-- ADD DATE AND TIME HERE -->
+
+            <div id="date_container" class="mdl-textfield mdl-js-textfield">
+    			<input class="mdl-textfield__input" type="text" id="date" readonly />
+    			<label class="mdl-textfield__label" id="date_label" for="date">Date</label>
+  			</div>
 
 		     <div class="demo-checkbox"> 
 				<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="swipe">
