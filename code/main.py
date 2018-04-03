@@ -22,6 +22,7 @@ from event import Event, EventForm
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 from flask_restful import Resource, Api
 import datetime
+import jinja2
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -367,6 +368,24 @@ def confirm(key, username):
 
     return redirect(url_for('login'))
 
+@app.route('/test_email')
+def test_email():
+    sender  = 'genNYC <support@{}.appspotmail.com>'.format(app_identity.get_application_id())
+    email = 'kss2153@columbia.edu'
+    confirm_url = 'google.com'
+    jinja_environment = jinja2.Environment(
+        loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
+    template = jinja_environment.get_template('templates/email_template.html')
+    email_body = template.render({'confirm_url': confirm_url})
+
+    message = mail.EmailMessage(
+        sender = email,
+        to = email,
+        subject = 'Please confirm your subscription to Mailing-List XYZ',
+        html = email_body)
+
+    message.send()
+    return 'OK'
 
 
 @app.errorhandler(401)

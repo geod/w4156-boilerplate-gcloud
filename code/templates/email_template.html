@@ -1,0 +1,26 @@
+<html>
+  <head>
+  <title>Please confirm your subscription to Mailing-List XYZ?</title>
+  </head>
+  <body>
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "EmailMessage",
+      "potentialAction": {
+        "@type": "ConfirmAction",
+        "name": "Confirm Subscription",
+        "handler": {
+          "@type": "HttpActionHandler",
+          "url": "{{ confirm_url }}",
+          "method": "http://schema.org/HttpRequestMethod/POST",
+        }
+      },
+      "description": "Confirm subscription to mailing list XYZ"
+    }
+    </script>
+    <p>
+      Dear John, please confirm that you wish to be subscribed to the mailing list XYZ.
+    </p>
+  </body>
+</html>
