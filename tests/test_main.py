@@ -17,6 +17,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 
 import main
+# from user import *
+# import validation
 import unittest
 
 class MainTest(unittest.TestCase):
@@ -41,6 +43,17 @@ class MainTest(unittest.TestCase):
     def test_settings(self):
         rv = self.app.get("/settings/index.html")
         self.check_culunch(rv)
+
+# user creation validation
+'''class ValidTest(unittest.TestCase)
+
+    def test_form(self, form):
+        form = Form("Shelley", "S", "sks2209", "Lunch657")
+        self.assertTrue = form_input_valid(form)
+
+        form = Form ("", "S", "sks2209", "Lunch657")
+        self.assertFalse = form_input_valid(form)'''
+
 
 
 if __name__ == '__main__':

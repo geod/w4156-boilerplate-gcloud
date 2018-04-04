@@ -71,22 +71,22 @@ def showDatabases():
 
 @app.route('/index.html', methods=['POST'])
 def create_user():
-    firstname = request.form['first_name_field']
-    lastname = request.form['last_name_field']
+    f_name = request.form['first_name_field']
+    l_name = request.form['last_name_field']
     uni = request.form['uni_field']
     password = request.form['password_field']
     school = request.form['school_field']
     year = request.form['year_field']
     interests = request.form['interests_field']
 
-    #valid = Validation()
-    #user_check = valid.user_valid(firstname, lastname, uni, password)
+    form_input = Form(uni, f_name, l_name, year, interests, school, password)
+    # valid = Validation()
+    # user_check = valid.user_valid(form_input)
     
-    name = firstname + ' ' + lastname
-    #if(user_check == True):
+    name = form_input.f_name + ' ' + form_input.l_name
+    # if user_check:
     user = User(uni, name, year, interests, school, password)
-
-    # need to take in whether user needs swipes
+    # else send error to user
 
     print(user.uni + user.name + user.schoolYear + user.interests + user.schoolName + user.password)
 

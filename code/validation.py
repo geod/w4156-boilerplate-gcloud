@@ -1,21 +1,16 @@
 class Validation:
 
-	def user_valid(f_name, l_name, uni, pwd):
-		uChecker = True
-		if(f_name == "" or l_name == "" or uni == "" or pwd == ""):
-			uChecker = False
-		elif (len(pwd)<8 or pwd.isupper() or pwd.islower() or pwd.isdigit()):
-			uChecker = False
-		return uChecker
+    def form_input_valid(self, form):
+        uChecker = True
+        if form.f_name == "" or form.l_name == "" or form.uni == "" or form.pwd == "":
+            uChecker = False
+        elif len(form.pwd) < 8 or form.pwd.isupper() or form.pwd.islower() or form.pwd.isdigit():
+            uChecker = False
+        return uChecker
 
-	#testing
-	print (user_valid("Shelley", "S", "sks2209", "Lunch657"))
-	print (user_valid("Shelley", "", "sks2209", "Lunch657"))
-	print (user_valid("Shelley", "S", "sks2209", "lunch657"))
+    # testing
+    '''print (form_input_valid("Shelley", "S", "sks2209", "Lunch657"))
+    print (form_input_valid("Shelley", "", "sks2209", "Lunch657"))
+    print (form_input_valid("Shelley", "S", "sks2209", "lunch657"))'''
 
-	# def listing_valid(cafe,date):
-		
-
-
-
-
+# def listing_valid(cafe,date):
