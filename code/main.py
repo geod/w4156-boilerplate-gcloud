@@ -5,7 +5,7 @@ from user import *
 #from validation import Validation
 
 vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
-from flask import Flask, make_response, request, url_for, redirect
+from flask import Flask, make_response, request, url_for, redirect, render_template
 import MySQLdb
 
 # These environment variables are configured in app.yaml.
@@ -141,6 +141,12 @@ def create_listing():
     db.close()
 
     return redirect(url_for('static', filename='listings/index.html'))
+
+
+@app.route('/listings')
+def output():
+    # serve index template
+    return render_template('listings/index.html', name="carson")
 
 if __name__ == '__main__':
     app.run(debug=True)
