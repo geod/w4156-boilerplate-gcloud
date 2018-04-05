@@ -22,6 +22,7 @@ class User:
 class Form:
 
     def __init__(self, uni, f_name, l_name, year, interests, school, pwd):
+        # type: (object, object, object, object, object, object, object) -> object
         self.uni = uni
         self.f_name = f_name
         self.l_name = l_name

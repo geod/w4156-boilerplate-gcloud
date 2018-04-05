@@ -2,7 +2,7 @@ from __future__ import print_function
 from google.appengine.ext import vendor
 import os
 from user import *
-#from validation import Validation
+from validation import Validation
 
 vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
 from flask import Flask, make_response, request, url_for, redirect, render_template
@@ -80,38 +80,44 @@ def create_user():
     interests = request.form['interests_field']
 
     form_input = Form(uni, f_name, l_name, year, interests, school, password)
-    # valid = Validation()
-    # user_check = valid.user_valid(form_input)
-    
-    name = form_input.f_name + ' ' + form_input.l_name
-    # if user_check:
-    user = User(uni, name, year, interests, school, password)
-    # else send error to user
+    valid = Validation()
+    user_check = valid.form_input_valid(form_input)
 
-    print(user.uni + user.name + user.schoolYear + user.interests + user.schoolName + user.password)
+    print (form_input.uni + " " + form_input.f_name + " " + form_input.l_name + " " + form_input.school +
+           " " + form_input.interests + " " + form_input.school + " " + form_input.pwd)
 
-    # store in database
+    if user_check:
 
-    db = connect_to_cloudsql()
-    cursor = db.cursor()
-    cursor.execute('use cuLunch')
+        name = form_input.f_name + ' ' + form_input.l_name
+        user = User(uni, name, year, interests, school, password)
+        # else send error to user
 
-    query = "INSERT INTO users VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % (uni, password, name, year, interests, school)
-    # print('query generated')
-    # print(query)
+        # store in database
 
-    try:
-        cursor.execute(query)
-        # commit the changes in the DB
-        db.commit()
-    except:
-        # rollback when an error occurs
-        db.rollback()
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute('use cuLunch')
 
-    # disconnect from db after use
-    db.close()
+        query = "INSERT INTO users VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % (user.uni, user.password, user.name,
+                                                                                   user.year, user.interests, user.school)
+        # print('query generated')
+        # print(query)
 
-    return redirect(url_for('static', filename='listform/index.html'))
+        try:
+            cursor.execute(query)
+            # commit the changes in the DB
+            db.commit()
+        except:
+            # rollback when an error occurs
+            db.rollback()
+
+        # disconnect from db after use
+        db.close()
+
+        return redirect(url_for('static', filename='listform/index.html'))
+
+    else:
+        return redirect(url_for('static', filename='index.html'))
 
 
 @app.route('/listform/index.html', methods=['POST'])
