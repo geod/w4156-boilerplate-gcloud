@@ -1,6 +1,6 @@
 class Validation:
 
-    def form_input_valid(self, form):
+    def form_input_valid(form):
         uChecker = True
         if form.f_name == "" or form.l_name == "" or form.uni == "" or form.pwd == "":
             uChecker = False

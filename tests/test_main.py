@@ -18,8 +18,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 import main
 # from user import *
-# import validation
+# from validation import *
 import unittest
+
 
 class MainTest(unittest.TestCase):
     """This class uses the Flask tests app to run an integration test against a
@@ -44,16 +45,50 @@ class MainTest(unittest.TestCase):
         rv = self.app.get("/settings/index.html")
         self.check_culunch(rv)
 
-# user creation validation
-'''class ValidTest(unittest.TestCase)
+'''# user creation validation
+class ValidTest(unittest.TestCase)
 
     def test_form(self, form):
-        form = Form("Shelley", "S", "sks2209", "Lunch657")
+        
+        # good
+        form = Form("Shelley", "S", "sks2209", "lunch657")
         self.assertTrue = form_input_valid(form)
 
-        form = Form ("", "S", "sks2209", "Lunch657")
-        self.assertFalse = form_input_valid(form)'''
+        # good
+        form = Form ("Shelley", "S", "sks2209", "Lunch")
+        self.assertTrue = form_input_valid (form)
 
+        # good
+        form = Form ("Shelley", "S", "sks2209", "LUNCH657")
+        self.assertTrue = form_input_valid (form)
+
+        # no name
+        form = Form ("", "S", "sks2209", "Lunch657")
+        self.assertFalse = form_input_valid(form)
+
+        # no last
+        form = Form ("Shelley", "", "sks2209", "Lunch657")
+        self.assertFalse = form_input_valid (form)
+
+        # no uni
+        form = Form ("Shelley", "S", "", "Lunch657")
+        self.assertFalse = form_input_valid (form)
+
+        # no pass
+        form = Form ("Shelley", "S", "sks2209", "")
+        self.assertFalse = form_input_valid (form)
+
+        # pass all lower
+        form = Form ("Shelley", "S", "sks2209", "lunch")
+        self.assertFalse = form_input_valid (form)
+
+        # pass all upper
+        form = Form ("Shelley", "S", "sks2209", "LUNCH")
+        self.assertFalse = form_input_valid (form)
+
+        # pass all numbers
+        form = Form ("Shelley", "S", "sks2209", "1234")
+        self.assertFalse = form_input_valid (form)'''
 
 
 if __name__ == '__main__':
