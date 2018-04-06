@@ -1,4 +1,4 @@
-/*function fadeIn(i, elements, duration, callback){
+function fadeIn(i, elements, duration, callback){
             if(i >= elements.length)
                 $.isFunction(callback) && callback();
             else
@@ -11,7 +11,7 @@ fadeIn(0, $('ul li'), 250)
 
 
 
-$(document).ready(function() {
+/*$(document).ready(function() {
 	var testBlob = "                    <li>\
                         <div class=\"panel panel-default posting\">\
                             <div class=\"panel-body\">\
@@ -37,7 +37,7 @@ $(document).ready(function() {
     		clearInterval(tempInterval);
     	}
     }, 50)
-})
+})*/
 
 //called by clicking on the contracted card
 function expandPost(postObject) {
@@ -80,4 +80,4 @@ $(document).ready(function() {
     $(".expander").click(function(e) {
         e.stopPropagation();
     });
-})*/
+})

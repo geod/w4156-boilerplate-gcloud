@@ -2,7 +2,6 @@ from __future__ import print_function
 from google.appengine.ext import vendor
 import os
 from user import *
-from validation import Validation
 
 vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
 from flask import Flask, make_response, request, url_for, redirect, render_template
@@ -79,9 +78,8 @@ def create_user():
     year = request.form['year_field']
     interests = request.form['interests_field']
 
-    form_input = Form(uni, f_name, l_name, year, interests, school, password)
-    valid = Validation()
-    user_check = valid.form_input_valid(form_input)
+    form_input = Form(f_name, l_name, uni, password, school, year, interests)
+    user_check = form_input.form_input_valid()
 
     print (form_input.uni + " " + form_input.f_name + " " + form_input.l_name + " " + form_input.school +
            " " + form_input.interests + " " + form_input.school + " " + form_input.pwd)
@@ -132,8 +130,8 @@ def create_listing():
     cursor.execute('use cuLunch')
 
     query = "INSERT INTO listings VALUES ('%s', '%s', '%d', '%s')" % ('2018-04-20 19:00:05', 'cl3403', True, cafeteria)
-    #print('query generated')
-    #print(query)
+    # print('query generated')
+    # print(query)
 
     try:
         cursor.execute(query)
@@ -153,6 +151,7 @@ def create_listing():
 def output():
     # serve index template
     return render_template('listings/index.html', name="carson")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
