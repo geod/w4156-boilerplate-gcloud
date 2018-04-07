@@ -36,8 +36,8 @@ CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 # CLOUDSQL_USER = "kayvon"
 # CLOUDSQL_PASSWORD = "kayvon"
 
-# DB_HOST_DEV = '35.193.223.145'
-DB_HOST_DEV = "127.0.0.1" # Using for local setup
+DB_HOST_DEV = '35.193.223.145'
+# DB_HOST_DEV = "127.0.0.1" # Using for local setup
 
 # ENV = ''
 # if os.environ.get('BRANCH') != 'master':
