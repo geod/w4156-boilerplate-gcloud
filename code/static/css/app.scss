@@ -233,6 +233,16 @@ li {
   padding-bottom: 25px;
 }
 
+// HIGHLIGHT FOR INTERESTS ON EVENTS PAGE
+span.interest {
+  background: $GENBLUE-BRIGHT;
+  border-radius: 2px;
+  color: white;
+  padding: .25rem 1rem;
+  // text-decoration-line: underline;
+  // text-decoration-style: dotted;
+}
+
 // === MEDIA QUERIES FOR LARGE SCREEN ===
 @media only screen and (max-width: 992px) {
   nav {

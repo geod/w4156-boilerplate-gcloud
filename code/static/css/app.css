@@ -206,6 +206,13 @@ li {
   padding-bottom: 25px;
 }
 
+span.interest {
+  background: #1a87ab;
+  border-radius: 2px;
+  color: white;
+  padding: .25rem 1rem;
+}
+
 @media only screen and (max-width: 992px) {
   nav .brand-logo {
     margin-left: 0;

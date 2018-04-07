@@ -4,11 +4,11 @@
 <div class="mdl-page row">
   <div class="col s12">
 
-    <h2>Find your next experience.</h2>
+    <h3>Find your next experience.</h3>
 
     {% for interest in survey_results %}
-    <h3>You seem to like <font color="blue">{{ interest }}</font></h3>
-    <h4>Events that have to do with <font color="blue">{{ interest }}:</font></h4>
+    <h4>You seem to like <span class="interest">{{ interest }}</span></h4>
+    <h4>Events that have to do with <span class="interest">{{ interest }}:</span></h4>
     <br>
     <ul>
       {% for eid, ename, start_date, end_date, num_cap, num_attending, tag in events %}
