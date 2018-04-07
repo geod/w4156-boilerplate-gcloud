@@ -22,6 +22,12 @@ body {
   background-size: cover;
 }
 
+.bg-container {
+  width: 100%;
+  height: 100%;
+  background: $GENWHITE-OFF;
+}
+
 button, input[type="submit"], .btn {
   font-size: 1.5rem !important;
   color: white;
@@ -49,6 +55,7 @@ nav {
 .container.app-main {
   height: 100%;
   width: 100%;
+  overflow: auto;
 
   .mdl-page {
     height: 100%;
@@ -195,10 +202,35 @@ li {
   padding-bottom: 25px;
 }
 
+// === MEDIA QUERIES FOR LARGE SCREEN ===
 @media only screen and (max-width: 992px) {
   nav {
     .brand-logo {
       margin-left: 0;
+    }
+  }
+}
+
+// === MEDIA QUERIES FOR SMALL MOBILE SCREEN ===
+@media only screen and (max-width: 600px) {
+  nav {
+    height: 128px;
+
+    .brand-logo {
+      line-height: 128px;
+      font-size: 4rem;
+
+      .sidenav-trigger {
+        height: inherit;
+        line-height: inherit;
+        font-size: inherit;
+
+        i {
+          height: inherit;
+          line-height: inherit;
+          font-size: inherit;
+        }
+      }
     }
   }
 }

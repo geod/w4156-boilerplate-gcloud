@@ -143,6 +143,9 @@ def register_user(user):
 
 @app.route('/')
 def index():
+    if current_user.is_authenticated():
+        return redirect(url_for('home'))
+        
     return render_template("hello.html")
 
 
@@ -317,8 +320,6 @@ def create_event():
     if request.method == 'POST' and form.validate():
         event = EventForm()
         form.populate_obj(event)
-
-        print(event.start)
 
         return redirect(url_for('home'))
 
