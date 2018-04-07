@@ -18,16 +18,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 
   <script type=text/javascript>
-  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
   </script>
-  <!--MDL UI Framework  -->
-  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-indigo.min.css">
-  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script> -->
 
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
 </head>
 <body>
+
+  <!-- TODO@IVY: Modify sidebar navigation to be persistent sidebar menu for webapp -->
   <!-- Navigation bar IF LOGGED IN -->
   {% if current_user.is_authenticated() or request.path == "/login" or request.path == "/register" %}
   <header class="mdl-layout__header mdl-layout__header--transparent">
