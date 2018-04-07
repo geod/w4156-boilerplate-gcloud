@@ -184,7 +184,6 @@ def login():
     error = None
     if request.method == 'POST':
         test_user = User(request.form['username'], request.form['password'])
-        print(test_user)
 
         if authenticate_user(test_user):
             login_user(test_user)

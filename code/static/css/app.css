@@ -6,7 +6,7 @@ body, html {
 
 body {
   font-family: 'Roboto', Helvetica, sans-serif;
-  background: linear-gradient(rgba(255, 0, 0, 0), rgba(255, 0, 0, 0)), url("../img/newyork.jpg") no-repeat fixed center center;
+  background: linear-gradient(rgba(255, 0, 0, 0), #00264691), url("../img/newyork.jpg") no-repeat fixed center center;
   background-size: cover;
 }
 
@@ -37,6 +37,20 @@ nav {
 nav .brand-logo {
   font-family: 'Allerta Stencil', Helvetica, sans-serif;
   margin-left: 1rem;
+}
+
+ul.sidenav li h1, ul.sidenav li h2, ul.sidenav li h3, ul.sidenav li h4, ul.sidenav li h5, ul.sidenav li h6 {
+  padding: 0 32px;
+}
+
+ul.sidenav li:first-child {
+  background: #1a87ab;
+  color: white;
+  padding: 1rem 0;
+}
+
+footer.page-footer {
+  margin-top: -6px;
 }
 
 .container.app-main {
