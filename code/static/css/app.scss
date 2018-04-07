@@ -6,6 +6,7 @@ $GENBLUE: #0097c7cc;
 $GENBLUE-DARK: #0D546B;
 $GENBLACK: rgba(0, 0, 0, 0.8);
 $GENWHITE-OFF: #f1f1f1;
+$GENRED: #d32f2f;
 
 body, html {
   height: 100%;
@@ -56,11 +57,31 @@ nav {
   }
 }
 
+// === CUSTOM PAGE OVERRIDES ===
+form#survey, form#create_event {
+  text-align: left;
+
+  input#adrenaline {
+    position: static;
+    opacity: 1;
+    vertical-align: middle;
+    pointer-events: all;
+  }
+}
+
 // Form override
 form {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  [type="checkbox"]+span:not(.lever) {
+    font-size: .8rem;
+  }
+
+  li {
+    padding-bottom: 0;
+  }
 }
 
 .mdl-modal {
@@ -87,6 +108,12 @@ form {
 // Home page panel
 .panel-wrapper {
   // overflow: hidden !important;
+  .error {
+    background: $GENRED;
+    border-radius: 2px;
+    padding: 0.5rem 1rem;
+  }
+
   .panel {
     align-items: center;
     justify-content: center;

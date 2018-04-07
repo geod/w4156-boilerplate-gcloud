@@ -18,7 +18,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 
   <script type=text/javascript>
-    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
   </script>
   <!--MDL UI Framework  -->
   <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -36,14 +36,15 @@
         <a href="#!" class="brand-logo">genNYC</a>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
+          {{ current_user.is_authenticated }}
           {% if current_user.is_authenticated %}
-          <li><a href="/home">Home</a></li>
-          <li><a href="recommendations">Recommendations</a></li>
-          <li><a href="new_event">Create New Event</a></li>
-          <li><a href="survey">Survey</a></li>
-          <li><a href="logout">Logout</a></li>
+              <li><a href="/home">Home</a></li>
+              <li><a href="recommendations">Recommendations</a></li>
+              <li><a href="create_event">Create New Event</a></li>
+              <li><a href="survey">Survey</a></li>
+              <li><a href="logout">Logout</a></li>
           {% else %}
-          <li><a href="/">Home</a></li>
+              <li><a href="/">Home</a></li>
           {% endif %}
         </ul>
       </div>
@@ -53,7 +54,7 @@
       {% if current_user.is_authenticated %}
       <li><a href="/home">Home</a></li>
       <li><a href="recommendations">Recommendations</a></li>
-      <li><a href="new_event">Create New Event</a></li>
+      <li><a href="create_event">Create New Event</a></li>
       <li><a href="survey">Survey</a></li>
       <li><a href="logout">Logout</a></li>
       {% else %}
@@ -65,11 +66,11 @@
   <!-- Main content -->
   {% if request.path != "/" and request.path != "/login" and request.path != "/register" %}
   <div class="container app-main">
-  {% else %}
-  <div class="container">
-  {% endif %}
-    {% block body %}{% endblock %}
-  </div>
-  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-</body>
-</html>
+    {% else %}
+    <div class="container">
+      {% endif %}
+      {% block body %}{% endblock %}
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+  </html>

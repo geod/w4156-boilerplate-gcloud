@@ -36,8 +36,8 @@ CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 # CLOUDSQL_USER = "kayvon"
 # CLOUDSQL_PASSWORD = "kayvon"
 
-DB_HOST_DEV = '35.193.223.145'
-# DB_HOST_DEV = "127.0.0.1" # Using for local setup
+# DB_HOST_DEV = '35.193.223.145'
+DB_HOST_DEV = "127.0.0.1" # Using for local setup
 
 # ENV = ''
 # if os.environ.get('BRANCH') != 'master':
@@ -260,8 +260,9 @@ def fill_user_tags(user, survey):
                         ]:
 
         for item in items:
-            query = "INSERT INTO " + ENV_DB + ".UserTags(username, tag, category) VALUES ('{}', '{}', '{}')".format(user.username, item, cname)
-
+            query = "INSERT INTO " + ENV_DB + ".UserTags(username, tag, category) VALUES ('{}', '{}', '{}') \
+            ON DUPLICATE KEY UPDATE tag=VALUES(tag), category=VALUES(category)".format(user.username, item, cname)
+            print(query)
             cursor.execute(query)
 
     db.commit()
@@ -303,7 +304,7 @@ def survey():
     return render_template('survey.html', title='Survey', form=form)
 
 
-@app.route('/new_event', methods=['GET', 'POST'])
+@app.route('/create_event', methods=['GET', 'POST'])
 @login_required
 def create_event():
     if not current_user.email_verified:
@@ -321,7 +322,7 @@ def create_event():
 
         return redirect(url_for('home'))
 
-    return render_template('event_form.html', title='New Event', form=form)
+    return render_template('event_form.html', title='Create Event', form=form)
 
 
 def send_email(address, username):
