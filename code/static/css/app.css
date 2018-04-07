@@ -13,6 +13,7 @@ body {
 .bg-container {
   width: 100%;
   height: 100%;
+  display: inline-table;
   background: #f1f1f1;
 }
 
@@ -41,7 +42,7 @@ nav .brand-logo {
 .container.app-main {
   height: 100%;
   width: 100%;
-  overflow: auto;
+  display: inline-block;
 }
 
 .container.app-main .mdl-page {
@@ -94,6 +95,10 @@ form li {
 .mdl-page {
   background: #f1f1f1;
   color: #000;
+}
+
+.panel-wrapper.index {
+  margin-bottom: 0;
 }
 
 .panel-wrapper .error {
@@ -157,8 +162,16 @@ form li {
   background-color: #0097c7cc;
 }
 
+.panel-wrapper .panel .login:hover, .panel-wrapper .panel-main .login:hover {
+  background-color: #0D546Bcc;
+}
+
 .panel-wrapper .panel .signin, .panel-wrapper .panel-main .signin {
   background-color: rgba(0, 0, 0, 0.8);
+}
+
+.panel-wrapper .panel .signin:hover, .panel-wrapper .panel-main .signin:hover {
+  background-color: black;
 }
 
 .panel-wrapper .panel-main {

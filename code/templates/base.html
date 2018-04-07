@@ -29,11 +29,12 @@
 </head>
 <body>
   <!-- Navigation bar IF LOGGED IN -->
+  {% if current_user.is_authenticated() or request.path == "/login" or request.path == "/register" %}
   <header class="mdl-layout__header mdl-layout__header--transparent">
     <!-- Navigation -->
     <nav>
       <div class="nav-wrapper">
-        <a href="#!" class="brand-logo">genNYC</a>
+        <a href="/" class="brand-logo">genNYC</a>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
           {% if current_user.is_authenticated() %}
@@ -61,6 +62,7 @@
       {% endif %}
     </ul>
   </header>
+  {% endif %}
 
   <!-- Main content -->
   {% if request.path != "/" and request.path != "/login" and request.path != "/register" %}

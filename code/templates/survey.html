@@ -2,11 +2,12 @@
 {% extends "base.html" %}
 {% block title %}Survey{% endblock %}
 {% block body %}
-<div class="mdl-modal row">
+<div class="mdl-modal row z-depth-1">
 
     <h2>Your Interests</h2>
 
-    <p>Let us get to know you better. Please answer the following questions so we can help you find events.</p>
+    <p>Let's get to know you better.</p>
+    <p>Please answer the following questions so we can help you find events.</p>
 
     <form method="POST" action="" class="col s12" id="survey">
             {{ form.csrf_token }}

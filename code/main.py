@@ -145,8 +145,7 @@ def register_user(user):
 def index():
     if current_user.is_authenticated():
         return redirect(url_for('home'))
-        
-    return render_template("hello.html")
+    return render_template("index.html")
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -323,7 +322,7 @@ def create_event():
 
         return redirect(url_for('home'))
 
-    return render_template('event_form.html', title='Create Event', form=form)
+    return render_template('create_event.html', title='Create Event', form=form)
 
 
 def send_email(address, username):

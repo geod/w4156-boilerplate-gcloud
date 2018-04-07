@@ -4,6 +4,7 @@
 // === COLORS ===
 $GENBLUE: #0097c7cc;
 $GENBLUE-DARK: #0D546B;
+$GENBLUE-DARK-T: #0D546Bcc;
 $GENBLACK: rgba(0, 0, 0, 0.8);
 $GENWHITE-OFF: #f1f1f1;
 $GENRED: #d32f2f;
@@ -25,6 +26,7 @@ body {
 .bg-container {
   width: 100%;
   height: 100%;
+  display: inline-table; // fix collapsing margin
   background: $GENWHITE-OFF;
 }
 
@@ -55,7 +57,7 @@ nav {
 .container.app-main {
   height: 100%;
   width: 100%;
-  overflow: auto;
+  display: inline-block; // fix collapsing margin
 
   .mdl-page {
     height: 100%;
@@ -115,6 +117,10 @@ form {
 // Home page panel
 .panel-wrapper {
   // overflow: hidden !important;
+  &.index {
+    margin-bottom: 0;
+  }
+
   .error {
     background: $GENRED;
     border-radius: 2px;
@@ -175,10 +181,16 @@ form {
 
     .login {
       background-color: $GENBLUE;
+      &:hover {
+        background-color: $GENBLUE-DARK-T;
+      }
     }
 
     .signin {
       background-color: $GENBLACK;
+      &:hover {
+        background-color: black;
+      }
     }
   }
 
