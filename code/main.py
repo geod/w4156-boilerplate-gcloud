@@ -219,11 +219,6 @@ def group():
 
 @app.route('/explore')
 def explore_events():
-    # q = {
-    #     "Wine tastery": "2843 Broadway New York, NY 10027",
-    #      "Picnic at the park": "Morningside Dr, New York, NY 10026",
-    #      "Coffee date": "2194 Frederick Douglass Blvd, New York, NY 10019"
-    # }
 
     return render_template("explore.html")
 
@@ -347,6 +342,7 @@ def fill_event(user, event):
 
     db.commit()
     db.close()
+
 
 def send_email(address, username):
     confirmation_url = 'gennyc-dev.appspot.com/emailConf/{}/{}'.format(randomKey, username)
