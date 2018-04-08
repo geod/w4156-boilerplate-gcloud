@@ -17,7 +17,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 
 import main
-from user import *
+from code.user import *
 import unittest
 
 
