@@ -36,6 +36,12 @@ class MainTest(unittest.TestCase):
         rv = self.app.get('/index.html')
         self.check_culunch(rv)
 
+    def test_listform(self):
+        rv = self.app.get("/listform/index.html")
+        self.check_culunch(rv)
+
+    """
+
     def test_listings(self):
         rv = self.app.get("/listings/index.html")
         self.check_culunch(rv)
@@ -43,6 +49,7 @@ class MainTest(unittest.TestCase):
     def test_settings(self):
         rv = self.app.get("/settings/index.html")
         self.check_culunch(rv)
+    """
 
 # user creation validation
 class ValidTest(unittest.TestCase):
