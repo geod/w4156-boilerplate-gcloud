@@ -85,12 +85,12 @@
                     <h2 class='mdl-card__title-text'>Wednesday, 12:30 PM</h2>
                   </div>
                   <div class="mdl-card__supporting-text post-description">
-                    Offered by: Adrian Garza
+                    Offered by: {{ name }}
                   </div>
                   <div class="panel-hidden">
                     <div class="personal-info">
                       <div class="mdl-card__supporting-text info-list">
-                        <h3>Adrian Garza</h3>
+                        <h3>{{ name }}</h3>
                         <p><b>School: </b>Columbia College</p>
                         <p><b>Year: </b>Senior</p>
                         <p><b>Interests: </b>Running, hiking, complaining about things</p>
@@ -108,117 +108,6 @@
                 </div>
               </li>
 
-              <li>
-                <div class="mdl-card mdl-shadow--2dp posting" onclick="expandPost(this);">
-                  <div class="mdl-card__title dinner">
-                    <h2 class='mdl-card__title-text'>Thursday, 11:55 PM</h2>
-                  </div>
-                  <div class="mdl-card__supporting-text post-description">
-                    Offered by: Hob
-                  </div>
-                  <div class="panel-hidden">
-                    <div class="personal-info">
-                      <div class="mdl-card__supporting-text info-list">
-                        <h3>Hob</h3>
-                        <p><b>School: </b>General Studies</p>
-                        <p><b>Year: </b>Extreme Senior</p>
-                        <p><b>Interests: </b>Flexing, competitive eating</p>
-                        <p><b>Bio: </b>I got fired from my job as an arbys santa yesterday. Just looking for other cool, like-minded people who also worked as arbys santas.</p>
-                      </div>
-                    </div>
-                    <div class="mdl-card__actions mdl-card--border">
-                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="mailto:ahg2142@columbia.edu">
-                          rhb1209@columbia.edu
-                        </a>
-                    </div>
-                  </div>
-
-                  <i class="material-icons bottomright expander" onclick="contractPost(this);">expand_more</i>
-                </div>
-              </li> 
-
-              <li>
-                <div class="mdl-card mdl-shadow--2dp posting" onclick="expandPost(this);">
-                  <div class="mdl-card__title breakfast">
-                    <h2 class='mdl-card__title-text'>Friday, 9:30 AM</h2>
-                  </div>
-                  <div class="mdl-card__supporting-text post-description">
-                    Offered by: Chunk
-                  </div>
-                  <div class="panel-hidden">
-                    <div class="personal-info">
-                      <div class="mdl-card__supporting-text info-list">
-                        <h3>Chunk</h3>
-                        <p><b>School: </b>SEAS</p>
-                        <p><b>Year: </b>Freshman</p>
-                        <p><b>Interests: </b>Power posing in front of Hartley</p>
-                        <p><b>Bio: </b>After my morning workout, I like to share breakfast with someone before my afternoon workout.</p>
-                      </div>
-                    </div>
-                    <div class="mdl-card__actions mdl-card--border">
-                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="mailto:ahg2142@columbia.edu">
-                          lump@columbia.edu
-                        </a>
-                    </div>
-                  </div>
-
-                    <li>
-                <div class="mdl-card mdl-shadow--2dp posting" onclick="expandPost(this);">
-                  <div class="mdl-card__title breakfast">
-                    <h2 class='mdl-card__title-text'>Friday, 9:30 AM</h2>
-                  </div>
-                  <div class="mdl-card__supporting-text post-description">
-                    Offered by: Carson
-                  </div>
-                  <div class="panel-hidden">
-                    <div class="personal-info">
-                      <div class="mdl-card__supporting-text info-list">
-                        <h3>Carson</h3>
-                        <p><b>School: </b>Barnard</p>
-                        <p><b>Year: </b>Junior</p>
-                        <p><b>Interests: </b>Singin' jazz!!!</p>
-                        <p><b>Bio: </b>Looking to share a smoothie at the Diana Center!</p>
-                      </div>
-                    </div>
-                    <div class="mdl-card__actions mdl-card--border">
-                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="mailto:ahg2142@columbia.edu">
-                          cck2127@barnard.edu
-                        </a>
-                    </div>
-                  </div>
-
-                  <i class="material-icons bottomright expander" onclick="contractPost(this);">expand_more</i>
-                </div>
-              </li> 
-
-              <li>
-                <div class="mdl-card mdl-shadow--2dp posting" onclick="expandPost(this);">
-                  <div class="mdl-card__title lunch">
-                    <h2 class='mdl-card__title-text'>Saturday, 2:45 PM</h2>
-                  </div>
-                  <div class="mdl-card__supporting-text post-description">
-                    Offered by: Ted Cruz
-                  </div>
-                  <div class="panel-hidden">
-                    <div class="personal-info">
-                      <div class="mdl-card__supporting-text info-list">
-                        <h3>Ted Cruz</h3>
-                        <p><b>School: </b>Barnard</p>
-                        <p><b>Year: </b>Sophomore</p>
-                        <p><b>Interests: </b>Chasing down and eating rats, politics, pretending to be a human</p>
-                        <p><b>Bio: </b>Mother promised me a bowl of tapioca if I swiped someone into JJs</p>
-                      </div>
-                    </div>
-                    <div class="mdl-card__actions mdl-card--border">
-                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="mailto:ahg2142@columbia.edu">
-                          tcruz@barnard.edu
-                        </a>
-                    </div>
-                  </div>
-
-                  <i class="material-icons bottomright expander" onclick="contractPost(this);">expand_more</i>
-                </div>
-              </li>              
           </ul>
       </div>
 
@@ -228,7 +117,7 @@
   </main>
 </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js "></script>
-    <script src="listings.js"></script>
+    <script type="text/javascript" src="listings.js"></script>
 </body>
 
 </html>
