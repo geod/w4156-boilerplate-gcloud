@@ -36,8 +36,8 @@ CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 # CLOUDSQL_USER = "kayvon"
 # CLOUDSQL_PASSWORD = "kayvon"
 
-DB_HOST_DEV = '35.193.223.145'
-# DB_HOST_DEV = "127.0.0.1" # Using for local setup
+# DB_HOST_DEV = '35.193.223.145'
+DB_HOST_DEV = "127.0.0.1" # Using for local setup
 
 # ENV = ''
 # if os.environ.get('BRANCH') != 'master':
@@ -108,7 +108,7 @@ def load_user(user_name):
     db.close()
     if data is None:
         return None
-    print(data, User(*data))
+    # print(data, User(*data))
     return User(*data)
 
 
@@ -263,7 +263,6 @@ def fill_user_tags(user, survey):
         for item in items:
             query = "INSERT INTO " + ENV_DB + ".UserTags(username, tag, category) VALUES ('{}', '{}', '{}') \
             ON DUPLICATE KEY UPDATE tag=VALUES(tag), category=VALUES(category)".format(user.username, item, cname)
-            print(query)
             cursor.execute(query)
 
     db.commit()
@@ -319,10 +318,34 @@ def create_event():
         event = EventForm()
         form.populate_obj(event)
 
+        # Create Event form submission
+        fill_event(current_user, event)
+
         return redirect(url_for('home'))
 
     return render_template('create_event.html', title='Create Event', form=form)
 
+def fill_event(user, event):
+    """Form POST DB query for create_event.
+    """
+
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+
+    location_query = "INSERT IGNORE INTO " + ENV_DB + ".Locations(lname, lat, lon, address_1, address_2, zip, city, state) \
+    VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(event.name, event.lat, event.lng, event.formatted_address, event.address_2, event.postal_code, event.sublocality, event.administrative_area_level_1_short)
+    cursor.execute(location_query)
+
+    print(location_query)
+    lid = cursor.lastrowid
+    query = "INSERT INTO " + ENV_DB + ".Events(ename, description, start_date, end_date, num_cap, num_attending, lid) \
+    VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(event.event_name, event.description, event.start_date, event.end_date, event.cap, event.attending, lid)
+    cursor.execute(query)
+
+    print(query)
+
+    db.commit()
+    db.close()
 
 def send_email(address, username):
     confirmation_url = 'gennyc-dev.appspot.com/emailConf/{}/{}'.format(randomKey, username)
