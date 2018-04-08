@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %} Recommendations {% endblock %}
 {% block body %}
-<div class="mdl-page row">
+<div class="mdl-modal">
   <div class="col s12">
 
     <h2>Find your next experience.</h2>
@@ -14,6 +14,28 @@
       {% for eid, ename, start_date, end_date, num_cap, num_attending, tag in events %}
       {% if tag == interest %}
       <li>{{ename}}, {{start_date}} to {{end_date}}, {{num_attending}}/{{num_cap}} filled</li>
+      <li><a href="#" class="button" data-latLng="2194 Frederick Douglass Blvd, New York, NY 10019">Double Dutch</a>
+        <iframe class="map" width="600" height="450"></iframe>
+                <script  type="text/javascript">
+
+                $(document).ready(function(){
+                    $('.map').hide();
+                }).on("click", ".button", function(e) {
+                    e.preventDefault();
+                    var latln = jQuery(this).attr("data-latLng");
+                    initialize(latln);
+
+                    function initialize(latln) {
+
+                        var q = encodeURIComponent(latln);
+                        $('#map')
+                            .attr('src',
+                            'https://www.google.com/maps/embed/v1/place?key=AIzaSyDqQfmy2tRlFybt3yggtXeWbrKRLO91amA&q='+q);
+                        $('.map').show();
+                    }
+                });
+
+                </script></li>
       {% endif %}
       {% endfor %}
     </ul>
