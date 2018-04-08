@@ -5,20 +5,58 @@
 <div class="mdl-modal row z-depth-1">
       <h2>Create New Event</h2>
 
-      <div class="col-lg-10">
+      <div class="col lg-10 s12">
         <form method="POST" action="" class="col s12" id="create_event">
             {{ form.csrf_token }}
+
+            <div class="input-field col s12">
+              {{ render_field(form.event_name) }}
+            </div>
+
+            <div class="input-field col s12">
+              {{ render_field(form.description) }}
+            </div>
+
+            <div class="input-field col s12">
+              {{ render_field(form.start_date) }}
+            </div>
+
+            <div class="input-field col s12">
+              {{ render_field(form.end_date) }}
+            </div>
+
+            <div class="input-field col s12">
+              {{ render_field(form.formatted_address) }}
+            </div>
+
+            <div class="input-field col s12 hide">
+              {{ render_field(form.lat) }}
+            </div>
+
+            <div class="input-field col s12 hide">
+              {{ render_field(form.lng) }}
+            </div>
 
             <div class="input-field col s12">
               {{ render_field(form.name) }}
             </div>
 
             <div class="input-field col s12">
-              {{ render_field(form.start) }}
+              {{ render_field(form.address_2) }}
             </div>
+
             <div class="input-field col s12">
-              {{ render_field(form.end) }}
+              {{ render_field(form.postal_code) }}
             </div>
+
+            <div class="input-field col s12">
+              {{ render_field(form.sublocality) }}
+            </div>
+
+            <div class="input-field col s12">
+              {{ render_field(form.administrative_area_level_1_short) }}
+            </div>
+
             <div class="input-field col s12">
               {{ render_field(form.cap) }}
             </div>
