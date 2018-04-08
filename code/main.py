@@ -239,9 +239,11 @@ def recommend():
     # interests = rec.get_user_interests()
     events = rec.get_events()
 
+    # Create set of interests
     interests = set()
     for e in events:
-        interests.add(e[6])
+        #  Extract interets from Event entity (assuming last attribute)
+        interests.add(e[-1])
 
     return render_template("recommendations.html", survey_results=list(interests), events=events)
 
@@ -332,17 +334,16 @@ def fill_event(user, event):
     db = connect_to_cloudsql()
     cursor = db.cursor()
 
+    # Insert location of event into Locations table
     location_query = "INSERT IGNORE INTO " + ENV_DB + ".Locations(lname, lat, lon, address_1, address_2, zip, city, state) \
     VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(event.name, event.lat, event.lng, event.formatted_address, event.address_2, event.postal_code, event.sublocality, event.administrative_area_level_1_short)
     cursor.execute(location_query)
 
-    print(location_query)
+    # Get lid of last inserted locatiion, add event to Events table
     lid = cursor.lastrowid
     query = "INSERT INTO " + ENV_DB + ".Events(ename, description, start_date, end_date, num_cap, num_attending, lid) \
     VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(event.event_name, event.description, event.start_date, event.end_date, event.cap, event.attending, lid)
     cursor.execute(query)
-
-    print(query)
 
     db.commit()
     db.close()
