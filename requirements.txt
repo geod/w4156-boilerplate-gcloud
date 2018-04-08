@@ -12,5 +12,7 @@ google-cloud
 flask-login==0.2.7
 flask-wtf
 wtforms
+wtforms_components
+python-dateutil
 flask-restful
 apscheduler
