@@ -35,7 +35,7 @@ class UserInterests(Form):
                                                  ('hockey', 'Hockey'), ('golf', 'Golf'),
                                                  ('other_sport', 'Other'), ('none_sport', 'Not interested')],
                                         validators=[validators.InputRequired()])
-    adrenaline = fields.BooleanField('Do you like adrenaline adventures?')
+    adrenaline = fields.BooleanField('Do you like adrenaline adventures?', default=False)
     location = fields.SelectMultipleField('What suits you?',
                                           choices=[('indoors', 'Indoors'), ('outdoors', 'Outdoors'),
                                                    ('water', 'On the Water'), ('any', 'Anywhere!')],

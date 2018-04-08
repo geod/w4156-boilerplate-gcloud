@@ -36,8 +36,8 @@ CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 # CLOUDSQL_USER = "kayvon"
 # CLOUDSQL_PASSWORD = "kayvon"
 
-DB_HOST_DEV = '35.193.223.145'
-# DB_HOST_DEV = "127.0.0.1" # Using for local setup
+# DB_HOST_DEV = '35.193.223.145'
+DB_HOST_DEV = "127.0.0.1" # Using for local setup
 
 # ENV = ''
 # if os.environ.get('BRANCH') != 'master':
@@ -108,7 +108,7 @@ def load_user(user_name):
     db.close()
     if data is None:
         return None
-    print(data, User(*data))
+    # print(data, User(*data))
     return User(*data)
 
 
@@ -143,7 +143,9 @@ def register_user(user):
 
 @app.route('/')
 def index():
-    return render_template("hello.html")
+    if current_user.is_authenticated():
+        return redirect(url_for('home'))
+    return render_template("index.html")
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -182,7 +184,6 @@ def login():
     error = None
     if request.method == 'POST':
         test_user = User(request.form['username'], request.form['password'])
-        print(test_user)
 
         if authenticate_user(test_user):
             login_user(test_user)
@@ -238,9 +239,11 @@ def recommend():
     # interests = rec.get_user_interests()
     events = rec.get_events()
 
+    # Create set of interests
     interests = set()
     for e in events:
-        interests.add(e[6])
+        #  Extract interets from Event entity (assuming last attribute)
+        interests.add(e[-1])
 
     return render_template("recommendations.html", survey_results=list(interests), events=events)
 
@@ -260,8 +263,8 @@ def fill_user_tags(user, survey):
                         ]:
 
         for item in items:
-            query = "INSERT INTO " + ENV_DB + ".UserTags(username, tag, category) VALUES ('{}', '{}', '{}')".format(user.username, item, cname)
-
+            query = "INSERT INTO " + ENV_DB + ".UserTags(username, tag, category) VALUES ('{}', '{}', '{}') \
+            ON DUPLICATE KEY UPDATE tag=VALUES(tag), category=VALUES(category)".format(user.username, item, cname)
             cursor.execute(query)
 
     db.commit()
@@ -303,7 +306,7 @@ def survey():
     return render_template('survey.html', title='Survey', form=form)
 
 
-@app.route('/new_event', methods=['GET', 'POST'])
+@app.route('/create_event', methods=['GET', 'POST'])
 @login_required
 def create_event():
     if not current_user.email_verified:
@@ -317,12 +320,33 @@ def create_event():
         event = EventForm()
         form.populate_obj(event)
 
-        print(event.start)
+        # Create Event form submission
+        fill_event(current_user, event)
 
         return redirect(url_for('home'))
 
-    return render_template('event_form.html', title='New Event', form=form)
+    return render_template('create_event.html', title='Create Event', form=form)
 
+def fill_event(user, event):
+    """Form POST DB query for create_event.
+    """
+
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+
+    # Insert location of event into Locations table
+    location_query = "INSERT IGNORE INTO " + ENV_DB + ".Locations(lname, lat, lon, address_1, address_2, zip, city, state) \
+    VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(event.name, event.lat, event.lng, event.formatted_address, event.address_2, event.postal_code, event.sublocality, event.administrative_area_level_1_short)
+    cursor.execute(location_query)
+
+    # Get lid of last inserted locatiion, add event to Events table
+    lid = cursor.lastrowid
+    query = "INSERT INTO " + ENV_DB + ".Events(ename, description, start_date, end_date, num_cap, num_attending, lid) \
+    VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(event.event_name, event.description, event.start_date, event.end_date, event.cap, event.attending, lid)
+    cursor.execute(query)
+
+    db.commit()
+    db.close()
 
 def send_email(address, username):
     confirmation_url = 'gennyc-dev.appspot.com/emailConf/{}/{}'.format(randomKey, username)

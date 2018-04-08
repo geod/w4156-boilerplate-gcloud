@@ -2,35 +2,59 @@
 {% extends "base.html" %}
 {% block title %}Survey{% endblock %}
 {% block body %}
-<div class="row">
-    <div class="col-lg-12 well">
+<div class="mdl-modal row z-depth-1">
 
-      <div class="page-header">
-        <h2>Please answer the following questions</h2>
-      </div>
+    <h2>Your Interests</h2>
 
-      <div class="col-lg-10">
-        <form method="POST" action="" class="form form-horizontal" style="width:80%;margin-left:auto;margin-right:auto;">
+    <p>Let's get to know you better.</p>
+    <p>Please answer the following questions so we can help you find events.</p>
+
+    <form method="POST" action="" class="col s12" id="survey">
             {{ form.csrf_token }}
 
-            {{ render_field(form.food_and_drinks) }}
-            {{ render_field(form.sports) }}
-            {{ render_field(form.adrenaline)}}
-            {{ render_field(form.location)}}
-            {{ render_field(form.fitness)}}
-            {{ render_field(form.arts_and_culture)}}
-            {{ render_field(form.music)}}
+            <div class="input-field col s12">
+              {{ render_field(form.food_and_drinks) }}
+            </div>
 
-          <input class="btn btn-default" type="submit" value="Submit">
+            <div class="input-field col s12">
+              {{ render_field(form.sports) }}
+            </div>
 
+            <div class="input-field col s12">
+              {{ render_field(form.adrenaline)}}
+              <!-- <div class="form-group">
+                <label>
+                  <input type="checkbox" />
+                  <span>Do you like adrenaline adventures?</span>
+                </label>
+              </div> -->
+            </div>
+
+            <div class="input-field col s12">
+              {{ render_field(form.location)}}
+            </div>
+
+            <div class="input-field col s12">
+              {{ render_field(form.fitness)}}
+            </div>
+
+            <div class="input-field col s12">
+              {{ render_field(form.arts_and_culture)}}
+            </div>
+
+            <div class="input-field col s12">
+              {{ render_field(form.music)}}
+            </div>
+          <button class="btn waves-effect waves-light" type="submit">Submit</button>
         </form>
       </div>
 
     </div>
   </div>
 
+  {% if error %}
+  <p class="error"><strong>Error:</strong> {{ error }}
+  {% endif %}
+
 
 {% endblock %}
-
-
-

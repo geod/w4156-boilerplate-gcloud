@@ -4,8 +4,11 @@
 // === COLORS ===
 $GENBLUE: #0097c7cc;
 $GENBLUE-DARK: #0D546B;
+$GENBLUE-DARK-T: #0D546Bcc;
 $GENBLACK: rgba(0, 0, 0, 0.8);
 $GENWHITE-OFF: #f1f1f1;
+$GENRED: #d32f2f;
+$GENBLUE-BRIGHT: #1a87ab;
 
 body, html {
   height: 100%;
@@ -16,9 +19,23 @@ body {
   font-family: 'Roboto', Helvetica, sans-serif;
   background: linear-gradient(
   rgba(255, 0, 0, 0.0),
-  rgba(255, 0, 0, 0.0)
+  #00264691
   ), url('../img/newyork.jpg') no-repeat fixed center center;
   background-size: cover;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+
+  > .container {
+    flex: 1 0 auto;
+  }
+}
+
+.bg-container {
+  width: 100%;
+  height: 100%;
+  display: inline-table; // fix collapsing margin
+  background: $GENWHITE-OFF;
 }
 
 button, input[type="submit"], .btn {
@@ -44,10 +61,29 @@ nav {
   }
 }
 
+ul.sidenav {
+  li {
+    h1, h2, h3, h4, h5, h6 {
+      padding: 0 32px;
+    }
+
+    &:first-child {
+      background: $GENBLUE-BRIGHT;
+      color: white;
+      padding: 1rem 0;
+    }
+  }
+}
+
+footer.page-footer {
+  margin-top: -6px;
+}
+
 // Container override for main webapp pages
 .container.app-main {
   height: 100%;
   width: 100%;
+  display: inline-block; // fix collapsing margin
 
   .mdl-page {
     height: 100%;
@@ -56,11 +92,35 @@ nav {
   }
 }
 
+// === CUSTOM PAGE OVERRIDES ===
+form#survey, form#create_event {
+  text-align: left;
+
+  input#adrenaline {
+    position: static;
+    opacity: 1;
+    vertical-align: middle;
+    pointer-events: all;
+  }
+
+  input#location {
+    
+  }
+}
+
 // Form override
 form {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  [type="checkbox"]+span:not(.lever) {
+    font-size: .8rem;
+  }
+
+  li {
+    padding-bottom: 0;
+  }
 }
 
 .mdl-modal {
@@ -87,6 +147,16 @@ form {
 // Home page panel
 .panel-wrapper {
   // overflow: hidden !important;
+  &.index {
+    margin-bottom: 0;
+  }
+
+  .error {
+    background: $GENRED;
+    border-radius: 2px;
+    padding: 0.5rem 1rem;
+  }
+
   .panel {
     align-items: center;
     justify-content: center;
@@ -141,10 +211,16 @@ form {
 
     .login {
       background-color: $GENBLUE;
+      &:hover {
+        background-color: $GENBLUE-DARK-T;
+      }
     }
 
     .signin {
       background-color: $GENBLACK;
+      &:hover {
+        background-color: black;
+      }
     }
   }
 
@@ -168,10 +244,45 @@ li {
   padding-bottom: 25px;
 }
 
+// HIGHLIGHT FOR INTERESTS ON EVENTS PAGE
+span.interest {
+  background: $GENBLUE-BRIGHT;
+  border-radius: 2px;
+  color: white;
+  padding: .25rem 1rem;
+  // text-decoration-line: underline;
+  // text-decoration-style: dotted;
+}
+
+// === MEDIA QUERIES FOR LARGE SCREEN ===
 @media only screen and (max-width: 992px) {
   nav {
     .brand-logo {
       margin-left: 0;
+    }
+  }
+}
+
+// === MEDIA QUERIES FOR SMALL MOBILE SCREEN ===
+@media only screen and (max-width: 600px) {
+  nav {
+    height: 128px;
+
+    .brand-logo {
+      line-height: 128px;
+      font-size: 4rem;
+
+      .sidenav-trigger {
+        height: inherit;
+        line-height: inherit;
+        font-size: inherit;
+
+        i {
+          height: inherit;
+          line-height: inherit;
+          font-size: inherit;
+        }
+      }
     }
   }
 }
