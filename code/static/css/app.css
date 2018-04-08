@@ -8,6 +8,13 @@ body {
   font-family: 'Roboto', Helvetica, sans-serif;
   background: linear-gradient(rgba(255, 0, 0, 0), #00264691), url("../img/newyork.jpg") no-repeat fixed center center;
   background-size: cover;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+body > .container {
+  flex: 1 0 auto;
 }
 
 .bg-container {

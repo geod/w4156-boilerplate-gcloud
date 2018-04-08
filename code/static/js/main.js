@@ -3,4 +3,5 @@ $(document).ready(function() {
   $('select').formSelect()
   $('.sidenav').sidenav()
   $('.datepicker').datepicker()
+  $('#formatted_address').geocomplete({ details: 'form' })
 })
