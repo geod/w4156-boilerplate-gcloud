@@ -167,8 +167,10 @@ def create_listing():
 
         # disconnect from db after use
         db.close()
+        return redirect(url_for('static', filename='listings/index.html'))
 
-    return render_template('listings/index.html')
+
+    return render_template('/listform/index.html')
 
 
 @app.route('/listings')
