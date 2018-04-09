@@ -441,8 +441,8 @@ def add_group(group_name, users):
 
 
 @app.route('/groups')
+@login_required
 def group():
-
     groups = get_group_names(current_user)
     pending = {}
     accepted = {}
@@ -476,6 +476,24 @@ class CheckValidUser(Resource):
         else:
             return {}, 201
 api.add_resource(CheckValidUser, '/api/validate_username/<string:username>')
+
+class CheckValidUserExisting(Resource):
+    def get(self, group, username):
+        if (username == current_user.username):
+            return {}, 201
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM " + ENV_DB + ".Users WHERE username='" + username + "'")
+        data = cursor.fetchone()
+        if not data:
+            return {}, 201
+        cursor.execute("SELECT * FROM " + ENV_DB + ".Groups WHERE groupName='"+ group +"' AND username='" + username + "'")
+        data = cursor.fetchone()
+        if data:
+            return {}, 201
+        else:
+            return {}, 200
+api.add_resource(CheckValidUserExisting, '/api/validate_username/existing/<string:group>/<string:username>')
 
 class CheckValidGroupName(Resource):
     def get(self, group_name):

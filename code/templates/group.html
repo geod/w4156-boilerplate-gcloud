@@ -15,7 +15,7 @@
             <p></p>
           </div>
           <div class="card-action">
-            <a href="#modal2" class="modal-trigger">Add users</a>
+            <a onclick="cur_group='{{group}}';newEditModal()" href="#modal2" class="modal-trigger">Add users</a>
             <a href="#">See recommendations</a>
           </div>
         </div>
@@ -56,7 +56,7 @@
     <a onclick="newgroup()" href="#modal1" title="create a new group" class="btn-floating btn-large waves-effect waves-light blue-grey modal-trigger"><i class="material-icons">add</i></a>
   </div>
 
-  <div id="modal2" class="modal">
+  <div id="modal2" class="modal add">
     <div class="modal-content">
       <h4>Add users to group</h4>
       <br>
@@ -75,12 +75,12 @@
     </div>
 
     <div class="modal-footer">
-      <button onclick="addUsers()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Add</a>
+      <button onclick="addUsers()" href="#" class="waves-effect waves-green btn-flat">Add</a>
     </div>
   </div>
 
   <!-- Modal -->
-  <div id="modal1" class="modal">
+  <div id="modal1" class="modal create">
     <div class="modal-content">
       <h4>Create group</h4>
       <br>
@@ -101,7 +101,7 @@
       </div>
       <div id="group_users_container"></div>
       <div class="modal-footer">
-        <button onclick="createGroup()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Create</a>
+        <button onclick="createGroup()" href="#" class="waves-effect waves-green btn-flat">Create</a>
       </div>
 
     </div>
@@ -115,6 +115,7 @@
 
     var ng_usernames = []
     var add_usernames = []
+    var cur_group = ''
 
     function add_user_new_group() {
       var input = document.getElementById('username_ng')
@@ -126,11 +127,7 @@
           if (this.readyState == 4) {
             if (this.status == 200) {
               ng_usernames.push(input.value)
-              var injected_html = ""
-              for (var i = 0; i < ng_usernames.length; i++) {
-                injected_html += "<div class='row'>" + ng_usernames[i] + "</div>"
-              }
-              container.innerHTML = injected_html
+              renderUsernames(container)
               input.value = ''
               error.innerHTML = ''
             } else {
@@ -148,7 +145,24 @@
 
     function newgroup() {
       ng_usernames = []
+      var container = document.getElementById('group_users_container')
+      renderUsernames(container)
     }
+
+    function newEditModal() {
+      add_usernames = []
+      var container = document.getElementById('group_users_container_ed')
+      renderUsernames(container)
+    }
+
+    function renderUsernames(container) {
+      var injected_html = ""
+      for (var i = 0; i < ng_usernames.length; i++) {
+        injected_html += "<div class='row'>" + ng_usernames[i] + "</div>"
+      }
+      container.innerHTML = injected_html
+    }
+
 
     function addGroup() {
       var groupName = document.getElementById('groupname_ng')
@@ -172,14 +186,20 @@
 
     function createGroup() {
       var groupName = document.getElementById('groupname_ng').value
-      if (groupName == '' || ng_usernames.length == 0) return
       var error = document.getElementById('modal_ng_error')
+      if (ng_usernames.length == 0) {
+        error.innerHTML = "add some users to your group"
+        return
+      }
+      var elem = document.querySelector('.modal.create')
+      var modal = M.Modal.getInstance(elem)
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.onreadystatechange = function() {
         if (this.readyState == 4) {
           if (this.status == 200) {
             addGroup()
             error.innerHTML = ""
+            modal.close()
           } else {
             console.log('error group name bad')
             error.innerHTML = "sorry, that group name is taken"
@@ -247,11 +267,23 @@
             }
           }
         };
-        url = 'api/validate_username/' + input.value
+        url = 'api/validate_username/existing/' + cur_group + '/' + input.value
         xmlHttp.open('GET', url, true)
         xmlHttp.setRequestHeader('Content-Type', 'text/plain')
         xmlHttp.send();
       }
+    }
+
+    function addUsers() {
+      var error = document.getElementById('edit_users_error')
+      if (add_usernames.length == 0) {
+        error.innerHTML = "add some users to your group"
+        return
+      }
+      var elem = document.querySelector('.modal.add')
+      var modal = M.Modal.getInstance(elem)
+
+      modal.close()
     }
 
 
