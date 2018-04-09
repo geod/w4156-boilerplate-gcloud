@@ -9,6 +9,14 @@ class Recommend:
         self.user = user
         self.most_interested = []
 
+    def get_user_interests_with_categories(self):
+        db = main.connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute("SELECT tag, category FROM " + ENV_DB + ".UserTags WHERE username='" + self.user.username + "'")
+        data = cursor.fetchall()
+        db.close()
+        return list((i[0], i[1]) for i in data)
+
     def get_user_interests(self):
         db = main.connect_to_cloudsql()
         cursor = db.cursor()

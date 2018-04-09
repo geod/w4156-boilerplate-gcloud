@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %} Group {% endblock %}
+{% block body %}
+<div class="container">
+  <div class="col s12">
+    <div class="card blue-grey darken-1">
+      <div class="card-content white-text">
+        <span class="card-title">{{user.fname}} {{user.lname}}</span>
+        <br><br>
+        <p text-align:center>Interests:
+        {% for tag in tags%}
+        <br>
+        {{tag[0]}} - {{tag[1]}}
+        <br>
+          <!-- <div class="row"><div>{{tag[0]}} - {{tag[1]}}</div></div> -->
+        {% endfor %}
+        </p>
+      </div>
+
+      <div class="card-action">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

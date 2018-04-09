@@ -101,13 +101,17 @@ def authenticate_user(user):
         return True
     return False
 
-@login_manager.user_loader
-def load_user(user_name):
+def get_user_from_username(user_name):
     db = connect_to_cloudsql()
     cursor = db.cursor()
     cursor.execute("SELECT username, password, email, fname, lname, dob, timezone, email_verified FROM " + ENV_DB + ".Users WHERE username='" + user_name + "'")
     data = cursor.fetchone()
     db.close()
+    return data
+
+@login_manager.user_loader
+def load_user(user_name):
+    data = get_user_from_username(user_name)
     if data is None:
         return None
     # print(data, User(*data))
@@ -540,6 +544,18 @@ class RespondToRequest(Resource):
 api.add_resource(RespondToRequest, '/api/respond_to_request/<string:group_name>/<string:response>')
 
 
+@app.route('/profile/<string:username>')
+@login_required
+def profile(username):
+    data = get_user_from_username(username)
+    if data is None:
+        return {}, 500
+    user = User(*data)
+    r = recommender.Recommend(user)
+
+    tags = r.get_user_interests_with_categories()
+    print (tags)
+    return render_template('profile.html', user=user, tags=tags)
 
 @app.errorhandler(401)
 def page_not_found(e):
