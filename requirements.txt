@@ -16,3 +16,4 @@ wtforms_components
 python-dateutil
 flask-restful
 apscheduler
+py-ms-cognitive

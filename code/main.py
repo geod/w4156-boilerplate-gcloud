@@ -25,6 +25,7 @@ from flask_login import LoginManager, login_required, login_user, logout_user, c
 from flask_restful import Resource, Api
 import datetime
 import jinja2
+from py_ms_cognitive import PyMsCognitiveImageSearch
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -38,8 +39,8 @@ CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 # CLOUDSQL_USER = "kayvon"
 # CLOUDSQL_PASSWORD = "kayvon"
 
-DB_HOST_DEV = '35.193.223.145'
-# DB_HOST_DEV = "127.0.0.1" # Using for local setup
+# DB_HOST_DEV = '35.193.223.145'
+DB_HOST_DEV = "127.0.0.1" # Using for local setup
 
 # ENV = ''
 # if os.environ.get('BRANCH') != 'master':
@@ -58,6 +59,8 @@ MOCK_EVENTS = [Event('Rollerblading Tour of Central Park', 2018, 3, 20, 'Join th
 
 api = Api(app)
 randomKey= '472389hewhuw873dsa4245193ej23yfehw'
+
+BING_KEY = "50e4e5baced54241a030d0f5b56bee7c" 
 
 
 def connect_to_cloudsql():
@@ -554,13 +557,32 @@ def profile(username):
     r = recommender.Recommend(user)
 
     tags = r.get_user_interests_with_categories()
-    print (tags)
-    return render_template('profile.html', user=user, tags=tags)
+    # return render_template('profile.html', user=user, join_date=db_date_to_normal(user.join_date), img_urls=grab_tag_pictures([tag[0] for tag in tags]), tags=tags)
+
+    return render_template('profile.html', user=user, join_date=db_date_to_normal(user.join_date), tags=tags)
+
+
 
 @app.errorhandler(401)
 def page_not_found(e):
     error = 'You must be logged in to view this page.'
     return render_template('error.html', error=error)
+
+
+def db_date_to_normal(db_date):
+    return db_date.strftime("%B %d, %Y")
+
+
+def grab_tag_pictures(tags):
+    pass
+    # img_urls = {}
+    # for tag in tags:
+        # search_service = PyMsCognitiveImageSearch(BING_KEY, tag)
+        
+        # img_result = search_service.search(limit=1, format='json') #1-50
+
+        # img_urls[tag] = img_result[0]['thumbnail_url']
+    # return img_urls
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -2,7 +2,7 @@
 {% block title %} Group {% endblock %}
 {% block body %}
 <div class="container">
-  <div class="col s12">
+<!--   <div class="col s12">
     <div class="card blue-grey darken-1">
       <div class="card-content white-text">
         <span class="card-title">{{user.fname}} {{user.lname}}</span>
@@ -12,7 +12,6 @@
         <br>
         {{tag[0]}} - {{tag[1]}}
         <br>
-          <!-- <div class="row"><div>{{tag[0]}} - {{tag[1]}}</div></div> -->
         {% endfor %}
         </p>
       </div>
@@ -21,7 +20,81 @@
 
       </div>
     </div>
-  </div>
+  </div> -->
+
+    <div id="profile-page" class="section">
+        <!-- profile-page-header -->
+        <div id="profile-page-header" class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator profile-bg" src="../static/img/newyork.jpg" alt="user background">                    
+            </div>
+            <figure class="card-profile-image">
+                <img src="../static/img/default_profile.png" alt="profile image" class="circle z-depth-2 responsive-img activator">
+            </figure>
+            <div class="card-content">
+              <div class="row">                    
+                <div class="col s3 offset-s2">                        
+                    <h4 class="card-title grey-text text-darken-4">{{user.fname}} {{user.lname}}</h4>
+                    <p class="medium-small grey-text">{{user.username}}</p>  
+                </div>
+                <div class="col s3 center-align">
+                    <h4 class="card-title grey-text text-darken-4">{{join_date}}</h4>
+                    <p class="medium-small grey-text">Member since</p>                        
+                </div>                 
+                <div class="col s4 center-align">
+                    <h4 class="card-title grey-text text-darken-4">{{user.email}}</h4>
+                    <p class="medium-small grey-text">Contact info</p>                        
+                </div>                    
+                </div>
+              </div>
+            </div>
+            
+        </div>
+        <!-- / profile-page-header -->
+
+        <!-- profile-page-content -->
+        <div id="profile-page-content" class="row">
+            <!-- profile-page-sidebar-->
+            <div id="profile-page-sidebar" class="col s12 m4">
+                <!-- Profile About  -->
+                <div class="card light-blue">
+                    <div class="card-content white-text">
+                        <span class="card-title">About Me</span>
+                    </div>                  
+                </div>
+                <!-- Profile About  -->
+
+            <!-- Profile About Details  -->
+                <ul id="profile-page-about-details" class="collection z-depth-1">
+                    <li class="collection-item">
+                        <div class="row">
+                            <div class="col s5 grey-text darken-1"><i class="mdi-social-domain"></i>Timezone</div>
+                            <div class="col s7 grey-text text-darken-4 right-align"> UTC +{{user.timezone}}</div>
+                        </div>
+                    </li>
+                    <li class="collection-item">
+                        <div class="row">
+                            <div class="col s5 grey-text darken-1"><i class="mdi-social-cake"></i> Birthday</div>
+                            <div class="col s7 grey-text text-darken-4 right-align">{{user.dob}}</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!--/ Profile About Details  -->
+
+            <div class="col s12 m8">
+                {% for tag in tags%}
+                    <div class="card light-blue">
+                        <div class="card-content white-text">
+                            <span class="card-title">{{tag[0]}}</span>
+                        </div>                  
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- profile-page-content -->
+    <div> 
 </div>
 
 
