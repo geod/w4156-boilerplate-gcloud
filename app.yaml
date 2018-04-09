@@ -13,14 +13,17 @@ threadsafe: yes
 
 # Handlers define how to route requests to your application.
 handlers:
+- url: /jobs/.*
+  script: code.jobs.app
+  login: admin
 - url: .*  # This regex directs all routes to main.app
   script: code.main.app
 
 # [START env_variables]
 env_variables:
-    CLOUDSQL_CONNECTION_NAME: <YOUR_CONNECTION_NAME>
-    CLOUDSQL_USER: <YOUR_USERNAME>
-    CLOUDSQL_PASSWORD: <YOUE_PASSWORD>
+    CLOUDSQL_CONNECTION_NAME: gennyc-dev:us-central1:mysqldev
+    CLOUDSQL_USER: kayvon
+    CLOUDSQL_PASSWORD: kayvon
 # [END env_variables]
 
 libraries:

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %} Recommendations {% endblock %}
+{% block body %}
+<div class="mdl-modal row">
+  <div class="col s12">
+
+    <h3 class="recommendations-header">Find your next experience.</h3>
+      <h6 style="font-weight: bold;">Filters</h6><br>
+
+    <form action="/search" method="POST">
+        <div class="small-10 columns">
+            <input type="text" placeholder="Search for an event" id="search" name="search" required/>
+        </div>
+    </form>
+
+    {% for interest in survey_results %}
+      <!--<h6>You seem to like <span class="interest">{{ interest }}</span></h6>-->
+
+    <!--<h6>Events that have to do with <span class="interest">{{ interest }}:</span></h6>-->
+    <br>
+
+      {% for eid, ename, description, start_date, end_date, num_cap, num_attending, lname, address_1, tag, lat, lon in events %}
+      {% if tag == interest %}
+
+      <div class="card horizontal">
+        <div class="card-image">
+          <img src="../static/img/{{ interest }}.jpg">
+        </div>
+        <div class="card-stacked">
+          <div class="card-content">
+            <ul>
+              <li><h6> {{start_date}} to {{end_date}}</h6></li>
+              <li><h6><a href="#" id="unique-link">{{ename}}</a></h6></li>
+              <li>{{num_attending}}/{{num_cap}} filled</li>
+            </ul>
+            <div id="recommendations" style="color: darkgrey; float: right;">Because you chose
+                <span class="interest">{{ interest }}</span>
+          </div>
+          </div>
+          <div class="card-action">
+            <a class="button modal-trigger" href="#map" data-latLng="{{ lat }}, {{lon}}">Address: {{ address_1 }}</a>
+          </div>
+        </div>
+      </div>
+
+      <div id="map" class="modal">
+        <div class="modal-content">
+          <h4>{{ lname }}</h4>
+          <p>{{ address_1 }}</p>
+
+          <iframe class="map"
+                    width="100%"
+                    height="450px"
+                    frameborder="0"
+                    style="border:0">
+          </iframe>
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+      </div>
+
+      <script type="text/javascript">
+      $(document).ready(function(){
+
+
+      }).on("click", ".button", function(e) {
+        e.preventDefault();
+        var latln = jQuery(this).attr("data-latLng");
+        console.log(latln)
+        initialize(latln);
+
+        function initialize(latln) {
+          var num = Number(latln)
+          console.log(num);
+
+          $('.map')
+          .attr('src',
+          'https://www.google.com/maps/embed/v1/place?key=AIzaSyDqQfmy2tRlFybt3yggtXeWbrKRLO91amA&q='+{{lat}}+","+{{lon}});
+        }
+
+      });
+      </script>
+      {% endif %}
+      {% endfor %}
+
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}{% endblock %}</title>
+
+  <!-- FONTS -->
+  <link href="https://fonts.googleapis.com/css?family=Allerta+Stencil" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+  <!-- MATERIALIZE UI Framework -->
+  <!-- Compiled and minified CSS -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"
+  <!-- Compiled and minified JavaScript -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
+  <!-- MAPS AUTOCOMPLETE API -->
+  <script src="http://maps.googleapis.com/maps/api/js?libraries=places"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.js"></script>
+
+  <script type=text/javascript>
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+  </script>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+
+</head>
+<body>
+
+  <!-- TODO@IVY: Modify sidebar navigation to be persistent sidebar menu for webapp -->
+  <!-- Navigation bar IF LOGGED IN -->
+  {% if current_user.is_authenticated() or request.path == "/login" or request.path == "/register" %}
+  <header class="mdl-layout__header mdl-layout__header--transparent">
+    <!-- Navigation -->
+    <nav>
+      <div class="nav-wrapper">
+        <a href="/" class="brand-logo">genNYC</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+          {% if current_user.is_authenticated() %}
+          <li><a href="/home">Home</a></li>
+          <li><a href="recommendations">Recommendations</a></li>
+          <li><a href="create_event">Create New Event</a></li>
+          <li><a href="survey">Interest Survey</a></li>
+          <li><a href="logout">Logout</a></li>
+          {% else %}
+          <li><a href="/">Home</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    <ul class="sidenav" id="mobile-demo">
+      {% if current_user.is_authenticated() %}
+      <li><h5>Hello {{ current_user.username }}</h5></li>
+      <li><a href="/home">Home</a></li>
+      <li><a href="recommendations">Recommendations</a></li>
+      <li><a href="create_event">Create New Event</a></li>
+      <li><a href="survey">Interest Survey</a></li>
+      <li><a href="logout">Logout</a></li>
+      {% else %}
+      <li><a href="/">Home</a></li>
+      {% endif %}
+    </ul>
+  </header>
+  {% endif %}
+
+  <!-- Main content -->
+  {% if request.path != "/" and request.path != "/login" and request.path != "/register" %}
+  <div class="bg-container">
+    <div class="container app-main">
+      {% else %}
+      <div class="container">
+        {% endif %}
+        {% block body %}{% endblock %}
+      </div>
+      {% if request.path != "/" and request.path != "/login" and request.path != "/register" %}
+    </div>
+  </div>
+  {% endif %}
+
+  <footer class="page-footer blue-grey darken-3">
+    <div class="footer-copyright blue-grey darken-4">
+      <div class="container">
+        © 2018 genNYC Team | COMS4156 ASE
+        <a class="grey-text text-lighten-4 right" href="https://github.com/js4785/gennyc">Github Project</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

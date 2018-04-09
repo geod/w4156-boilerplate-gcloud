@@ -2,3 +2,9 @@
 *.DS_Store
 *.pyc
 lib/*
+log.md
+setup.cfg
+circle.yml
+cloud_sql_proxy
+textrank_input.txt
+textrank_output.txt

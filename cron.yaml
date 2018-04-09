@@ -1,0 +1,13 @@
+cron:
+- description: "Sunday event recommendation blast"
+  url: /jobs/mail/queue_emails
+  schedule: every monday 11:30
+  timezone: US/Eastern
+  
+# - description: "test"
+#   url: /jobs/mail/test
+#   schedule: every monday 5:40
+
+# - description: "test job"
+#   url: /jobs/test
+#   schedule: every 2 minutes

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %} Search {% endblock %}
+{% block body %}
+    <h1>Search</h1>
+    <form action="/search" method="POST">
+        <div class="small-10 columns">
+            <input type="text" placeholder="Search for an event" id="search" name="search" required/>
+        </div>
+        <div class="small-2 columns">
+            <button class="postfix search-button" type="submit">Search</button>
+        </div>
+    </form>
+    {% block results %}{% endblock %}
+{% endblock %}

@@ -1,0 +1,14 @@
+eid,tag,category
+1,wine,food_drink
+1,romantic,food_drink
+1,indoors,location
+2,indoors,location
+2,beer,food_drink
+2,bbq,food_drink
+2,football,sports
+3,museum,arts_culture
+3,trendy,arts_culture
+4,outdoors,location
+5,pop,music
+5,rock,music
+5,outdoors,location

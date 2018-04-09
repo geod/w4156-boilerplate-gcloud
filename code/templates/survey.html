@@ -1,0 +1,60 @@
+{% from "macro.html" import render_field %}
+{% extends "base.html" %}
+{% block title %}Survey{% endblock %}
+{% block body %}
+<div class="mdl-modal row z-depth-1">
+
+    <h2>Your Interests</h2>
+
+    <p>Let's get to know you better.</p>
+    <p>Please answer the following questions so we can help you find events.</p>
+
+    <form method="POST" action="" class="col s12" id="survey">
+            {{ form.csrf_token }}
+
+            <div class="input-field col s12">
+              {{ render_field(form.food_and_drinks) }}
+            </div>
+
+            <div class="input-field col s12">
+              {{ render_field(form.sports) }}
+            </div>
+
+            <div class="input-field col s12">
+              {{ render_field(form.adrenaline)}}
+              <!-- <div class="form-group">
+                <label>
+                  <input type="checkbox" />
+                  <span>Do you like adrenaline adventures?</span>
+                </label>
+              </div> -->
+            </div>
+
+            <div class="input-field col s12">
+              {{ render_field(form.location)}}
+            </div>
+
+            <div class="input-field col s12">
+              {{ render_field(form.fitness)}}
+            </div>
+
+            <div class="input-field col s12">
+              {{ render_field(form.arts_and_culture)}}
+            </div>
+
+            <div class="input-field col s12">
+              {{ render_field(form.music)}}
+            </div>
+          <button class="btn waves-effect waves-light" type="submit">Submit</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  {% if error %}
+  <p class="error"><strong>Error:</strong> {{ error }}
+  {% endif %}
+
+
+{% endblock %}

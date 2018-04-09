@@ -5,4 +5,15 @@
 #
 # Note: The `lib` directory is added to `sys.path` by `appengine_config.py`.
 Flask==0.10
+Werkzeug<0.13.0,>=0.12.0
 MySQL-python
+google-api-python-client
+google-cloud
+flask-login==0.2.7
+flask-wtf
+wtforms
+wtforms_components
+python-dateutil
+flask-restful
+apscheduler
+py-ms-cognitive
