@@ -8,6 +8,8 @@ except ImportError:
     logging.warning('google app engine unable to be imported')
 
 from flask import Flask, render_template, redirect, url_for, request, make_response
+import datetime
+
 app = Flask(__name__)
 app.debug = True
 
@@ -173,11 +175,13 @@ def register():
 
     return render_template('register.html', error = error)
 
+
 @app.route('/verify', methods=['GET','POST'])
 def verify():
     if (request.method == 'POST'):
         send_email(current_user.email, current_user.username)
     return render_template('verify_email.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -214,11 +218,6 @@ def home():
 
 @app.route('/explore')
 def explore_events():
-    # q = {
-    #     "Wine tastery": "2843 Broadway New York, NY 10027",
-    #      "Picnic at the park": "Morningside Dr, New York, NY 10026",
-    #      "Coffee date": "2194 Frederick Douglass Blvd, New York, NY 10019"
-    # }
 
     return render_template("explore.html")
 
@@ -238,9 +237,23 @@ def recommend():
     interests = set()
     for e in events:
         #  Extract interets from Event entity (assuming last attribute)
-        interests.add(e[-1])
+        interests.add(e[-3])
+
+    for event_index, e in enumerate(events):
+        events[event_index] = helper_strip_date(e)
+
+    print(events)
 
     return render_template("recommendations.html", survey_results=list(interests), events=events)
+
+
+def helper_strip_date(e):
+    for idx, x in enumerate(e):
+        if type(x) is datetime.datetime:
+            e = list(e)
+            e[idx] = x.strftime('%B %d %I:%M %p')
+            e = tuple(e)
+    return e
 
 
 def fill_user_tags(user, survey):
@@ -322,6 +335,7 @@ def create_event():
 
     return render_template('create_event.html', title='Create Event', form=form)
 
+
 def fill_event(user, event):
     """Form POST DB query for create_event.
     """
@@ -342,6 +356,7 @@ def fill_event(user, event):
 
     db.commit()
     db.close()
+
 
 def send_email(address, username):
     confirmation_url = 'gennyc-dev.appspot.com/emailConf/{}/{}'.format(randomKey, username)
