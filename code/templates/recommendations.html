@@ -18,66 +18,71 @@
 
     <!--<h6>Events that have to do with <span class="interest">{{ interest }}:</span></h6>-->
     <br>
-      <div class="block" style="background-color: gainsboro; overflow: hidden;">
 
-    <ul>
-      {% for eid, ename, description, start_date, end_date, num_cap, num_attending, tag, lat, lon in events %}
+      {% for eid, ename, description, start_date, end_date, num_cap, num_attending, lname, address_1, tag, lat, lon in events %}
       {% if tag == interest %}
-        <li><div class="img"
-                 style="position:relative; height:100px; width:50%; overflow:hidden float:right; display:inline;">
-            <img src="../static/img/{{ interest }}.jpg" align="right"
-                 style="width: 300px; height: auto; overflow: hidden; display:inline;"/>
-        </div></li>
-        <li><div class="date"
-                 style="width: 10%; height: 100%; display:table-cell; float: left;
-                 padding-right: 10px; border-right: solid black 2px;">
-            <h6> {{start_date}} to {{end_date}}</h6>
+
+      <div class="card horizontal">
+        <div class="card-image">
+          <img src="../static/img/{{ interest }}.jpg">
         </div>
-        <li><div id="name" style=" margin-top: -60000px; display: inline-block;">
-          <h6><a href="#" id="unique-link">{{ename}}</a></h6>
-        </div>
-        <li>{{num_attending}}/{{num_cap}} filled</li>
-
-      <li><a href="#" class="button" data-latLng="{{ lat }}, {{lon}}">Address</a>
-        <br><br><iframe class="map"
-                width="600"
-                height="450"
-                frameborder="0"
-                style="border:0">
-        </iframe>
-
-        <script type="text/javascript">
-            $(document).ready(function(){
-                    $('.map').hide();
-
-                }).on("click", ".button", function(e) {
-                    e.preventDefault();
-                    var latln = jQuery(this).attr("data-latLng");
-                    console.log(latln)
-                    initialize(latln);
-
-                    function initialize(latln) {
-                        var num = Number(latln)
-                        console.log(num);
-
-                        $('.map')
-                            .attr('src',
-                            'https://www.google.com/maps/embed/v1/place?key=AIzaSyDqQfmy2tRlFybt3yggtXeWbrKRLO91amA&q='+{{lat}}+","+{{lon}});
-                        $('.map').show();
-                    }
-
-                });
-                </script>
-      </li>
-      {% endif %}
-      {% endfor %}
-    </ul>
-
-          <div id="recommendations" style="color: darkgrey; float: right;">Because you chose
-              <span class="interest">{{ interest }}</span>
+        <div class="card-stacked">
+          <div class="card-content">
+            <ul>
+              <li><h6> {{start_date}} to {{end_date}}</h6></li>
+              <li><h6><a href="#" id="unique-link">{{ename}}</a></h6></li>
+              <li>{{num_attending}}/{{num_cap}} filled</li>
+            </ul>
+            <div id="recommendations" style="color: darkgrey; float: right;">Because you chose
+                <span class="interest">{{ interest }}</span>
+          </div>
+          </div>
+          <div class="card-action">
+            <a class="button modal-trigger" href="#map" data-latLng="{{ lat }}, {{lon}}">Address: {{ address_1 }}</a>
+          </div>
         </div>
       </div>
 
+      <div id="map" class="modal">
+        <div class="modal-content">
+          <h4>{{ lname }}</h4>
+          <p>{{ address_1 }}</p>
+
+          <iframe class="map"
+                    width="100%"
+                    height="450px"
+                    frameborder="0"
+                    style="border:0">
+          </iframe>
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+      </div>
+
+      <script type="text/javascript">
+      $(document).ready(function(){
+
+
+      }).on("click", ".button", function(e) {
+        e.preventDefault();
+        var latln = jQuery(this).attr("data-latLng");
+        console.log(latln)
+        initialize(latln);
+
+        function initialize(latln) {
+          var num = Number(latln)
+          console.log(num);
+
+          $('.map')
+          .attr('src',
+          'https://www.google.com/maps/embed/v1/place?key=AIzaSyDqQfmy2tRlFybt3yggtXeWbrKRLO91amA&q='+{{lat}}+","+{{lon}});
+        }
+
+      });
+      </script>
+      {% endif %}
+      {% endfor %}
 
     {% endfor %}
   </div>

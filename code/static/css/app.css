@@ -97,6 +97,12 @@ form li {
   padding-bottom: 0;
 }
 
+.card.horizontal .card-image img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
 .mdl-modal {
   background-color: #ffffffe8;
   width: 70%;

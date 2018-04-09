@@ -247,6 +247,8 @@ def recommend():
     for event_index, e in enumerate(events):
         events[event_index] = helper_strip_date(e)
 
+    print(events)
+
     return render_template("recommendations.html", survey_results=list(interests), events=events)
 
 
