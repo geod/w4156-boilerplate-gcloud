@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css" />
+  <link rel="stylesheet" href="https://cdn.rawgit.com/kybarg/mdl-selectfield/mdl-menu-implementation/mdl-selectfield.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
+  <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"> </script>
+  	<script src="https://cdn.rawgit.com/kybarg/mdl-selectfield/mdl-menu-implementation/mdl-selectfield.min.js"></script>	
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="../listings/style.css">
+  <title>Settings | CU@Lunch</title>
+</head>
+
+<body class="dotbg">
+	<div class="mdl-layout mdl-js-layout dotbg">
+	  <header class="mdl-layout__header mdl-layout__header--transparent gradientbg">
+	    <div class="mdl-layout__header-row">
+	      <!-- Title -->
+	      <span class="mdl-layout-title">Settings</span>
+	      <!-- Add spacer, to align navigation to the right -->
+	      <div class="mdl-layout-spacer"></div>
+	      <!-- Navigation -->
+	      <nav class="mdl-navigation">
+	      	<a class="mdl-navigation__link" href="../listings/index.html">Home</a>
+	        <a class="mdl-navigation__link" href="">Settings</a>
+	        <a class="mdl-navigation__link" href="../index.html">Logout</a>
+	      </nav>
+	    </div>
+	  </header>
+	  <div class="mdl-layout__drawer">
+	    <span class="mdl-layout-title">Navigation</span>
+	    <nav class="mdl-navigation">
+	      <a class="mdl-navigation__link" href="">My Profile</a>
+	      <a class="mdl-navigation__link" href="../listings/index.html">All Listings</a>
+	      <a class="mdl-navigation__link" href="">Settings</a>
+	    </nav>
+	  </div>
+	  <main class="mdl-layout__content">
+
+	    <div class="container mdl-grid">
+
+	      <div class='mdl-cell mdl-cell--4-col'></div>
+
+	      <div class='mdl-cell mdl-cell--4-col' >
+	      	<div class="mdl-card mdl-shadow--2dp settings-card">
+	      		  <div class="mdl-card__title">
+				    <h2 class="mdl-card__title-text">Edit Settings</h2>
+				  </div>
+			<form action="#">
+			    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+				    <input class="mdl-textfield__input" type="text" id="name" value="Adrian Garza">
+				    <label class="mdl-textfield__label" for="name">Name</label>
+			    </div>
+
+			   	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+				    <input class="mdl-textfield__input" type="text" id="uni" value="ahg2142">
+				    <label class="mdl-textfield__label" for="uni">UNI</label>
+			    </div>
+
+			   	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+				    <input class="mdl-textfield__input" type="password" id="password" value="don't">
+				    <label class="mdl-textfield__label" for="password">Password</label>
+			    </div>
+
+			    <div class="mdl-selectfield mdl-js-selectfield">
+			        <select class="mdl-selectfield__select" id="school" name="School" value="Columbia">
+			          <option value=""></option>
+			          <option value="columbia">Columbia</option>
+			          <option value="barnard">Barnard</option>
+			        </select>
+			        <label class="mdl-selectfield__label" for="school">School</label>
+		        </div>
+
+		       	<div class="mdl-selectfield mdl-js-selectfield">
+			        <select class="mdl-selectfield__select" id="year" name="Year" value="Senior">
+			          <option value=""></option>
+			          <option value="freshman">Freshman</option>
+			          <option value="sophomore">Sophomore</option>
+			          <option value="junior">Junior</option>
+			          <option value="senior">Senior</option>
+			        </select>
+			        <label class="mdl-selectfield__label" for="year">Year</label>
+		        </div>
+
+			   	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+				    <input class="mdl-textfield__input" type="text" id="interests" maxlength="120" value="running, hiking, complaining about things">
+				    <label class="mdl-textfield__label" for="interests">Interests</label>
+			    </div>
+
+			    <div class="mdl-textfield mdl-js-textfield">
+				    <textarea class="mdl-textfield__input" type="text" rows="4" id="bio">I finished all my core requirements like a good boy</textarea>
+				    <label class="mdl-textfield__label" for="bio">Short Bio</label>
+				</div>
+			</form>
+
+			<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent gradientbg" id="register-button">
+			  	Update Settings
+			</button>
+	      	</div>
+	      </div>
+
+	      <div class="mdl-cell mdl-cell--4-col"></div>
+
+	    </div>
+
+
+
+
+
+	    <div class="container mdl-grid">
+
+      <div class='mdl-cell mdl-cell--3-col'></div>
+
+      <div class='mdl-cell mdl-cell--6-col' >
+          <ul id="post-container">
+            <li>
+                <div class="mdl-card mdl-shadow--2dp posting-title">
+                  <div class="mdl-card__title">
+                    <h2 class='mdl-card__title-text'>Your Listings</h2>
+                </div>
+              </li>
+              <li>
+                <div class="mdl-card mdl-shadow--2dp posting" onclick="expandPost(this);">
+                  <div class="mdl-card__title lunch">
+                    <h2 class='mdl-card__title-text'>Wednesday, 12:30 PM</h2>
+                  </div>
+                  <div class="mdl-card__supporting-text post-description">
+                    Offered by: Adrian Garza
+                  </div>
+                  <div class="panel-hidden">
+                    <div class="personal-info">
+                      <div class="mdl-card__supporting-text info-list">
+                        <h3>Adrian Garza</h3>
+                        <p><b>School: </b>Columbia College</p>
+                        <p><b>Year: </b>Senior</p>
+                        <p><b>Interests: </b>Running, hiking, complaining about things</p>
+                        <p><b>Bio: </b>I'm a second-semester senior who has completed all his core requirements like a good boy</p>
+                      </div>
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="mailto:ahg2142@columbia.edu">
+                          ahg2142@columbia.edu
+                        </a>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent redbg">
+						  	Delete Listing
+						</button>
+                    </div>
+                  </div>
+
+                  <i class="material-icons bottomright expander" onclick="contractPost(this);">expand_more</i>
+                </div>
+              </li>
+          </ul>
+      </div>
+
+      <div class='mdl-cell mdl-cell--3-col'></div>
+
+    </div>
+	</main>
+	</div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js "></script>
+    <script src="../listings/listings.js"></script>
+</body>
+</html>

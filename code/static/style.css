@@ -1,0 +1,86 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-image: url("img/bg.jpg");
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+#register-container, #landing-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#title-container {
+    max-width: 50%;
+    text-align: center;
+}
+
+#register-card {
+    max-width: 50%;
+    padding: 2em;
+    animation: fade-in .5s;
+}
+
+@keyframes fade-in {
+  from {
+    transform: translateY(80px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+h1, h2, h3 {
+    font-family: "Fira Sans Condensed", sans-serif;
+}
+
+h3 {
+    font-weight: bold;
+}
+
+#bio {
+    resize: none;
+}
+
+.fullpage {
+    height: 100vh;
+}
+
+.title {
+    font-size: 64pt;
+    font-family: "Fira Sans Condensed", sans-serif;
+    border: 5px solid white;
+    padding: 1rem 3rem;
+}
+
+#landing-container {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='black' fill-opacity='0.5' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+}
+
+#title-container {
+    color: white;
+}
+
+#startbutton {
+    color: white !important;
+}
+
+#startbutton .mdl-ripple {
+    background: white;
+}
+
+#register-button {
+    background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.error          { 
+    background: #f0d6d6; padding: 0.5em; 
+}

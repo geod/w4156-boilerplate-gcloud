@@ -14,6 +14,9 @@ machine:
 
     # Replace this with your project ID
     GCLOUD_PROJECT: "$GCLOUD_PROJECT_ID"
+    CLOUDSQL_CONNECTION_NAME: "$CLOUDSQL_CONNECTION_NAME" 
+    CLOUDSQL_USER: "$CLOUDSQL_USER" 
+    CLOUDSQL_PASSWORD: "$CLOUDSQL_PASSWORD"
 
 dependencies:
   pre:
@@ -25,7 +28,7 @@ dependencies:
     - echo $CLIENT_SECRET | base64 --decode > ${HOME}/client-secret.json
     # vendor our dependencies
     - mkdir -p lib
-    - pip install -r requirements.txt -t lib
+    - pip install -r requirements.txt -t code/lib
     # Make sure gcloud is up to date
     - gcloud --quiet components update app
     # authenticate gcloud

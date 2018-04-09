@@ -1,0 +1,44 @@
+body {
+  background-color: #eeeeff;
+  margin: 0;
+  width: 100%;
+}
+
+.mdl-card {
+  width: 100%;
+}
+
+.gradientbg {
+    background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.dotbg {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='black' fill-opacity='0.2' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.settings-card {
+  max-width: 90%;
+  margin: auto;
+}
+
+.settings-card > .mdl-card__title {
+  height: 10rem;
+  background-image: url("../img/bg.jpg");
+  background-size: cover;
+}
+
+.redbg {
+  background-image: linear-gradient(to right, #ff758c 0%, #ff7eb3 100%);
+}
+
+form {
+  max-width: 100%;
+  margin: auto;
+  text-align: center;
+  padding-top: 3rem;
+}
+
+#bio {
+    resize: none;
+}

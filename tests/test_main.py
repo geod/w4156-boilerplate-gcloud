@@ -17,19 +17,87 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 
 import main
+from code.user import *
 import unittest
+
 
 class MainTest(unittest.TestCase):
     """This class uses the Flask tests app to run an integration test against a
     local instance of the server."""
 
+    def check_culunch(self, rv):
+        print(rv.data)
+        assert ("cu@lunch" in rv.data.lower())
+
     def setUp(self):
         self.app = main.app.test_client()
 
-    def test_hello_world(self):
-        rv = self.app.get('/')
-        print(rv.data)
-        assert("hello" in rv.data.lower())
+    def test_index(self):
+        rv = self.app.get('/index.html')
+        self.check_culunch(rv)
+
+    def test_listform(self):
+        rv = self.app.get("/listform/index.html")
+        self.check_culunch(rv)
+
+    """
+
+    def test_listings(self):
+        rv = self.app.get("/listings/index.html")
+        self.check_culunch(rv)
+
+    def test_settings(self):
+        rv = self.app.get("/settings/index.html")
+        self.check_culunch(rv)
+    """
+
+# user creation validation
+class ValidTest(unittest.TestCase):
+
+    def test_form(self):
+        
+        # good
+        form = Form("Shelley", "S", "sks2209", "lunch657", "school", "year", "interests")
+        self.assertTrue = form.form_input_valid()
+
+        # good
+        form = Form("Shelley", "S", "sks2209", "Lunch", "school", "year", "interests")
+        self.assertTrue = form.form_input_valid()
+
+        # good
+        form = Form("Shelley", "S", "sks2209", "LUNCH657", "school", "year", "interests")
+        self.assertTrue = form.form_input_valid()
+
+        # no name
+        form = Form("", "S", "sks2209", "Lunch657", "school", "year", "interests")
+        self.assertFalse = form.form_input_valid()
+
+        # no last
+        form = Form("Shelley", "", "sks2209", "Lunch657", "school", "year", "interests")
+        self.assertFalse = form.form_input_valid()
+
+        # no uni
+        form = Form("Shelley", "S", "", "Lunch657", "school", "year", "interests")
+        self.assertFalse = form.form_input_valid()
+
+        # no pass
+        form = Form("Shelley", "S", "sks2209", "", "school", "year", "interests")
+        self.assertFalse = form.form_input_valid()
+
+        # pass all lower
+        form = Form("Shelley", "S", "sks2209", "lunch", "school", "year", "interests")
+        self.assertFalse = form.form_input_valid()
+
+        # pass all upper
+        form = Form("Shelley", "S", "sks2209", "LUNCH", "school", "year", "interests")
+        self.assertFalse = form.form_input_valid()
+
+        # pass all numbers
+        form = Form("Shelley", "S", "sks2209", "1234", "school", "year", "interests")
+        self.assertFalse = form.form_input_valid()
+
+# check database
+
 
 if __name__ == '__main__':
     unittest.main()
