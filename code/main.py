@@ -36,8 +36,8 @@ CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 # CLOUDSQL_USER = "kayvon"
 # CLOUDSQL_PASSWORD = "kayvon"
 
-# DB_HOST_DEV = '35.193.223.145'
-DB_HOST_DEV = "127.0.0.1" # Using for local setup
+DB_HOST_DEV = '35.193.223.145'
+# DB_HOST_DEV = "127.0.0.1" # Using for local setup
 
 # ENV = ''
 # if os.environ.get('BRANCH') != 'master':
@@ -212,11 +212,6 @@ def home():
     # return render_template("results.html", MOCK_EVENTS=MOCK_EVENTS)
 
 
-@app.route('/group')
-def group():
-    return render_template("group.html")
-
-
 @app.route('/explore')
 def explore_events():
     # q = {
@@ -359,23 +354,23 @@ def send_email(address, username):
     mail.send_mail(sender_address, address, subject, body)
 
 
-@app.route('/email/<address>/<username>')
-def email(address, username):
-    send_email(address, username)
-    return redirect(url_for('home'))
-
-
-class ConfirmRegistration(Resource):
-    def get(self, username):
-        return {'username': username }
-
-api.add_resource(ConfirmRegistration, '/api/emailConf/<string:username>')
-
-class TestJob(Resource):
-    def get(self):
-        print('job run')
-        return {'test': 'success' }, 200
-api.add_resource(TestJob, '/jobs/test')
+# @app.route('/email/<address>/<username>')
+# def email(address, username):
+#     send_email(address, username)
+#     return redirect(url_for('home'))
+#
+#
+# class ConfirmRegistration(Resource):
+#     def get(self, username):
+#         return {'username': username }
+#
+# api.add_resource(ConfirmRegistration, '/api/emailConf/<string:username>')
+#
+# class TestJob(Resource):
+#     def get(self):
+#         print('job run')
+#         return {'test': 'success' }, 200
+# api.add_resource(TestJob, '/jobs/test')
 
 
 @app.route('/emailConf/<string:key>/<string:username>')
@@ -392,24 +387,125 @@ def confirm(key, username):
 
     return redirect(url_for('login'))
 
-@app.route('/test_email')
-def test_email():
-    sender  = 'genNYC <support@{}.appspotmail.com>'.format(app_identity.get_application_id())
-    email = 'kss2153@columbia.edu'
-    confirm_url = 'google.com'
-    jinja_environment = jinja2.Environment(
-        loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
-    template = jinja_environment.get_template('templates/email_template.html')
-    email_body = template.render({'confirm_url': confirm_url})
+# @app.route('/test_email')
+# def test_email():
+#     sender  = 'genNYC <support@{}.appspotmail.com>'.format(app_identity.get_application_id())
+#     email = 'kss2153@columbia.edu'
+#     confirm_url = 'google.com'
+#     jinja_environment = jinja2.Environment(
+#         loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
+#     template = jinja_environment.get_template('templates/email_template.html')
+#     email_body = template.render({'confirm_url': confirm_url})
+#
+#     message = mail.EmailMessage(
+#         sender = email,
+#         to = email,
+#         subject = 'Please confirm your subscription to Mailing-List XYZ',
+#         html = email_body)
+#
+#     message.send()
+#     return 'OK'
 
-    message = mail.EmailMessage(
-        sender = email,
-        to = email,
-        subject = 'Please confirm your subscription to Mailing-List XYZ',
-        html = email_body)
+def get_group_names(user):
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
 
-    message.send()
-    return 'OK'
+    query = "SELECT groupName, status from " + ENV_DB + ".Groups WHERE username='" + user.username + "'"
+    cursor.execute(query)
+    data = cursor.fetchall()
+    db.close()
+    return list((i[0],i[1]) for i in data)
+
+def get_group_members(group_name):
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    query = ("SELECT username from " + ENV_DB + ".Groups WHERE groupName='{}'").format(group_name)
+    cursor.execute(query)
+    data = cursor.fetchall()
+    db.close()
+    return list(i[0] for i in data)
+
+def add_group(group_name, users):
+    db = connect_to_cloudsql()
+    users.append(current_user.username)
+    for user in users:
+        cursor = db.cursor()
+        status = '2'
+        if (user == current_user.username):
+            status = '1'
+        query = ("INSERT INTO " + ENV_DB + ".Groups(groupName, username, status) \
+        VALUES ('{}','{}','{}')").format(group_name, user, status)
+        cursor.execute(query)
+    db.commit()
+    db.close()
+
+
+@app.route('/groups')
+def group():
+
+    groups = get_group_names(current_user)
+    pending = {}
+    accepted = {}
+    for group_name, status in groups:
+        members = get_group_members(group_name)
+        if (status == '1'):
+            accepted[group_name] = members
+        elif (status == '2'):
+            pending[group_name] = members
+    return render_template("group.html", pending=pending, accepted=accepted)
+
+class CreateGroup(Resource):
+    def put(self, groupname):
+        users = request.args.getlist('users')
+        add_group(groupname, users)
+        return {}, 200
+
+api.add_resource(CreateGroup, '/api/new_group/<string:groupname>')
+
+class CheckValidUser(Resource):
+    def get(self, username):
+        if (username == current_user.username):
+            return {}, 201
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM " + ENV_DB + ".Users WHERE username='" + username + "'")
+        data = cursor.fetchone()
+        db.close()
+        if (data):
+            return {}, 200
+        else:
+            return {}, 201
+api.add_resource(CheckValidUser, '/api/validate_username/<string:username>')
+
+class CheckValidGroupName(Resource):
+    def get(self, group_name):
+        if (group_name == ''):
+            return {}, 201
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM " + ENV_DB + ".Groups WHERE groupName='" + group_name + "'")
+        data = cursor.fetchone()
+        db.close()
+        if (data):
+            return {}, 201
+        else:
+            return {}, 200
+api.add_resource(CheckValidGroupName, '/api/validate_groupname/<string:group_name>')
+
+class RespondToRequest(Resource):
+    def put(self, group_name, response):
+        status = 1
+        if (response == 'reject'):
+            status = 3
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute("UPDATE " + ENV_DB + ".Groups SET status='"+ str(status) +"' \
+        WHERE username='" + current_user.username + "' AND groupName='"+ group_name +"'")
+        db.commit()
+        db.close()
+        return {}, 200
+api.add_resource(RespondToRequest, '/api/respond_to_request/<string:group_name>/<string:response>')
+
 
 
 @app.errorhandler(401)
